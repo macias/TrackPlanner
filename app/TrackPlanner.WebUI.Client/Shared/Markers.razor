@@ -1,0 +1,281 @@
+@using Microsoft.AspNetCore.Components.Rendering
+@using TrackPlanner.Data
+@using MathUnit
+@using System.Globalization
+@using System.Reflection.Emit
+@using System.Runtime.CompilerServices
+@using TrackPlanner.WebUI.Client.Data
+@using VisualAnchor = TrackPlanner.WebUI.Client.Data.VisualAnchor<BlazorLeaflet.Models.Marker>
+@using VisualDay = TrackPlanner.WebUI.Client.Data.VisualDay<BlazorLeaflet.Models.Marker,bool>
+
+@{
+
+  // https://docs.microsoft.com/en-us/aspnet/core/mvc/views/razor?view=aspnetcore-6.0#functions
+
+  void renderInsertionButton(int dayIndex, int anchorIndex)
+  {
+    <li style="margin-bottom: 1rem"><button type="button" class="btn btn-success btn-sm" 
+                                            @onclick="(args) => insertMarkerPlaceholder(args, dayIndex, anchorIndex)"><i class="fas fa-plus-circle"></i></button></li>
+  }
+
+  void renderAt(Length distance, TimeSpan start, bool isFirstOfDay)
+  {
+    string at_style = "padding-left: 0.5em;" + (isFirstOfDay ? "visibility: hidden" : "");
+    <span style="@at_style"><span>@DataFormat.Format(distance, withUnit: true)</span> <span><b>at</b> @DataFormat.Format(start)</span></span>
+  }
+
+  void renderPlaceholderRow()
+  {
+    <li style="margin-bottom: 1rem">
+      <i  @onclick="args => askForPositionAsync()" style="margin-left:0.5em;  color: rgb(20,215,20);" class="fas fa-map-marker-alt"></i>
+      
+      <button type="button" style="margin-right: 1rem; float:right" class="btn btn-dark btn-sm"
+              @onclick="args => deletePlaceholder()"><i class="fas fa-times-circle"></i></button>
+    </li>
+  }
+
+  void renderStartEdit(VisualDay day)
+  {
+    string css_style = $"{TimeInput.DefaultCssStyle};width: 4em";
+    
+    <b style="padding-left:1em">start</b>
+    <TimeInput EditContext="editContext" @bind-Value="@day.Start" CssStyle="@css_style"></TimeInput>
+  }
+
+  void renderNextDayRow(int dayIndex)
+  {
+    <li style="margin-bottom: 1rem">
+      @{
+        var day = Days[dayIndex];
+
+        renderAnchorButton($"D{dayIndex + 1}",lastOfDay:false,isPinned:true);
+        renderAt(Length.Zero, day.Start, isFirstOfDay: true);
+        renderStartEdit(day);
+      }
+
+      <button type="button" style="margin-right: 1rem; float:right" class="btn btn-dark btn-sm" 
+              @onclick="args => mergeDayToPrevious(args, dayIndex)"><i class="fas fa-link"></i></button>
+    </li>
+  }
+  void renderStatistics(SummaryDay day)
+  {
+    string speed = day.TrueTimeDuration == System.TimeSpan.Zero ? "--" : DataFormat.Format(day.Distance / day.TrueTimeDuration, withUnit: true);
+
+    <h5>Statistics</h5>
+    <div>
+      <b>Time</b> @(DataFormat.Format(day.TrueTimeDuration)) <b>Distance</b> @(DataFormat.Format(day.Distance, withUnit: true)) <b>Speed</b> @(speed)
+    </div>
+    <div>
+      @{
+        var snack_times = day.Checkpoints.SelectMany(it => it.SnackTimesAt).Count();
+        if (snack_times>0)
+        {
+          <span style="margin-right: 0.5em"><i title="@(TripEvent.SnackTime.ToString())" class="@eventClass(TripEvent.SnackTime)"></i> @(snack_times), @(DataFormat.Format(day.SnackTimesDuration)) </span> 
+        }
+      }
+      @{
+        var camp_resupplies = day.Checkpoints.Count(it => it.CampRessuplyAt.HasValue);
+        if (camp_resupplies>0)
+        {
+          <span style="margin-right: 0.5em"><i title="@(TripEvent.Resupply.ToString())"  class="@(eventClass(TripEvent.Resupply))"></i> @(camp_resupplies) (@DataFormat.Format(day.CampResupplyDuration)) </span>
+        }
+      }
+      @{
+        var lunch_at = day.Checkpoints.Select(it => it.LunchAt).FirstOrDefault(it => it.HasValue);
+        if (lunch_at.HasValue)
+        {
+          <span style="margin-right: 0.5em"><i title="@(TripEvent.Lunch.ToString())"  class="@(eventClass(TripEvent.Lunch))"></i> @DataFormat.Format(lunch_at.Value) (@DataFormat.Format(day.LunchDuration)) </span>
+        }
+      }
+      @{
+        var laundry_at = day.Checkpoints.Select(it => it.LaundryAt).FirstOrDefault(it => it.HasValue);
+        if (laundry_at.HasValue)
+        {
+          <span style="margin-right: 0.5em"><i title="@(TripEvent.Laundry.ToString())"  class="@(eventClass(TripEvent.Laundry))"></i> @DataFormat.Format(laundry_at.Value) (@DataFormat.Format(day.LaundryDuration)) </span>
+        }
+      }
+      <i></i>
+    </div>
+  }
+
+  void renderAnchorButton(string label,bool lastOfDay,bool isPinned)
+  {
+    string css_class = "btn btn-"+(isPinned?(lastOfDay?"warning":"primary"):"secondary");
+    <button type="button" class="@css_class">@label</button>
+  }
+
+  string eventClass(TripEvent kind)
+  {
+    return  "fas fa-" + kind switch{
+      TripEvent.Laundry=>"tint",
+      TripEvent.Lunch=>"utensils",
+      TripEvent.Resupply=>"shopping-cart",
+      TripEvent.SnackTime=>"carrot",     
+      _ => throw new ArgumentOutOfRangeException(),
+      };
+  }
+
+  void renderAnchorRow(SummaryJourney summary, int dayIndex, int checkpointIndex)
+  {
+    var summary_day = summary.Days[dayIndex];
+    var inner_day = this.Days[dayIndex];
+    SummaryCheckpoint checkpoint = summary_day.Checkpoints[checkpointIndex];
+    
+    bool is_first_of_day = checkpointIndex == 0;
+    bool is_last_of_day = checkpointIndex == summary_day.Checkpoints.Count - 1;
+
+    var (anchor_day_idx, anchor_idx,anchor_reused) = checkpointIndexToAnchor(checkpoint, dayIndex, checkpointIndex);
+//    Console.WriteLine($"Chkpt {dayIndex}::{checkpointIndex} mapped to {anchor_day_idx}::{anchor_idx}, {anchor_reused}");
+    var anchor = this.Days[anchor_day_idx].Anchors[anchor_idx];
+
+    <li style="margin-bottom: 1rem">
+      @{
+        if (checkpoint.IsLooped)
+          renderAnchorButton( "E", lastOfDay:true, isPinned:true );
+        else if (!anchor_reused)
+        renderAnchorButton(getMarkerTitle(dayIndex, anchor_idx),is_last_of_day,anchor.IsPinned);
+        
+        if (checkpointIndex != 0 && anchor.IsPinned)
+        {
+          <CustomTextInput EditContext="editContext" CssStyle="width: 14em; margin-left:0.5em" @bind-Value="@anchor.Label"   />
+        }
+        renderAt(checkpoint.IncomingDistance, checkpoint.Arrival, is_first_of_day);
+
+        if (is_first_of_day)
+        {
+          if (dayIndex==0)
+          renderStartEdit(inner_day);
+          else
+            renderNextDayRow(dayIndex);
+        }
+        else if (!is_last_of_day && anchor.IsPinned)
+        {
+          <b style="padding-left:1em">break</b>
+          <BreakTimeInput EditContext="editContext" @bind-Value="@anchor.Break"></BreakTimeInput>
+        }
+      }
+
+      @foreach (var (at,kind) in checkpoint.Events)
+      {
+        var title = $"{kind} {DataFormat.Format(at)}";
+        var css_class = eventClass(kind);
+        <i class="@css_class" title="@title" style="margin: 0 2px; color: navy"></i>
+      }
+      @if (!anchor_reused)
+      {
+         @if (!anchor.IsPinned)
+         {
+           <button type="button" style="margin-right: 1rem; float:right" class="btn btn-dark btn-sm" 
+                   @onclick="args => pinMarker( dayIndex, anchor_idx)"><i class="fas fa-thumbtack"></i></button>
+         }
+        else if (!checkpoint.IsLooped) // don't worry about starting day (on "next" days), those are covered with separate methods 
+        {
+          <button type="button" style="margin-right: 1rem; float:right" class="btn btn-dark btn-sm" 
+                  onclick="@(async ()=> await deleteMarkerAsync( dayIndex, anchor_idx))"><i class="fas fa-trash"></i></button>
+        }
+        @if (!is_last_of_day)
+        {
+          <button type="button" style="margin-right: 1rem; float:right" class="btn btn-dark btn-sm" 
+                  @onclick="args => splitDay( dayIndex, anchor_idx)"><i class="fas fa-cut"></i></button>
+        }
+      }
+
+    </li>
+
+  }
+}
+
+
+<div>
+  <div>
+    <span style="">
+      <input style="" type="checkbox" id="loopedCheckBox" @bind="IsLooped">
+      <label style="" for="loopedCheckBox">
+        Looped route
+      </label>
+    </span>
+    <span style="">
+      <input style="" type="checkbox" id="homeStartCheckBox" @bind="VisualSchedule.StartsAtHome">
+      <label style="" for="homeStartCheckBox">
+        Home start
+      </label>
+    </span>
+    <span style="">
+      <input style="" type="checkbox" id="homeEndCheckBox" @bind="VisualSchedule.EndsAtHome">
+      <label style="" for="homeEndCheckBox">
+        Home end
+      </label>
+    </span>
+  </div>
+  
+  <ul style="list-style-type: none; padding-left: 0;">
+    @{
+
+       Console.WriteLine($"Rendering markers side bar with {Days.Count} days");
+
+      for (int __day_idx = 0; __day_idx < summary.Value.Days.Count; ++__day_idx)
+      {
+        int day_idx = __day_idx;
+        var day = summary.Value.Days[day_idx];
+        var inner_day = this.Days[day_idx];
+
+        Console.WriteLine($"Toggle state for human day {day_idx+1} = {inner_day.Visual}");
+        
+        var late_camping = day.LateCampingBy.HasValue ? 
+          new MarkupString($"<span title='late camping' ><i style='color:red' class='fas fa-stopwatch'></i> <small>{DataFormat.Format(day.LateCampingBy.Value)}</small></span>") 
+          : new MarkupString();
+        
+        <AccordionToggle Tag="@day_idx"  OnToggled="onDayToggled" @bind-Collapsed="inner_day.Visual">
+          <Header>
+            <h4>Day @(day_idx + 1) @(late_camping)</h4>
+          </Header>
+        </AccordionToggle>
+
+        if (!inner_day.Visual)
+        {
+          // Console.WriteLine("Start of anchor loop");
+
+         
+          int anchor_idx = day_idx==0?0:-1;
+          Console.WriteLine($"DEBUG rendering for day {day_idx} {day.Checkpoints.Count} checkpoints");
+          @for ( int checkpoint_idx = 0; checkpoint_idx < day.Checkpoints.Count; ++checkpoint_idx,++anchor_idx)
+          {
+            // on next days do now show insertion before day start
+            if (checkpoint_idx > 0 || day_idx == 0)
+            {
+              if ((day_idx,anchor_idx) == anchorPlaceholder)
+                renderPlaceholderRow();
+
+              if ((day_idx,anchor_idx) != anchorPlaceholder)
+              {
+                renderInsertionButton(day_idx, anchor_idx);
+              }
+            }
+
+            renderAnchorRow(summary.Value, day_idx, checkpoint_idx);
+          }
+          
+          Console.WriteLine("End of anchor loop");
+
+          if ((day_idx,anchor_idx) == anchorPlaceholder)
+            renderPlaceholderRow();
+
+          // DO NOT use `else` here because placeholder is nullable
+          if ((day_idx,anchor_idx) != anchorPlaceholder)
+            renderInsertionButton(day_idx, anchor_idx);
+          
+
+          renderStatistics(day);
+
+
+        }
+
+      }
+      
+      
+    }
+    <div><b>Total distance:</b> @(DataFormat.Format(summary.Value.Distance, withUnit:true))</div>
+  </ul>
+
+</div>
+

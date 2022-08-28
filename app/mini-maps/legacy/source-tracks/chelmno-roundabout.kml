@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="utf-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2">
+<Document>
+    <name>route</name>
+    <open>1</open>
+    <description>
+    <![CDATA[
+        popisek
+    ]]>
+    </description>
+    <Style id="path"><LineStyle><color>b20000ff</color><width>6</width></LineStyle></Style>
+    <Style id="routepoint"><IconStyle><color>b20000ff</color><Icon><href>http://maps.google.com/mapfiles/kml/shapes/placemark_square.png</href></Icon></IconStyle></Style>
+    <Style id="waypoint"><IconStyle><color>b20000ff</color><Icon><href>http://maps.google.com/mapfiles/kml/shapes/placemark_circle.png</href></Icon></IconStyle></Style>
+    <Folder>
+        <name>1. část</name>
+        <visibility>1</visibility>
+        <open>1</open>
+        <Folder>
+            <name>Itinerar Start -&gt; Toruńska</name>
+            <visibility>1</visibility>
+            <open>0</open>
+            <Placemark>
+                <name>Start</name>
+                <visibility>1</visibility>
+                <description>
+                <![CDATA[
+                    <table>
+                        <tr><td>Longitude: 18.421742767095566</td></tr>
+                        <tr><td>Latitude: 53.32023583352566</td></tr>
+                        <tr><td>Altitude: 88</td></tr>
+                    </table>
+                ]]>
+                </description>
+                <styleUrl>#waypoint</styleUrl>
+                <Point>
+                    <coordinates>
+                        18.421742767095566,53.32023583352566,88
+                    </coordinates>
+                </Point>
+            </Placemark>
+            <Placemark>
+                <name></name>
+                <visibility>1</visibility>
+                <description>
+                <![CDATA[
+                    <table>
+                        <tr><td>Longitude: 18.420125395059586</td></tr>
+                        <tr><td>Latitude: 53.328837007284164</td></tr>
+                        <tr><td>Altitude: 82</td></tr>
+                    </table>
+                ]]>
+                </description>
+                <styleUrl>#waypoint</styleUrl>
+                <Point>
+                    <coordinates>
+                        18.420125395059586,53.328837007284164,82
+                    </coordinates>
+                </Point>
+            </Placemark>
+            <Placemark>
+                <name>Chełmińska</name>
+                <visibility>1</visibility>
+                <description>
+                <![CDATA[
+                    <table>
+                        <tr><td>Longitude: 18.42010796070099</td></tr>
+                        <tr><td>Latitude: 53.328842371702194</td></tr>
+                        <tr><td>Altitude: 82</td></tr>
+                    </table>
+                ]]>
+                </description>
+                <styleUrl>#waypoint</styleUrl>
+                <Point>
+                    <coordinates>
+                        18.42010796070099,53.328842371702194,82
+                    </coordinates>
+                </Point>
+            </Placemark>
+            <Placemark>
+                <name>Toruńska</name>
+                <visibility>1</visibility>
+                <description>
+                <![CDATA[
+                    <table>
+                        <tr><td>Longitude: 18.419200032949448</td></tr>
+                        <tr><td>Latitude: 53.33369180560112</td></tr>
+                        <tr><td>Altitude: 77</td></tr>
+                    </table>
+                ]]>
+                </description>
+                <styleUrl>#waypoint</styleUrl>
+                <Point>
+                    <coordinates>
+                        18.419200032949448,53.33369180560112,77
+                    </coordinates>
+                </Point>
+            </Placemark>
+        </Folder>
+        <Folder>
+            <name>Planovani Długa -&gt; Chełmno</name>
+            <visibility>1</visibility>
+            <open>0</open>
+            <Placemark>
+                <name>Długa</name>
+                <visibility>1</visibility>
+                <description>
+                <![CDATA[
+                    <table>
+                        <tr><td>Longitude: 18.421744108200073</td></tr>
+                        <tr><td>Latitude: 53.32023449242115</td></tr>
+                    </table>
+                ]]>
+                </description>
+                <styleUrl>#routepoint</styleUrl>
+                <Point>
+                    <coordinates>
+                        18.421744108200073,53.32023449242115
+                    </coordinates>
+                </Point>
+            </Placemark>
+            <Placemark>
+                <name>Chełmno</name>
+                <visibility>1</visibility>
+                <description>
+                <![CDATA[
+                    <table>
+                        <tr><td>Longitude: 18.41929793357849</td></tr>
+                        <tr><td>Latitude: 53.33367772400379</td></tr>
+                    </table>
+                ]]>
+                </description>
+                <styleUrl>#routepoint</styleUrl>
+                <Point>
+                    <coordinates>
+                        18.41929793357849,53.33367772400379
+                    </coordinates>
+                </Point>
+            </Placemark>
+        </Folder>
+        <Placemark><name>route</name><styleUrl>#path</styleUrl>
+        <LineString>
+            <tessellate>1</tessellate>
+            <coordinates>
+                18.421742767095566,53.32023583352566,88
+                18.421563059091568,53.321110904216766,88
+                18.42144638299942,53.321679532527924,90
+                18.42141017317772,53.3218190073967,90
+                18.42132031917572,53.32224279642105,90
+                18.42110440135002,53.32333780825138,90
+                18.420880436897278,53.32443751394749,90
+                18.420781195163727,53.32488812506199,91
+                18.420691341161728,53.32533337175846,91
+                18.42051163315773,53.326245322823524,90
+                18.420323878526688,53.32715794444084,88
+                18.420197814702988,53.32777485251427,87
+                18.420071750879288,53.32839176058769,85
+                18.420089185237885,53.32852050662041,84
+                18.420098572969437,53.328590244054794,83
+                18.42010796070099,53.32861706614494,83
+                18.420134782791138,53.328627794981,83
+                18.420161604881287,53.32863852381706,83
+                18.420179039239883,53.32865461707115,83
+                18.420197814702988,53.32867607474327,82
+                18.420215249061584,53.32870289683342,82
+                18.420215249061584,53.32872971892357,82
+                18.420215249061584,53.32875654101372,82
+                18.420197814702988,53.32877799868584,82
+                18.42017099261284,53.328804820775986,82
+                18.42014417052269,53.328826278448105,82
+                18.420125395059586,53.328837007284164,82
+                18.42010796070099,53.328842371702194,82
+                18.42004492878914,53.32889065146446,83
+                18.419999331235886,53.32894429564476,83
+                18.419936299324036,53.329062312841415,82
+                18.419874608516693,53.32936808466911,82
+                18.419748544692993,53.3299420773983,83
+                18.419712334871292,53.33015665411949,83
+                18.419668078422546,53.33037123084068,83
+                18.419586271047592,53.330837935209274,84
+                18.419406563043594,53.33171769976616,82
+                18.419218808412552,53.332602828741074,79
+                18.41914638876915,53.33299979567528,81
+                18.419137001037598,53.333042711019516,81
+                18.419137001037598,53.33314999938011,81
+                18.419119566679,53.333337754011154,80
+                18.419137001037598,53.33350405097008,79
+                18.4191732108593,53.33362206816673,78
+                18.419200032949448,53.33369180560112,77
+            </coordinates>
+        </LineString>
+        </Placemark>
+    </Folder>
+</Document>
+</kml>

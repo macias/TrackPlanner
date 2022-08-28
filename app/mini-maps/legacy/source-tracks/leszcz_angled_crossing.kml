@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2">
+<Document>
+    <name>route</name>
+    <open>1</open>
+    <description>
+    <![CDATA[
+        popisek
+    ]]>
+    </description>
+    <Style id="path"><LineStyle><color>b20000ff</color><width>6</width></LineStyle></Style>
+    <Style id="routepoint"><IconStyle><color>b20000ff</color><Icon><href>http://maps.google.com/mapfiles/kml/shapes/placemark_square.png</href></Icon></IconStyle></Style>
+    <Style id="waypoint"><IconStyle><color>b20000ff</color><Icon><href>http://maps.google.com/mapfiles/kml/shapes/placemark_circle.png</href></Icon></IconStyle></Style>
+    <Folder>
+        <name>1. část</name>
+        <visibility>1</visibility>
+        <open>1</open>
+        <Folder>
+            <name>Itinerar Start -&gt; Szkolna</name>
+            <visibility>1</visibility>
+            <open>0</open>
+            <Placemark>
+                <name>Start</name>
+                <visibility>1</visibility>
+                <description>
+                <![CDATA[
+                    <table>
+                        <tr><td>Longitude: 18.517789989709854</td></tr>
+                        <tr><td>Latitude: 53.10594543814659</td></tr>
+                        <tr><td>Altitude: 80</td></tr>
+                    </table>
+                ]]>
+                </description>
+                <styleUrl>#waypoint</styleUrl>
+                <Point>
+                    <coordinates>
+                        18.517789989709854,53.10594543814659,80
+                    </coordinates>
+                </Point>
+            </Placemark>
+            <Placemark>
+                <name>Szkolna</name>
+                <visibility>1</visibility>
+                <description>
+                <![CDATA[
+                    <table>
+                        <tr><td>Longitude: 18.519470393657684</td></tr>
+                        <tr><td>Latitude: 53.106290102005005</td></tr>
+                        <tr><td>Altitude: 81</td></tr>
+                    </table>
+                ]]>
+                </description>
+                <styleUrl>#waypoint</styleUrl>
+                <Point>
+                    <coordinates>
+                        18.519470393657684,53.106290102005005,81
+                    </coordinates>
+                </Point>
+            </Placemark>
+            <Placemark>
+                <name>Szkolna</name>
+                <visibility>1</visibility>
+                <description>
+                <![CDATA[
+                    <table>
+                        <tr><td>Longitude: 18.520529866218567</td></tr>
+                        <tr><td>Latitude: 53.10766540467739</td></tr>
+                        <tr><td>Altitude: 80</td></tr>
+                    </table>
+                ]]>
+                </description>
+                <styleUrl>#waypoint</styleUrl>
+                <Point>
+                    <coordinates>
+                        18.520529866218567,53.10766540467739,80
+                    </coordinates>
+                </Point>
+            </Placemark>
+        </Folder>
+        <Folder>
+            <name>Planovani Leszczynowa -&gt; Szkolna</name>
+            <visibility>1</visibility>
+            <open>0</open>
+            <Placemark>
+                <name>Leszczynowa</name>
+                <visibility>1</visibility>
+                <description>
+                <![CDATA[
+                    <table>
+                        <tr><td>Longitude: 18.51780205965042</td></tr>
+                        <tr><td>Latitude: 53.105930015444756</td></tr>
+                    </table>
+                ]]>
+                </description>
+                <styleUrl>#routepoint</styleUrl>
+                <Point>
+                    <coordinates>
+                        18.51780205965042,53.105930015444756
+                    </coordinates>
+                </Point>
+            </Placemark>
+            <Placemark>
+                <name>Szkolna</name>
+                <visibility>1</visibility>
+                <description>
+                <![CDATA[
+                    <table>
+                        <tr><td>Longitude: 18.52058082818985</td></tr>
+                        <tr><td>Latitude: 53.10765668749809</td></tr>
+                    </table>
+                ]]>
+                </description>
+                <styleUrl>#routepoint</styleUrl>
+                <Point>
+                    <coordinates>
+                        18.52058082818985,53.10765668749809
+                    </coordinates>
+                </Point>
+            </Placemark>
+        </Folder>
+        <Placemark><name>route</name><styleUrl>#path</styleUrl>
+        <LineString>
+            <tessellate>1</tessellate>
+            <coordinates>
+                18.517789989709854,53.10594543814659,80
+                18.517961651086807,53.10597762465477,80
+                18.51867914199829,53.10612849891186,80
+                18.519093543291092,53.10620963573456,81
+                18.519281297922134,53.106252551078796,81
+                18.519470393657684,53.106290102005005,81
+                18.519650101661682,53.10643024742603,81
+                18.51979359984398,53.106576427817345,80
+                18.51992905139923,53.1067219376564,80
+                18.520206660032272,53.107077330350876,80
+                18.520529866218567,53.10766540467739,80
+            </coordinates>
+        </LineString>
+        </Placemark>
+    </Folder>
+</Document>
+</kml>

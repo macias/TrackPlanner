@@ -1,0 +1,7 @@
+.file_dir_icon {
+    margin-right:1rem;
+}
+.file_dir:hover {
+    background-color: orange;
+    cursor: pointer;
+}

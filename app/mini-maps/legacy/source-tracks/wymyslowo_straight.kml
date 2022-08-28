@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2">
+<Document>
+    <name>route</name>
+    <open>1</open>
+    <description>
+    <![CDATA[
+        popisek
+    ]]>
+    </description>
+    <Style id="path"><LineStyle><color>b20000ff</color><width>6</width></LineStyle></Style>
+    <Style id="routepoint"><IconStyle><color>b20000ff</color><Icon><href>http://maps.google.com/mapfiles/kml/shapes/placemark_square.png</href></Icon></IconStyle></Style>
+    <Style id="waypoint"><IconStyle><color>b20000ff</color><Icon><href>http://maps.google.com/mapfiles/kml/shapes/placemark_circle.png</href></Icon></IconStyle></Style>
+    <Folder>
+        <name>1. část</name>
+        <visibility>1</visibility>
+        <open>1</open>
+        <Folder>
+            <name>Itinerar Start -&gt; Jeżynowa</name>
+            <visibility>1</visibility>
+            <open>0</open>
+            <Placemark>
+                <name>Start</name>
+                <visibility>1</visibility>
+                <description>
+                <![CDATA[
+                    <table>
+                        <tr><td>Longitude: 18.503884077072144</td></tr>
+                        <tr><td>Latitude: 53.16300742328167</td></tr>
+                        <tr><td>Altitude: 88</td></tr>
+                    </table>
+                ]]>
+                </description>
+                <styleUrl>#waypoint</styleUrl>
+                <Point>
+                    <coordinates>
+                        18.503884077072144,53.16300742328167,88
+                    </coordinates>
+                </Point>
+            </Placemark>
+            <Placemark>
+                <name>Stawowa</name>
+                <visibility>1</visibility>
+                <description>
+                <![CDATA[
+                    <table>
+                        <tr><td>Longitude: 18.503902852535248</td></tr>
+                        <tr><td>Latitude: 53.16355124115944</td></tr>
+                        <tr><td>Altitude: 89</td></tr>
+                    </table>
+                ]]>
+                </description>
+                <styleUrl>#waypoint</styleUrl>
+                <Point>
+                    <coordinates>
+                        18.503902852535248,53.16355124115944,89
+                    </coordinates>
+                </Point>
+            </Placemark>
+            <Placemark>
+                <name>Jeżynowa</name>
+                <visibility>1</visibility>
+                <description>
+                <![CDATA[
+                    <table>
+                        <tr><td>Longitude: 18.505348563194275</td></tr>
+                        <tr><td>Latitude: 53.17132227122784</td></tr>
+                        <tr><td>Altitude: 84</td></tr>
+                    </table>
+                ]]>
+                </description>
+                <styleUrl>#waypoint</styleUrl>
+                <Point>
+                    <coordinates>
+                        18.505348563194275,53.17132227122784,84
+                    </coordinates>
+                </Point>
+            </Placemark>
+        </Folder>
+        <Folder>
+            <name>Planovani Jana III Sobieskiego -&gt; Jeżynowa</name>
+            <visibility>1</visibility>
+            <open>0</open>
+            <Placemark>
+                <name>Jana III Sobieskiego</name>
+                <visibility>1</visibility>
+                <description>
+                <![CDATA[
+                    <table>
+                        <tr><td>Longitude: 18.50386530160904</td></tr>
+                        <tr><td>Latitude: 53.16300742328167</td></tr>
+                    </table>
+                ]]>
+                </description>
+                <styleUrl>#routepoint</styleUrl>
+                <Point>
+                    <coordinates>
+                        18.50386530160904,53.16300742328167
+                    </coordinates>
+                </Point>
+            </Placemark>
+            <Placemark>
+                <name>Jeżynowa</name>
+                <visibility>1</visibility>
+                <description>
+                <![CDATA[
+                    <table>
+                        <tr><td>Longitude: 18.50536733865738</td></tr>
+                        <tr><td>Latitude: 53.17131690680981</td></tr>
+                    </table>
+                ]]>
+                </description>
+                <styleUrl>#routepoint</styleUrl>
+                <Point>
+                    <coordinates>
+                        18.50536733865738,53.17131690680981
+                    </coordinates>
+                </Point>
+            </Placemark>
+        </Folder>
+        <Placemark><name>route</name><styleUrl>#path</styleUrl>
+        <LineString>
+            <tessellate>1</tessellate>
+            <coordinates>
+                18.503884077072144,53.16300742328167,88
+                18.503902852535248,53.16355124115944,89
+                18.503992706537247,53.16627100110054,85
+                18.50400075316429,53.16673971712589,85
+                18.504010140895844,53.167208433151245,86
+                18.504585474729538,53.16928714513779,86
+                18.50480943918228,53.16997580230236,85
+                18.505042791366577,53.17067049443722,84
+                18.505348563194275,53.17132227122784,84
+            </coordinates>
+        </LineString>
+        </Placemark>
+    </Folder>
+</Document>
+</kml>

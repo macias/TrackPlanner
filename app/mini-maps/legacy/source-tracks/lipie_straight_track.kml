@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2">
+<Document>
+    <name>route</name>
+    <open>1</open>
+    <description>
+    <![CDATA[
+        popisek
+    ]]>
+    </description>
+    <Style id="path"><LineStyle><color>b20000ff</color><width>6</width></LineStyle></Style>
+    <Style id="routepoint"><IconStyle><color>b20000ff</color><Icon><href>http://maps.google.com/mapfiles/kml/shapes/placemark_square.png</href></Icon></IconStyle></Style>
+    <Style id="waypoint"><IconStyle><color>b20000ff</color><Icon><href>http://maps.google.com/mapfiles/kml/shapes/placemark_circle.png</href></Icon></IconStyle></Style>
+    <Folder>
+        <name>1. část</name>
+        <visibility>1</visibility>
+        <open>1</open>
+        <Folder>
+            <name>Itinerar Start -&gt; </name>
+            <visibility>1</visibility>
+            <open>0</open>
+            <Placemark>
+                <name>Start</name>
+                <visibility>1</visibility>
+                <description>
+                <![CDATA[
+                    <table>
+                        <tr><td>Longitude: 18.44857558608055</td></tr>
+                        <tr><td>Latitude: 52.87949591875076</td></tr>
+                        <tr><td>Altitude: 75</td></tr>
+                    </table>
+                ]]>
+                </description>
+                <styleUrl>#waypoint</styleUrl>
+                <Point>
+                    <coordinates>
+                        18.44857558608055,52.87949591875076,75
+                    </coordinates>
+                </Point>
+            </Placemark>
+            <Placemark>
+                <name></name>
+                <visibility>1</visibility>
+                <description>
+                <![CDATA[
+                    <table>
+                        <tr><td>Longitude: 18.444667607545853</td></tr>
+                        <tr><td>Latitude: 52.87702962756157</td></tr>
+                        <tr><td>Altitude: 77</td></tr>
+                    </table>
+                ]]>
+                </description>
+                <styleUrl>#waypoint</styleUrl>
+                <Point>
+                    <coordinates>
+                        18.444667607545853,52.87702962756157,77
+                    </coordinates>
+                </Point>
+            </Placemark>
+            <Placemark>
+                <name></name>
+                <visibility>1</visibility>
+                <description>
+                <![CDATA[
+                    <table>
+                        <tr><td>Longitude: 18.443579971790314</td></tr>
+                        <tr><td>Latitude: 52.87747420370579</td></tr>
+                        <tr><td>Altitude: 77</td></tr>
+                    </table>
+                ]]>
+                </description>
+                <styleUrl>#waypoint</styleUrl>
+                <Point>
+                    <coordinates>
+                        18.443579971790314,52.87747420370579,77
+                    </coordinates>
+                </Point>
+            </Placemark>
+            <Placemark>
+                <name></name>
+                <visibility>1</visibility>
+                <description>
+                <![CDATA[
+                    <table>
+                        <tr><td>Longitude: 18.442619740962982</td></tr>
+                        <tr><td>Latitude: 52.87648178637028</td></tr>
+                        <tr><td>Altitude: 79</td></tr>
+                    </table>
+                ]]>
+                </description>
+                <styleUrl>#waypoint</styleUrl>
+                <Point>
+                    <coordinates>
+                        18.442619740962982,52.87648178637028,79
+                    </coordinates>
+                </Point>
+            </Placemark>
+        </Folder>
+        <Folder>
+            <name>Planovani 52.879473N, 18.448598W -&gt; 2533C</name>
+            <visibility>1</visibility>
+            <open>0</open>
+            <Placemark>
+                <name>52.879473N, 18.448598W</name>
+                <visibility>1</visibility>
+                <description>
+                <![CDATA[
+                    <table>
+                        <tr><td>Longitude: 18.448598384857178</td></tr>
+                        <tr><td>Latitude: 52.879473119974136</td></tr>
+                    </table>
+                ]]>
+                </description>
+                <styleUrl>#routepoint</styleUrl>
+                <Point>
+                    <coordinates>
+                        18.448598384857178,52.879473119974136
+                    </coordinates>
+                </Point>
+            </Placemark>
+            <Placemark>
+                <name>2533C</name>
+                <visibility>1</visibility>
+                <description>
+                <![CDATA[
+                    <table>
+                        <tr><td>Longitude: 18.442600965499878</td></tr>
+                        <tr><td>Latitude: 52.876485139131546</td></tr>
+                    </table>
+                ]]>
+                </description>
+                <styleUrl>#routepoint</styleUrl>
+                <Point>
+                    <coordinates>
+                        18.442600965499878,52.876485139131546
+                    </coordinates>
+                </Point>
+            </Placemark>
+        </Folder>
+        <Placemark><name>route</name><styleUrl>#path</styleUrl>
+        <LineString>
+            <tessellate>1</tessellate>
+            <coordinates>
+                18.44857558608055,52.87949591875076,75
+                18.44764083623886,52.87906274199486,75
+                18.44751477241516,52.879003062844276,75
+                18.44685897231102,52.87869393825531,76
+                18.44646468758583,52.878504171967506,77
+                18.44611331820488,52.87828154861927,76
+                18.44561979174614,52.877913415431976,76
+                18.445216119289398,52.87755534052849,77
+                18.444864749908447,52.87720263004303,77
+                18.444667607545853,52.87702962756157,77
+                18.443579971790314,52.87747420370579,77
+                18.443553149700165,52.877441346645355,77
+                18.44348207116127,52.877365574240685,77
+                18.442619740962982,52.87648178637028,79
+            </coordinates>
+        </LineString>
+        </Placemark>
+    </Folder>
+</Document>
+</kml>

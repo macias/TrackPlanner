@@ -1,0 +1,37 @@
+﻿.auto-anchor-icon
+{
+    background-image: url("/icons/flag-icon.png");
+    text-align:center;
+    color:black;
+}
+
+.navy-number-icon
+{
+    background-image: url("/icons/marker-matte-navy.png");
+    text-align:center;
+    color:White;
+}
+
+.olive-number-icon
+{
+    background-image: url("/icons/marker-matte-olive.png");
+    text-align:center;
+    color:White;
+}
+
+.orange-number-icon
+{
+    background-image: url("/icons/marker-matte-orange.png");
+    text-align:center;
+    color:White;
+}
+
+.auto-anchor-icon-text
+{
+    padding-top: 12px;
+}
+
+.pinned-anchor-icon-text
+{
+    padding-top: 6px;
+}

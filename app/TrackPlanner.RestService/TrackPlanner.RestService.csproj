@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <LangVersion>10</LangVersion>
+    <WarningsAsErrors>Nullable</WarningsAsErrors>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="5.0.11" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="5.6.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\TrackPlanner.Data\TrackPlanner.Data.csproj" />
+    <ProjectReference Include="..\TrackPlanner.RestSymbols\TrackPlanner.RestSymbols.csproj" />
+    <ProjectReference Include="..\TrackPlanner.Turner\TrackPlanner.Turner.csproj" />
+    <ProjectReference Include="..\TrackPlanner.PathFinder\TrackPlanner.PathFinder.csproj" />
+  </ItemGroup>
+
+</Project>

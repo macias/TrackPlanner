@@ -1,0 +1,4250 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Document xmlns="http://www.opengis.net/kml/2.2">
+  <name>torun_chelminska_cycleway_snap_with_turn</name>
+  <Style id="icon-1739-DB4436-nodesc">
+    <IconStyle>
+      <color>ff3644db</color>
+      <colorMode>normal</colorMode>
+      <scale>1</scale>
+      <Icon>
+        <href>https://www.gstatic.com/mapspro/images/stock/503-wht-blank_maps.png</href>
+      </Icon>
+    </IconStyle>
+  </Style>
+  <Style id="625ff9e0-9d5d-4b2b-98e9-8e02936e640d">
+    <LineStyle>
+      <color>ff000000</color>
+      <colorMode>normal</colorMode>
+      <width>1</width>
+    </LineStyle>
+  </Style>
+  <Style id="17b844fe-ab9c-4867-9653-47805fc5bd5d">
+    <LineStyle>
+      <color>ff2bb4af</color>
+      <colorMode>normal</colorMode>
+      <width>7</width>
+    </LineStyle>
+  </Style>
+  <Style id="54cf3ff2-be02-490a-bc0d-d90ff55d5c41">
+    <LineStyle>
+      <color>ffa4aabc</color>
+      <colorMode>normal</colorMode>
+      <width>7</width>
+    </LineStyle>
+  </Style>
+  <Placemark>
+    <name>271631584</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.562068939208984,53.056522369384766</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>271631585</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.561336517333984,53.057147979736335</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>271631653</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.556728363037109,53.061588287353509</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>271631656</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.556644439697266,53.06166076660157</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>988562443</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.549970626831055,53.063285827636719</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>988562509</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.547924041748047,53.060474395751953</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>988562570</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.550052642822266,53.063373565673828</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>988562763</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.548244476318359,53.058300018310547</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>988562889</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.549629211425781,53.057491302490227</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>988562977</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.561660766601562,53.056835174560547</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>988563020</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.551088333129883,53.064769744873054</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>988563039</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.55339241027832,53.056262969970703</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>988563084</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.546875,53.058891296386719</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>988563167</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.551378250122067,53.064975738525391</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>1403173147</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.555784225463867,53.062217712402337</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>1403173182</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.551740646362305,53.065204620361328</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>1403173205</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.556222915649414,53.061943054199219</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>1403173210</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.556520462036136,53.062496185302734</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>1403173241</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.555669784545898,53.064987182617188</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>1403173307</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.546720504760742,53.058662414550781</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>1403173308</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.563297271728512,53.062721252441413</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>1403173318</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.550281524658207,53.057998657226562</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>1403173320</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.547117233276371,53.058788299560547</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>1615430622</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.561264038085938,53.0592041015625</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>1615430698</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.563014984130863,53.058788299560547</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>1615430715</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.563177108764648,53.059295654296868</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>1615430756</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.559659957885742,53.058769226074219</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>1615430769</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.565383911132812,53.059848785400391</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>1615430772</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.565515518188473,53.059883117675774</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>1615430800</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.565317153930668,53.059814453125</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>1615430879</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.563287734985352,53.057891845703118</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>1615430953</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.565698623657227,53.059822082519531</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>1615430991</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.562646865844727,53.058700561523438</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>1615431035</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.565252304077148,53.059761047363281</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>1615431069</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.565341949462891,53.059101104736328</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>1615431096</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.560909271240234,53.059238433837884</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>1615431106</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.563362121582031,53.058849334716797</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>1615431115</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.56096076965332,53.057514190673828</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>1615431135</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.56130218505859,53.058483123779297</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>1615431146</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.561317443847656,53.059005737304688</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>1615431188</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.564414978027344,53.05950927734375</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>1615431202</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.565727233886719,53.059726715087898</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>1615431247</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.560783386230469,53.059158325195312</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>1615431249</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.565153121948242,53.05902099609375</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>1615431366</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.561134338378906,53.059261322021484</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>1615431397</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.561210632324219,53.059242248535156</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>1615431447</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.565507888793945,53.058216094970703</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>1615431470</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.565174102783203,53.059112548828125</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>1615431472</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.561294555664062,53.059135437011719</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>1615431566</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.565118789672852,53.059627532958984</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>1615431580</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.560626983642578,53.058937072753899</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>1615431583</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.565584182739261,53.059886932373047</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>1615431595</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.560121536254883,53.058330535888672</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>1615431596</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.560823440551758,53.059192657470703</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>1615431597</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.565652847290039,53.059867858886719</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>1615431648</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.560516357421875,53.058364868164055</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>1737021328</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.562126159667969,53.056358337402344</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>1737021330</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.561588287353516,53.056747436523445</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>1737021333</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.55660247802734,53.061557769775391</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>1737021335</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.556381225585938,53.061847686767578</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>1737021338</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.555459976196289,53.062129974365234</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>1737021342</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.553977966308594,53.063056945800781</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>1737021345</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.553081512451172,53.063560485839844</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>1737021347</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.552530288696293,53.063865661621087</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>1737021349</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.552028656005859,53.064144134521484</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>1737021352</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.551609039306641,53.064369201660156</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>1737021355</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.551033020019531,53.064727783203125</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>2460171992</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.548061370849609,53.057029724121094</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>2460171993</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.548549652099609,53.057014465332031</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>2460171994</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.549747467041016,53.057155609130859</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>2460171995</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.550359725952148,53.057235717773438</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>2665383719</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.561944961547852,53.056465148925781</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>2760208731</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.546344757080082,53.060924530029297</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>2760208732</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.54890251159668,53.058559417724609</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>2760208747</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.550180435180664,53.057426452636719</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>2792661154</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.5556640625,53.055667877197266</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>2792661180</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.550527572631836,53.063663482666016</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>2792661183</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.554960250854489,53.055763244628906</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>2792661186</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.555419921875,53.055698394775391</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>2792661194</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.550327301025391,53.063533782958984</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>3417741714</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.556022644042969,53.061805725097656</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>3417754835</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.556713104248047,53.061679840087891</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>3417754836</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.556695938110352,53.061985015869141</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>3417827875</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.547500610351562,53.05987548828125</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>3417827876</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.550638198852539,53.064193725585938</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>3771990221</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.551362991333004,53.056327819824219</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>3771990226</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.551612854003906,53.056838989257812</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>3789247351</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.546602249145508,53.058998107910156</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>3789247353</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.54734039306641,53.060024261474609</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>3789247857</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.549684524536133,53.062892913818366</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>3789247859</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.549543380737305,53.063022613525391</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>3789247860</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.549919128417969,53.063224792480469</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>3789247861</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.549793243408203,53.063362121582031</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>3789247863</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.549739837646484,53.063423156738288</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>3789247864</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.550128936767578,53.063434600830071</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>3789247866</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.549694061279297,53.063461303710938</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>3789247867</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.549911499023441,53.06346511840821</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>3789247868</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.549785614013672,53.06346511840821</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>3789247869</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.549671173095703,53.063480377197273</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>3789247871</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.549552917480469,53.063587188720703</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>3789247874</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.549442291259766,53.063716888427734</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>3789834901</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.565423965454102,53.059864044189453</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>3789834902</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.565433502197266,53.060081481933594</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>3789834904</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.56538009643555,53.060302734375</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>3789834910</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.56224250793457,53.060585021972649</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>3789834913</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.564901351928711,53.060844421386726</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>3789834916</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.564765930175781,53.060962677001953</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>3789834921</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.564184188842773,53.061489105224616</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>3789834922</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.564002990722656,53.061691284179688</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>3789834923</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.563884735107422,53.061862945556641</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>3789834924</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.563737869262695,53.062000274658203</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>3789834925</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.563543319702148,53.062156677246094</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>3789834926</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.563425064086914,53.062267303466797</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>3789834927</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.561319351196286,53.062431335449219</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>3789834928</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.561967849731445,53.062538146972656</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>3789834929</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.563041687011719,53.062679290771484</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>3789834938</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.556097030639645,53.063636779785163</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>3789834943</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.561714172363281,53.064071655273438</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>3789834946</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.561407089233398,53.064388275146484</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>3789834948</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.561664581298832,53.064491271972656</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>3789834950</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.561239242553714,53.064579010009766</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>3789834956</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.555599212646484,53.065219879150391</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>3865383723</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.561651229858398,53.064643859863281</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>3939558703</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.550577163696289,53.063743591308594</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>3939558709</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.550704956054691,53.064304351806641</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>3939558715</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.550600051879883,53.064094543457024</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>3939558718</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.550453186035156,53.0635986328125</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>5098557088</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.560867309570316,53.057605743408196</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>5098557089</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.561897277832031,53.056652069091797</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>5098573327</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.559110641479492,53.059299468994141</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>5229533989</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.559944152832031,53.062206268310547</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>5229533990</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.559259414672848,53.063556671142578</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>5229533991</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.558931350708008,53.064155578613281</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>5229533992</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.558086395263672,53.065700531005866</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>5301391003</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.556976318359375,53.061737060546875</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>5301391004</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.556720733642575,53.061870574951172</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>6317046897</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.549919128417969,53.05769348144532</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>6317046898</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.5506591796875,53.056972503662109</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>6317053692</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.555881500244144,53.055572509765632</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>6317053693</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.555767059326172,53.055637359619141</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>6351262271</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.548866271972656,53.057037353515625</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>6351262277</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.55473518371582,53.055835723876953</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>6351262278</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.554729461669925,53.055694580078125</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>6351262279</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.554771423339844,53.055538177490234</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>6351262281</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.559783935546875,53.058444976806641</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>6351262282</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.558917999267578,53.05816650390625</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>6351262283</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.558660507202148,53.058048248291016</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>6351262284</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.557943344116211,53.05766296386718</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>6351267285</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.557519912719727,53.057472229003906</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>6351267286</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.557064056396488,53.057361602783196</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>6351267287</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.555902481079102,53.057140350341797</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>6351267288</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.553384780883789,53.06005859375</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>6351267289</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.554086685180664,53.058979034423828</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>6351267290</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.554220199584961,53.058753967285156</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>6351267291</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.554353713989254,53.058601379394531</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>6351385073</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.561796188354492,53.060520172119141</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>6351385074</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.561237335205078,53.060462951660156</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>6351385075</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.560752868652344,53.060443878173835</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>6351385076</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.560293197631839,53.060394287109375</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>6351385077</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.55998611450195,53.060340881347649</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>6351385078</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.559829711914062,53.060295104980469</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>6351385079</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.559700012207035,53.060230255126953</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>6351385080</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.559520721435547,53.060092926025391</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>6351385081</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.559354782104492,53.059997558593743</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>6351385082</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.559202194213867,53.059932708740234</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>6351385083</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.558645248413086,53.059745788574219</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>6351386188</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.560052871704102,53.058399200439453</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>6351386189</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.559896469116211,53.05833816528321</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>6351386190</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.560714721679688,53.057579040527351</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>6539710853</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.561756134033203,53.056598663330078</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>6539710854</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.559289932250973,53.058921813964844</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>6539710855</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.558504104614258,53.059711456298821</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>6539710856</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.557554244995121,53.060634613037109</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>6539710857</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.556615829467773,53.061637878417969</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>6539710858</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.556606292724613,53.061603546142585</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>6539710859</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.556484222412106,53.061645507812493</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>6539710860</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.556386947631839,53.061687469482415</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>6539710861</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.556297302246094,53.061721801757812</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>6539710862</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.556180953979492,53.061759948730462</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>6539710863</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.555797576904297,53.061927795410156</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>6539710864</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.55560302734375,53.062046051025384</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>6539710865</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.555267333984371,53.062263488769531</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>6539710866</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.554994583129883,53.062446594238274</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>6539710867</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.554546356201172,53.062732696533196</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>6539710868</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.554758071899414,53.062599182128906</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>6539710869</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.554372787475586,53.062831878662109</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>6539710875</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.551090240478516,53.064674377441406</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>6539710876</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.550979614257812,53.064678192138672</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>6539710877</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.551261901855469,53.064563751220703</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>6539710878</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.551156997680661,53.064624786376946</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>8777095580</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.563884735107422,53.057968139648438</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>8777095581</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.563741683959961,53.058017730712891</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>8777095582</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.563356399536133,53.057880401611328</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>8978544625</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.560184478759766,53.058555603027344</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>8978544626</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.561668395996094,53.057163238525398</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>8978544627</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.560400009155273,53.058353424072266</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>8978544628</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.561246871948242,53.057559967041016</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>8978544629</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.560468673706055,53.058547973632812</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>8978544630</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.560247421264648,53.058494567871101</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>8978544631</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.560514450073242,53.058605194091797</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>8978544632</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.561357498168949,53.058345794677734</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>8978544633</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.56132698059082,53.05842208862304</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>8978544634</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.561172485351562,53.058395385742195</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>8978544635</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.561378479003906,53.058021545410149</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>8978544636</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.561908721923828,53.057254791259766</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>8978544637</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.561624526977536,53.05720520019532</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>8978544638</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.564065933227539,53.057579040527351</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>8978544639</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.564008712768551,53.05817794799804</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>8978544640</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.563688278198242,53.058135986328118</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>8978544641</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.563192367553711,53.058124542236328</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>8978544642</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.563138961791992,53.057498931884766</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>8978544643</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.56298828125,53.057842254638672</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>8978544644</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.563591003417972,53.058349609374993</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>8978544645</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.564315795898441,53.058460235595703</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>8978544660</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.561073303222656,53.059261322021484</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>8978544661</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.560995101928711,53.059257507324219</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>8978544662</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.560859680175781,53.059215545654297</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>8978544663</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.561176300048828,53.05925369262696</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>8978544664</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.561241149902344,53.059223175048828</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>8978544665</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.561283111572266,53.059169769287109</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>8978544670</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.564592361450195,53.059539794921868</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>8978544671</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.564378738403317,53.059909820556641</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>8978544672</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.564445495605469,53.059818267822266</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>8978544673</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.564132690429691,53.05974197387696</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>8978544674</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.564258575439453,53.059482574462884</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>988562462</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.557785034179684,53.054847717285156</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>6351267292</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.558198928833008,53.055011749267578</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>1403173280</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.571773529052734,53.0640869140625</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>3789834940</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.570310592651367,53.063858032226562</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>5229533985</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.566215515136719,53.063209533691406</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>1403173188</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.556520462036136,53.075557708740234</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>1403173153</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.55625152587891,53.073719024658203</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>1403173259</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.555980682373047,53.071891784667969</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>5229533855</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.555610656738281,53.0697021484375</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>1403173112</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.555130004882812,53.067459106445312</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>6386546125</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.55511474609375,53.067157745361328</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>6386546124</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.555124282836914,53.066890716552734</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>1403173260</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.555248260498047,53.066482543945312</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>1615430911</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.566677093505859,53.059890747070312</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>8978544710</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.566635131835941,53.059871673583984</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>2422213400</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.550203323364258,53.065353393554688</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>6539710874</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.549657821655277,53.065792083740234</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>2422213402</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.549211502075195,53.066116333007812</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>6539710873</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.549114227294925,53.066200256347649</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>6539710872</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.549032211303711,53.066276550292969</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>6539710870</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.548931121826172,53.066383361816406</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>2422213404</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.548858642578125,53.066474914550781</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>6539710871</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.548576354980472,53.066944122314446</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>2422213481</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.548368453979492,53.067287445068359</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>6539710850</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.548183441162106,53.067592620849609</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>2422213479</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.547977447509762,53.067905426025398</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>6539710849</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.547601699829102,53.068462371826165</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>2422213408</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.547405242919922,53.068759918212891</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>6539710848</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.547014236450192,53.069393157958984</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>6539710847</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.546918869018555,53.069541931152344</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>2422213410</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.545822143554688,53.071224212646484</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>6539710846</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.545755386352539,53.071319580078125</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>6539710841</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.545728683471676,53.071357727050788</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>6539710845</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.545694351196289,53.071395874023438</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>6539710840</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.545671463012695,53.071434020996094</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>6539710844</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.545652389526367,53.071468353271484</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>6539710843</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.545608520507812,53.071556091308594</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>6539710842</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.545572280883789,53.071624755859375</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>2422213414</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.544855117797855,53.072715759277344</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>6539710839</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.54442024230957,53.073371887207031</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>6539710838</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.543798446655273,53.074298858642578</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>2422213486</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.543300628662109,53.075016021728516</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>3789247942</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.542871475219727,53.075630187988281</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>6539710836</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.542581558227539,53.076061248779297</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>6539710837</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.542245864868164,53.076587677001953</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>2422213474</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.541711807250977,53.077434539794922</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>6539710835</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.540693283081055,53.079013824462891</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>6539710834</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.539833068847656,53.080364227294922</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>271631675</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.549449920654297,53.066192626953125</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>3417827877</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.549234390258789,53.066364288330078</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>3417827878</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.549104690551758,53.066482543945312</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>271631700</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.54899787902832,53.066635131835938</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>1403173261</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.546840667724609,53.069953918457038</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>271631731</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.545948028564453,53.071353912353516</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>1403173106</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.544399261474609,53.073719024658203</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>1403173306</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.544017791748047,53.074321746826165</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>3789247943</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.543165206909183,53.075649261474609</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>5229533866</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.541297912597656,53.078495025634766</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>5229533890</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.541152954101562,53.078716278076172</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>3887174368</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.540073394775391,53.08039474487304</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>1734956129</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.544441223144531,53.059818267822266</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>2460171990</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.545724868774414,53.05706787109375</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>2460171991</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.546869277954102,53.05706787109375</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>962960332</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.567386627197266,53.059131622314453</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>1615431190</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.567216873168945,53.059219360351562</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>1615430884</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.566953659057617,53.059360504150391</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>5098557061</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.570608139038086,53.051639556884766</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>962960398</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.57020378112793,53.051868438720703</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>962960342</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.568832397460938,53.052654266357422</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>962960385</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.568174362182617,53.053028106689453</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>1615380833</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.567888259887695,53.053192138671875</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>5098557086</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.567514419555664,53.053401947021484</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>287162434</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.567266464233398,53.053546905517578</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>962960341</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.566312789916996,53.054092407226562</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>962960409</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.565713882446289,53.054431915283203</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>271631581</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.564212799072262,53.055278778076172</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>5229533998</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.563566207885742,53.055652618408203</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>3771990171</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.557106018066406,53.050998687744141</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>4394707668</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.556968688964844,53.051124572753906</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>3771990194</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.55435943603516,53.053524017333991</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>3771990208</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.552526473999023,53.055210113525391</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>1735518196</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.537895202636719,53.063201904296875</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>3789247865</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.538448333740234,53.063449859619134</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>3789247870</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.538774490356445,53.063545227050781</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>3789247872</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.538938522338867,53.063610076904297</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>3789247873</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.539113998413086,53.063686370849609</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>3789247875</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.539274215698246,53.063755035400391</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>3789247876</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.539693832397461,53.063915252685547</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>3789247877</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.539831161499023,53.063964843749993</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>3789247878</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.540199279785153,53.064113616943359</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>3789247879</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.540487289428711,53.064220428466797</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>3789247880</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.540775299072262,53.064323425292962</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>7086525878</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.540889739990234,53.064369201660156</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>3789247883</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.54107666015625,53.064441680908203</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>3789247884</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.541620254516598,53.064659118652344</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>3789247885</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.542047500610352,53.064815521240234</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>3789247888</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.54316329956055,53.065280914306641</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>3789247892</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.545980453491211,53.065822601318359</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>3789247894</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.546487808227536,53.065910339355469</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>3789247898</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.547142028808594,53.066062927246094</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>3789247897</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.547267913818356,53.066062927246094</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>3789247896</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.547342300415039,53.066043853759773</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>3789247895</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.547422409057617,53.066001892089844</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>3789247893</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.547618865966797,53.065883636474609</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>3789247890</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.548025131225586,53.065532684326172</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>3789247887</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.548395156860352,53.065277099609375</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>3789247886</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.548450469970703,53.065231323242188</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>3789247891</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.546756744384766,53.065643310546882</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>3789247882</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.548116683959961,53.064376831054688</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>3865383728</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.566671371459961,53.067333221435554</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>5229533988</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.564105987548828,53.066860198974616</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>3865383725</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.561384201049805,53.066318511962891</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>3789857060</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.559799194335938,53.066028594970696</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>3789857070</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.567331314086914,53.066696166992188</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>5229533987</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.564767837524414,53.065696716308594</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>3865383724</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.562368392944332,53.064762115478516</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>3789857078</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.558670043945312,53.067123413085938</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>1403173133</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.5604248046875,53.070781707763672</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>5229533845</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.560510635375977,53.070541381835945</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>5229533846</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.560525894165039,53.070419311523438</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>5229533847</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.560609817504879,53.070041656494141</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>3789857106</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.560914993286129,53.068962097167969</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>3865383729</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.56114387512207,53.067600250244141</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>3789857059</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.568178176879883,53.065876007080078</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>5229533986</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.565004348754883,53.065269470214837</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>3789247354</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.545934677124027,53.061283111572266</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>3789247355</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.545532226562504,53.061634063720703</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>2760208727</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.544605255126953,53.062442779541016</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>2760208743</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.543802261352539,53.063209533691406</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>2760208734</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.542171478271484,53.064701080322266</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>2760208748</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.541831970214844,53.065021514892578</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>2760208730</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.541446685791016,53.065216064453125</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>2760208735</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.540620803833008,53.066627502441406</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>3865383732</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.539339065551761,53.0687255859375</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>2760208741</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.539241790771484,53.068885803222656</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>2760208737</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.537921905517578,53.071201324462891</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>2760208738</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.537300109863281,53.072181701660156</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>3789247919</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.536277770996094,53.073837280273438</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>2760208742</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.535652160644531,53.074851989746087</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>2760208728</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.535444259643555,53.075271606445312</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>2760208729</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.53474044799805,53.077426910400391</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>2782946007</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.534469604492188,53.078098297119141</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>6317053691</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.556058883666992,53.055458068847663</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>6317053690</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.556186676025391,53.055377960205078</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>2792661196</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.556339263916016,53.055309295654297</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>4394707673</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.558736801147464,53.054542541503906</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>1615380707</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.56489181518555,53.052570343017578</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>4855631438</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.542026519775391,53.05419921875</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>988562696</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.542257308959961,53.0543212890625</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>5232219589</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.542421340942383,53.054447174072266</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>5232219588</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.542942047119141,53.054843902587891</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>5232219586</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.543838500976562,53.055561065673828</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>5232219587</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.544008255004886,53.055694580078125</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>7099696527</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.544618606567383,53.056159973144538</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>988562819</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.544746398925781,53.05625915527343</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>4439233475</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.545156478881836,53.056598663330078</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>4439233477</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.545238494873047,53.056667327880859</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>988562949</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.5458984375,53.057331085205078</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>1737021315</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.57219123840332,53.050300598144524</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>4096023373</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.572299957275391,53.050376892089844</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>6351385056</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.572341918945312,53.050407409667969</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>6351385055</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.572368621826172,53.05043029785157</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>6351385054</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.572381973266602,53.050460815429688</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>1737021322</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.572378158569332,53.050487518310554</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>6351385053</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.572349548339844,53.050518035888672</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>6351385052</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.572303771972656,53.050544738769538</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>1737021324</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.571361541748047,53.051071166992188</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>5098557068</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.571050643920898,53.051250457763672</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>5098557070</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.570863723754883,53.051357269287109</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>5098557071</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.570716857910156,53.051441192626953</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>6351386187</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.570337295532227,53.051670074462891</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>3887710252</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.567770004272461,53.053119659423828</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>1737021326</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.567455291748047,53.053298950195312</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>6352091166</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.566560745239258,53.053813934326172</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>6539710851</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.564226150512695,53.055152893066406</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>6539710852</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.563056945800781,53.055824279785156</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>6351262280</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.5557861328125,53.054054260253913</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>3789857061</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.553153991699215,53.066150665283203</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>1403173118</name>
+    <description />
+    <styleUrl>#icon-1739-DB4436-nodesc</styleUrl>
+    <Point>
+      <coordinates>18.553812026977539,53.066593170166016</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>24987562</name>
+    <description>0; Secondary; AsphaltLike; Bad; HasAccess; -1</description>
+    <styleUrl>#625ff9e0-9d5d-4b2b-98e9-8e02936e640d</styleUrl>
+    <LineString>
+      <coordinates>18.556728363037109,53.061588287353509
+18.556644439697266,53.06166076660157
+18.556381225585938,53.061847686767578
+18.556222915649414,53.061943054199219
+18.555784225463867,53.062217712402337
+18.551378250122067,53.064975738525391</coordinates>
+    </LineString>
+  </Placemark>
+  <Placemark>
+    <name>85248561</name>
+    <description>0; Path; Unknown; Bad; HasAccess; -1</description>
+    <styleUrl>#17b844fe-ab9c-4867-9653-47805fc5bd5d</styleUrl>
+    <LineString>
+      <coordinates>18.557785034179684,53.054847717285156
+18.558198928833008,53.055011749267578
+18.561944961547852,53.056465148925781
+18.562068939208984,53.056522369384766</coordinates>
+    </LineString>
+  </Placemark>
+  <Placemark>
+    <name>126612982</name>
+    <description>0; Path; Unknown; Bad; HasAccess; 2526</description>
+    <styleUrl>#17b844fe-ab9c-4867-9653-47805fc5bd5d</styleUrl>
+    <LineString>
+      <coordinates>18.571773529052734,53.0640869140625
+18.570310592651367,53.063858032226562
+18.566215515136719,53.063209533691406
+18.563297271728512,53.062721252441413
+18.563041687011719,53.062679290771484
+18.561967849731445,53.062538146972656
+18.561319351196286,53.062431335449219
+18.559944152832031,53.062206268310547
+18.556976318359375,53.061737060546875
+18.556713104248047,53.061679840087891
+18.556644439697266,53.06166076660157</coordinates>
+    </LineString>
+  </Placemark>
+  <Placemark>
+    <name>126613045</name>
+    <description>0; Path; Unknown; Bad; HasAccess; -1</description>
+    <styleUrl>#17b844fe-ab9c-4867-9653-47805fc5bd5d</styleUrl>
+    <LineString>
+      <coordinates>18.550281524658207,53.057998657226562
+18.553384780883789,53.06005859375
+18.556022644042969,53.061805725097656
+18.556222915649414,53.061943054199219</coordinates>
+    </LineString>
+  </Placemark>
+  <Placemark>
+    <name>126613048</name>
+    <description>0; Path; Unknown; Bad; HasAccess; 2527</description>
+    <styleUrl>#17b844fe-ab9c-4867-9653-47805fc5bd5d</styleUrl>
+    <LineString>
+      <coordinates>18.556520462036136,53.075557708740234
+18.55625152587891,53.073719024658203
+18.555980682373047,53.071891784667969
+18.555610656738281,53.0697021484375
+18.555130004882812,53.067459106445312
+18.55511474609375,53.067157745361328
+18.555124282836914,53.066890716552734
+18.555248260498047,53.066482543945312
+18.555599212646484,53.065219879150391
+18.555669784545898,53.064987182617188
+18.556097030639645,53.063636779785163
+18.556520462036136,53.062496185302734
+18.556695938110352,53.061985015869141
+18.556720733642575,53.061870574951172
+18.556713104248047,53.061679840087891</coordinates>
+    </LineString>
+  </Placemark>
+  <Placemark>
+    <name>148438443</name>
+    <description>0; Unclassified; Unknown; Bad; HasAccess; 2732</description>
+    <styleUrl>#17b844fe-ab9c-4867-9653-47805fc5bd5d</styleUrl>
+    <LineString>
+      <coordinates>18.563884735107422,53.057968139648438
+18.563741683959961,53.058017730712891
+18.563688278198242,53.058135986328118
+18.563591003417972,53.058349609374993
+18.563362121582031,53.058849334716797
+18.563177108764648,53.059295654296868</coordinates>
+    </LineString>
+  </Placemark>
+  <Placemark>
+    <name>148438474</name>
+    <description>0; Unclassified; Unpaved; Bad; HasAccess; -1</description>
+    <styleUrl>#17b844fe-ab9c-4867-9653-47805fc5bd5d</styleUrl>
+    <LineString>
+      <coordinates>18.565118789672852,53.059627532958984
+18.565252304077148,53.059761047363281
+18.565317153930668,53.059814453125
+18.565383911132812,53.059848785400391
+18.565423965454102,53.059864044189453
+18.565515518188473,53.059883117675774
+18.565584182739261,53.059886932373047
+18.565652847290039,53.059867858886719
+18.565698623657227,53.059822082519531
+18.565727233886719,53.059726715087898</coordinates>
+    </LineString>
+  </Placemark>
+  <Placemark>
+    <name>148438526</name>
+    <description>0; Unclassified; Unknown; Bad; HasAccess; 2732</description>
+    <styleUrl>#17b844fe-ab9c-4867-9653-47805fc5bd5d</styleUrl>
+    <LineString>
+      <coordinates>18.563362121582031,53.058849334716797
+18.563014984130863,53.058788299560547
+18.562646865844727,53.058700561523438
+18.56130218505859,53.058483123779297
+18.560516357421875,53.058364868164055
+18.560400009155273,53.058353424072266
+18.560121536254883,53.058330535888672</coordinates>
+    </LineString>
+  </Placemark>
+  <Placemark>
+    <name>148438530</name>
+    <description>0; Unclassified; Unknown; Bad; HasAccess; 916</description>
+    <styleUrl>#17b844fe-ab9c-4867-9653-47805fc5bd5d</styleUrl>
+    <LineString>
+      <coordinates>18.566677093505859,53.059890747070312
+18.566635131835941,53.059871673583984
+18.565727233886719,53.059726715087898
+18.565118789672852,53.059627532958984
+18.564592361450195,53.059539794921868
+18.564414978027344,53.05950927734375</coordinates>
+    </LineString>
+  </Placemark>
+  <Placemark>
+    <name>148438560</name>
+    <description>0; Unclassified; Unknown; Bad; HasAccess; -1</description>
+    <styleUrl>#17b844fe-ab9c-4867-9653-47805fc5bd5d</styleUrl>
+    <LineString>
+      <coordinates>18.565507888793945,53.058216094970703
+18.565153121948242,53.05902099609375
+18.565174102783203,53.059112548828125</coordinates>
+    </LineString>
+  </Placemark>
+  <Placemark>
+    <name>148438600</name>
+    <description>0; Unclassified; Unknown; Bad; HasAccess; 1119</description>
+    <styleUrl>#17b844fe-ab9c-4867-9653-47805fc5bd5d</styleUrl>
+    <LineString>
+      <coordinates>18.563287734985352,53.057891845703118
+18.56298828125,53.057842254638672
+18.561246871948242,53.057559967041016
+18.56096076965332,53.057514190673828</coordinates>
+    </LineString>
+  </Placemark>
+  <Placemark>
+    <name>148438611</name>
+    <description>0; Unclassified; Unknown; Bad; HasAccess; -1</description>
+    <styleUrl>#17b844fe-ab9c-4867-9653-47805fc5bd5d</styleUrl>
+    <LineString>
+      <coordinates>18.561317443847656,53.059005737304688
+18.561294555664062,53.059135437011719
+18.561283111572266,53.059169769287109
+18.561264038085938,53.0592041015625
+18.561241149902344,53.059223175048828
+18.561210632324219,53.059242248535156
+18.561176300048828,53.05925369262696
+18.561134338378906,53.059261322021484
+18.561073303222656,53.059261322021484
+18.560995101928711,53.059257507324219
+18.560909271240234,53.059238433837884
+18.560859680175781,53.059215545654297
+18.560823440551758,53.059192657470703
+18.560783386230469,53.059158325195312
+18.560626983642578,53.058937072753899</coordinates>
+    </LineString>
+  </Placemark>
+  <Placemark>
+    <name>161517058</name>
+    <description>0; Path; Unknown; Bad; HasAccess; -1</description>
+    <styleUrl>#17b844fe-ab9c-4867-9653-47805fc5bd5d</styleUrl>
+    <LineString>
+      <coordinates>18.546875,53.058891296386719
+18.547117233276371,53.058788299560547
+18.548244476318359,53.058300018310547
+18.549629211425781,53.057491302490227
+18.550359725952148,53.057235717773438</coordinates>
+    </LineString>
+  </Placemark>
+  <Placemark>
+    <name>161739306</name>
+    <description>0; Cycleway; AsphaltLike; Excellent; HasAccess; -1</description>
+    <styleUrl>#625ff9e0-9d5d-4b2b-98e9-8e02936e640d</styleUrl>
+    <LineString>
+      <coordinates>18.551033020019531,53.064727783203125
+18.550203323364258,53.065353393554688
+18.549657821655277,53.065792083740234
+18.549211502075195,53.066116333007812
+18.549114227294925,53.066200256347649
+18.549032211303711,53.066276550292969
+18.548931121826172,53.066383361816406
+18.548858642578125,53.066474914550781
+18.548576354980472,53.066944122314446
+18.548368453979492,53.067287445068359
+18.548183441162106,53.067592620849609
+18.547977447509762,53.067905426025398
+18.547601699829102,53.068462371826165
+18.547405242919922,53.068759918212891
+18.547014236450192,53.069393157958984
+18.546918869018555,53.069541931152344
+18.545822143554688,53.071224212646484
+18.545755386352539,53.071319580078125
+18.545728683471676,53.071357727050788
+18.545694351196289,53.071395874023438
+18.545671463012695,53.071434020996094
+18.545652389526367,53.071468353271484
+18.545608520507812,53.071556091308594
+18.545572280883789,53.071624755859375
+18.544855117797855,53.072715759277344
+18.54442024230957,53.073371887207031
+18.543798446655273,53.074298858642578
+18.543300628662109,53.075016021728516
+18.542871475219727,53.075630187988281
+18.542581558227539,53.076061248779297
+18.542245864868164,53.076587677001953
+18.541711807250977,53.077434539794922
+18.540693283081055,53.079013824462891
+18.539833068847656,53.080364227294922</coordinates>
+    </LineString>
+  </Placemark>
+  <Placemark>
+    <name>166821103</name>
+    <description>0; Secondary; AsphaltLike; Bad; HasAccess; 153</description>
+    <styleUrl>#625ff9e0-9d5d-4b2b-98e9-8e02936e640d</styleUrl>
+    <LineString>
+      <coordinates>18.559659957885742,53.058769226074219
+18.559110641479492,53.059299468994141</coordinates>
+    </LineString>
+  </Placemark>
+  <Placemark>
+    <name>166821105</name>
+    <description>0; Unclassified; Unknown; Bad; HasAccess; 916</description>
+    <styleUrl>#17b844fe-ab9c-4867-9653-47805fc5bd5d</styleUrl>
+    <LineString>
+      <coordinates>18.561317443847656,53.059005737304688
+18.560626983642578,53.058937072753899</coordinates>
+    </LineString>
+  </Placemark>
+  <Placemark>
+    <name>168990085</name>
+    <description>0; Secondary; AsphaltLike; Bad; HasAccess; -1</description>
+    <styleUrl>#625ff9e0-9d5d-4b2b-98e9-8e02936e640d</styleUrl>
+    <LineString>
+      <coordinates>18.551378250122067,53.064975738525391
+18.549449920654297,53.066192626953125
+18.549234390258789,53.066364288330078
+18.549104690551758,53.066482543945312
+18.54899787902832,53.066635131835938
+18.546840667724609,53.069953918457038
+18.545948028564453,53.071353912353516
+18.544399261474609,53.073719024658203
+18.544017791748047,53.074321746826165
+18.543165206909183,53.075649261474609
+18.541297912597656,53.078495025634766
+18.541152954101562,53.078716278076172
+18.540073394775391,53.08039474487304</coordinates>
+    </LineString>
+  </Placemark>
+  <Placemark>
+    <name>204660350</name>
+    <description>0; Unclassified; AsphaltLike; Bad; HasAccess; 3277</description>
+    <styleUrl>#625ff9e0-9d5d-4b2b-98e9-8e02936e640d</styleUrl>
+    <LineString>
+      <coordinates>18.546875,53.058891296386719
+18.547500610351562,53.05987548828125
+18.547924041748047,53.060474395751953
+18.549684524536133,53.062892913818366
+18.549919128417969,53.063224792480469
+18.549970626831055,53.063285827636719
+18.550052642822266,53.063373565673828
+18.550128936767578,53.063434600830071
+18.550327301025391,53.063533782958984
+18.550453186035156,53.0635986328125
+18.550527572631836,53.063663482666016
+18.550577163696289,53.063743591308594
+18.550600051879883,53.064094543457024
+18.550638198852539,53.064193725585938
+18.550704956054691,53.064304351806641
+18.550979614257812,53.064678192138672
+18.551033020019531,53.064727783203125</coordinates>
+    </LineString>
+  </Placemark>
+  <Placemark>
+    <name>204660352</name>
+    <description>0; Unclassified; AsphaltLike; Bad; HasAccess; -1</description>
+    <styleUrl>#625ff9e0-9d5d-4b2b-98e9-8e02936e640d</styleUrl>
+    <LineString>
+      <coordinates>18.544441223144531,53.059818267822266
+18.546602249145508,53.058998107910156
+18.546875,53.058891296386719</coordinates>
+    </LineString>
+  </Placemark>
+  <Placemark>
+    <name>238161865</name>
+    <description>0; Path; DirtLike; Bad; BikeLine, HasAccess; -1</description>
+    <styleUrl>#54cf3ff2-be02-490a-bc0d-d90ff55d5c41</styleUrl>
+    <LineString>
+      <coordinates>18.545724868774414,53.05706787109375
+18.546869277954102,53.05706787109375
+18.548061370849609,53.057029724121094
+18.548549652099609,53.057014465332031
+18.548866271972656,53.057037353515625
+18.549747467041016,53.057155609130859
+18.550359725952148,53.057235717773438</coordinates>
+    </LineString>
+  </Placemark>
+  <Placemark>
+    <name>270537158</name>
+    <description>0; Unclassified; Unknown; Bad; HasAccess; 916</description>
+    <styleUrl>#17b844fe-ab9c-4867-9653-47805fc5bd5d</styleUrl>
+    <LineString>
+      <coordinates>18.564414978027344,53.05950927734375
+18.564258575439453,53.059482574462884
+18.563177108764648,53.059295654296868
+18.561317443847656,53.059005737304688</coordinates>
+    </LineString>
+  </Placemark>
+  <Placemark>
+    <name>270551242</name>
+    <description>0; Unclassified; Unknown; Bad; HasAccess; 1509</description>
+    <styleUrl>#17b844fe-ab9c-4867-9653-47805fc5bd5d</styleUrl>
+    <LineString>
+      <coordinates>18.567386627197266,53.059131622314453
+18.567216873168945,53.059219360351562
+18.566953659057617,53.059360504150391
+18.565341949462891,53.059101104736328
+18.565174102783203,53.059112548828125
+18.564414978027344,53.05950927734375</coordinates>
+    </LineString>
+  </Placemark>
+  <Placemark>
+    <name>270764603</name>
+    <description>0; Secondary; AsphaltLike; Bad; HasAccess; 153</description>
+    <styleUrl>#625ff9e0-9d5d-4b2b-98e9-8e02936e640d</styleUrl>
+    <LineString>
+      <coordinates>18.570608139038086,53.051639556884766
+18.57020378112793,53.051868438720703
+18.568832397460938,53.052654266357422
+18.568174362182617,53.053028106689453
+18.567888259887695,53.053192138671875
+18.567514419555664,53.053401947021484
+18.567266464233398,53.053546905517578
+18.566312789916996,53.054092407226562
+18.565713882446289,53.054431915283203
+18.564212799072262,53.055278778076172
+18.563566207885742,53.055652618408203
+18.562068939208984,53.056522369384766</coordinates>
+    </LineString>
+  </Placemark>
+  <Placemark>
+    <name>271066960</name>
+    <description>0; Path; Unknown; Bad; HasAccess; -1</description>
+    <styleUrl>#17b844fe-ab9c-4867-9653-47805fc5bd5d</styleUrl>
+    <LineString>
+      <coordinates>18.550359725952148,53.057235717773438
+18.550180435180664,53.057426452636719
+18.549919128417969,53.05769348144532
+18.54890251159668,53.058559417724609
+18.547500610351562,53.05987548828125</coordinates>
+    </LineString>
+  </Placemark>
+  <Placemark>
+    <name>373787160</name>
+    <description>0; Path; Unknown; Bad; HasAccess; -1</description>
+    <styleUrl>#17b844fe-ab9c-4867-9653-47805fc5bd5d</styleUrl>
+    <LineString>
+      <coordinates>18.557106018066406,53.050998687744141
+18.556968688964844,53.051124572753906
+18.55435943603516,53.053524017333991
+18.552526473999023,53.055210113525391
+18.551362991333004,53.056327819824219
+18.5506591796875,53.056972503662109
+18.550359725952148,53.057235717773438</coordinates>
+    </LineString>
+  </Placemark>
+  <Placemark>
+    <name>375568259</name>
+    <description>0; Path; Unknown; Bad; HasAccess; -1</description>
+    <styleUrl>#17b844fe-ab9c-4867-9653-47805fc5bd5d</styleUrl>
+    <LineString>
+      <coordinates>18.537895202636719,53.063201904296875
+18.538448333740234,53.063449859619134
+18.538774490356445,53.063545227050781
+18.538938522338867,53.063610076904297
+18.539113998413086,53.063686370849609
+18.539274215698246,53.063755035400391
+18.539693832397461,53.063915252685547
+18.539831161499023,53.063964843749993
+18.540199279785153,53.064113616943359
+18.540487289428711,53.064220428466797
+18.540775299072262,53.064323425292962
+18.540889739990234,53.064369201660156
+18.54107666015625,53.064441680908203
+18.541620254516598,53.064659118652344
+18.542047500610352,53.064815521240234
+18.54316329956055,53.065280914306641
+18.545980453491211,53.065822601318359
+18.546487808227536,53.065910339355469
+18.547142028808594,53.066062927246094
+18.547267913818356,53.066062927246094
+18.547342300415039,53.066043853759773
+18.547422409057617,53.066001892089844
+18.547618865966797,53.065883636474609
+18.548025131225586,53.065532684326172
+18.548395156860352,53.065277099609375
+18.548450469970703,53.065231323242188
+18.549442291259766,53.063716888427734
+18.549552917480469,53.063587188720703
+18.549671173095703,53.063480377197273
+18.549694061279297,53.063461303710938
+18.549739837646484,53.063423156738288
+18.549793243408203,53.063362121582031
+18.549919128417969,53.063224792480469</coordinates>
+    </LineString>
+  </Placemark>
+  <Placemark>
+    <name>375568261</name>
+    <description>0; Path; Unknown; Bad; HasAccess; -1</description>
+    <styleUrl>#17b844fe-ab9c-4867-9653-47805fc5bd5d</styleUrl>
+    <LineString>
+      <coordinates>18.549793243408203,53.063362121582031
+18.549543380737305,53.063022613525391
+18.54734039306641,53.060024261474609
+18.546602249145508,53.058998107910156</coordinates>
+    </LineString>
+  </Placemark>
+  <Placemark>
+    <name>375568262</name>
+    <description>0; Path; Unknown; Bad; HasAccess; -1</description>
+    <styleUrl>#17b844fe-ab9c-4867-9653-47805fc5bd5d</styleUrl>
+    <LineString>
+      <coordinates>18.550128936767578,53.063434600830071
+18.549911499023441,53.06346511840821
+18.549785614013672,53.06346511840821
+18.549694061279297,53.063461303710938</coordinates>
+    </LineString>
+  </Placemark>
+  <Placemark>
+    <name>375568267</name>
+    <description>0; Path; Unknown; Bad; HasAccess; -1</description>
+    <styleUrl>#17b844fe-ab9c-4867-9653-47805fc5bd5d</styleUrl>
+    <LineString>
+      <coordinates>18.546487808227536,53.065910339355469
+18.546756744384766,53.065643310546882
+18.548116683959961,53.064376831054688
+18.549543380737305,53.063022613525391
+18.549684524536133,53.062892913818366</coordinates>
+    </LineString>
+  </Placemark>
+  <Placemark>
+    <name>375633896</name>
+    <description>0; Path; Unknown; Bad; HasAccess; -1</description>
+    <styleUrl>#17b844fe-ab9c-4867-9653-47805fc5bd5d</styleUrl>
+    <LineString>
+      <coordinates>18.565423965454102,53.059864044189453
+18.565433502197266,53.060081481933594
+18.56538009643555,53.060302734375
+18.564901351928711,53.060844421386726
+18.564765930175781,53.060962677001953
+18.564184188842773,53.061489105224616
+18.564002990722656,53.061691284179688
+18.563884735107422,53.061862945556641
+18.563737869262695,53.062000274658203
+18.563543319702148,53.062156677246094
+18.563425064086914,53.062267303466797
+18.563041687011719,53.062679290771484
+18.561714172363281,53.064071655273438
+18.561407089233398,53.064388275146484</coordinates>
+    </LineString>
+  </Placemark>
+  <Placemark>
+    <name>375633899</name>
+    <description>0; Path; Unknown; Bad; HasAccess; -1</description>
+    <styleUrl>#17b844fe-ab9c-4867-9653-47805fc5bd5d</styleUrl>
+    <LineString>
+      <coordinates>18.566671371459961,53.067333221435554
+18.564105987548828,53.066860198974616
+18.561384201049805,53.066318511962891
+18.559799194335938,53.066028594970696
+18.558086395263672,53.065700531005866
+18.555599212646484,53.065219879150391</coordinates>
+    </LineString>
+  </Placemark>
+  <Placemark>
+    <name>375633905</name>
+    <description>0; Path; Unknown; Bad; HasAccess; -1</description>
+    <styleUrl>#17b844fe-ab9c-4867-9653-47805fc5bd5d</styleUrl>
+    <LineString>
+      <coordinates>18.561319351196286,53.062431335449219
+18.56224250793457,53.060585021972649</coordinates>
+    </LineString>
+  </Placemark>
+  <Placemark>
+    <name>375633910</name>
+    <description>0; Path; Unknown; Bad; HasAccess; -1</description>
+    <styleUrl>#17b844fe-ab9c-4867-9653-47805fc5bd5d</styleUrl>
+    <LineString>
+      <coordinates>18.556097030639645,53.063636779785163
+18.558931350708008,53.064155578613281
+18.561239242553714,53.064579010009766
+18.561407089233398,53.064388275146484</coordinates>
+    </LineString>
+  </Placemark>
+  <Placemark>
+    <name>375633913</name>
+    <description>0; Path; Unknown; Bad; HasAccess; -1</description>
+    <styleUrl>#17b844fe-ab9c-4867-9653-47805fc5bd5d</styleUrl>
+    <LineString>
+      <coordinates>18.567331314086914,53.066696166992188
+18.564767837524414,53.065696716308594
+18.562368392944332,53.064762115478516
+18.561664581298832,53.064491271972656
+18.561407089233398,53.064388275146484
+18.559259414672848,53.063556671142578
+18.556520462036136,53.062496185302734</coordinates>
+    </LineString>
+  </Placemark>
+  <Placemark>
+    <name>375633915</name>
+    <description>0; Path; Unknown; Bad; HasAccess; -1</description>
+    <styleUrl>#17b844fe-ab9c-4867-9653-47805fc5bd5d</styleUrl>
+    <LineString>
+      <coordinates>18.561239242553714,53.064579010009766
+18.559799194335938,53.066028594970696
+18.558670043945312,53.067123413085938
+18.555248260498047,53.066482543945312</coordinates>
+    </LineString>
+  </Placemark>
+  <Placemark>
+    <name>375633919</name>
+    <description>0; Path; Unknown; Bad; HasAccess; -1</description>
+    <styleUrl>#17b844fe-ab9c-4867-9653-47805fc5bd5d</styleUrl>
+    <LineString>
+      <coordinates>18.5604248046875,53.070781707763672
+18.560510635375977,53.070541381835945
+18.560525894165039,53.070419311523438
+18.560609817504879,53.070041656494141
+18.560914993286129,53.068962097167969
+18.56114387512207,53.067600250244141
+18.561384201049805,53.066318511962891
+18.561651229858398,53.064643859863281
+18.561664581298832,53.064491271972656
+18.561714172363281,53.064071655273438
+18.561967849731445,53.062538146972656</coordinates>
+    </LineString>
+  </Placemark>
+  <Placemark>
+    <name>383298664</name>
+    <description>0; Path; Unknown; Bad; HasAccess; -1</description>
+    <styleUrl>#17b844fe-ab9c-4867-9653-47805fc5bd5d</styleUrl>
+    <LineString>
+      <coordinates>18.568178176879883,53.065876007080078
+18.565004348754883,53.065269470214837
+18.562368392944332,53.064762115478516
+18.561651229858398,53.064643859863281
+18.561239242553714,53.064579010009766</coordinates>
+    </LineString>
+  </Placemark>
+  <Placemark>
+    <name>408596858</name>
+    <description>0; Unclassified; AsphaltLike; Bad; HasAccess; 3277</description>
+    <styleUrl>#625ff9e0-9d5d-4b2b-98e9-8e02936e640d</styleUrl>
+    <LineString>
+      <coordinates>18.551033020019531,53.064727783203125
+18.551088333129883,53.064769744873054
+18.551378250122067,53.064975738525391</coordinates>
+    </LineString>
+  </Placemark>
+  <Placemark>
+    <name>408596863</name>
+    <description>0; Cycleway; AsphaltLike; Excellent; HasAccess; -1</description>
+    <styleUrl>#625ff9e0-9d5d-4b2b-98e9-8e02936e640d</styleUrl>
+    <LineString>
+      <coordinates>18.55660247802734,53.061557769775391
+18.556484222412106,53.061645507812493
+18.556386947631839,53.061687469482415
+18.556297302246094,53.061721801757812
+18.556180953979492,53.061759948730462
+18.556022644042969,53.061805725097656
+18.555797576904297,53.061927795410156
+18.55560302734375,53.062046051025384
+18.555459976196289,53.062129974365234
+18.555267333984371,53.062263488769531
+18.554994583129883,53.062446594238274
+18.554758071899414,53.062599182128906
+18.554546356201172,53.062732696533196
+18.554372787475586,53.062831878662109
+18.553977966308594,53.063056945800781
+18.553081512451172,53.063560485839844
+18.552530288696293,53.063865661621087
+18.552028656005859,53.064144134521484
+18.551609039306641,53.064369201660156
+18.551261901855469,53.064563751220703
+18.551156997680661,53.064624786376946
+18.551090240478516,53.064674377441406
+18.551033020019531,53.064727783203125</coordinates>
+    </LineString>
+  </Placemark>
+  <Placemark>
+    <name>408706216</name>
+    <description>0; Path; Unknown; Bad; HasAccess; -1</description>
+    <styleUrl>#17b844fe-ab9c-4867-9653-47805fc5bd5d</styleUrl>
+    <LineString>
+      <coordinates>18.547500610351562,53.05987548828125
+18.54734039306641,53.060024261474609
+18.546344757080082,53.060924530029297
+18.545934677124027,53.061283111572266
+18.545532226562504,53.061634063720703
+18.544605255126953,53.062442779541016
+18.543802261352539,53.063209533691406
+18.542171478271484,53.064701080322266
+18.542047500610352,53.064815521240234
+18.541831970214844,53.065021514892578
+18.541446685791016,53.065216064453125
+18.540620803833008,53.066627502441406
+18.539339065551761,53.0687255859375
+18.539241790771484,53.068885803222656
+18.537921905517578,53.071201324462891
+18.537300109863281,53.072181701660156
+18.536277770996094,53.073837280273438
+18.535652160644531,53.074851989746087
+18.535444259643555,53.075271606445312
+18.53474044799805,53.077426910400391
+18.534469604492188,53.078098297119141</coordinates>
+    </LineString>
+  </Placemark>
+  <Placemark>
+    <name>408706217</name>
+    <description>0; Path; Unknown; Bad; HasAccess; -1</description>
+    <styleUrl>#17b844fe-ab9c-4867-9653-47805fc5bd5d</styleUrl>
+    <LineString>
+      <coordinates>18.550359725952148,53.057235717773438
+18.551612854003906,53.056838989257812
+18.55339241027832,53.056262969970703
+18.55473518371582,53.055835723876953
+18.554960250854489,53.055763244628906
+18.555419921875,53.055698394775391
+18.5556640625,53.055667877197266
+18.555767059326172,53.055637359619141
+18.555881500244144,53.055572509765632
+18.556058883666992,53.055458068847663
+18.556186676025391,53.055377960205078
+18.556339263916016,53.055309295654297
+18.557785034179684,53.054847717285156
+18.558736801147464,53.054542541503906
+18.56489181518555,53.052570343017578</coordinates>
+    </LineString>
+  </Placemark>
+  <Placemark>
+    <name>493683143</name>
+    <description>0; Unclassified; AsphaltLike; Bad; HasAccess; 2781</description>
+    <styleUrl>#625ff9e0-9d5d-4b2b-98e9-8e02936e640d</styleUrl>
+    <LineString>
+      <coordinates>18.542026519775391,53.05419921875
+18.542257308959961,53.0543212890625
+18.542421340942383,53.054447174072266
+18.542942047119141,53.054843902587891
+18.543838500976562,53.055561065673828
+18.544008255004886,53.055694580078125
+18.544618606567383,53.056159973144538
+18.544746398925781,53.05625915527343
+18.545156478881836,53.056598663330078
+18.545238494873047,53.056667327880859
+18.545724868774414,53.05706787109375
+18.5458984375,53.057331085205078
+18.546720504760742,53.058662414550781
+18.546875,53.058891296386719</coordinates>
+    </LineString>
+  </Placemark>
+  <Placemark>
+    <name>523791360</name>
+    <description>0; Secondary; AsphaltLike; Bad; HasAccess, SpeedLimit50; 153</description>
+    <styleUrl>#625ff9e0-9d5d-4b2b-98e9-8e02936e640d</styleUrl>
+    <LineString>
+      <coordinates>18.562068939208984,53.056522369384766
+18.561897277832031,53.056652069091797
+18.561660766601562,53.056835174560547
+18.561336517333984,53.057147979736335
+18.56096076965332,53.057514190673828
+18.560867309570316,53.057605743408196
+18.560121536254883,53.058330535888672
+18.560052871704102,53.058399200439453
+18.559659957885742,53.058769226074219</coordinates>
+    </LineString>
+  </Placemark>
+  <Placemark>
+    <name>523806831</name>
+    <description>0; Secondary; AsphaltLike; Bad; HasAccess; 153</description>
+    <styleUrl>#625ff9e0-9d5d-4b2b-98e9-8e02936e640d</styleUrl>
+    <LineString>
+      <coordinates>18.559110641479492,53.059299468994141
+18.558645248413086,53.059745788574219
+18.556728363037109,53.061588287353509</coordinates>
+    </LineString>
+  </Placemark>
+  <Placemark>
+    <name>540582070</name>
+    <description>0; Path; Unknown; Bad; HasAccess; -1</description>
+    <styleUrl>#17b844fe-ab9c-4867-9653-47805fc5bd5d</styleUrl>
+    <LineString>
+      <coordinates>18.558086395263672,53.065700531005866
+18.558931350708008,53.064155578613281
+18.559259414672848,53.063556671142578
+18.559944152832031,53.062206268310547</coordinates>
+    </LineString>
+  </Placemark>
+  <Placemark>
+    <name>628059661</name>
+    <description>0; Cycleway; AsphaltLike; Excellent; HasAccess; -1</description>
+    <styleUrl>#625ff9e0-9d5d-4b2b-98e9-8e02936e640d</styleUrl>
+    <LineString>
+      <coordinates>18.57219123840332,53.050300598144524
+18.572299957275391,53.050376892089844
+18.572341918945312,53.050407409667969
+18.572368621826172,53.05043029785157
+18.572381973266602,53.050460815429688
+18.572378158569332,53.050487518310554
+18.572349548339844,53.050518035888672
+18.572303771972656,53.050544738769538
+18.571361541748047,53.051071166992188
+18.571050643920898,53.051250457763672
+18.570863723754883,53.051357269287109
+18.570716857910156,53.051441192626953
+18.570337295532227,53.051670074462891
+18.567770004272461,53.053119659423828
+18.567455291748047,53.053298950195312
+18.566560745239258,53.053813934326172
+18.564226150512695,53.055152893066406
+18.563056945800781,53.055824279785156
+18.562126159667969,53.056358337402344
+18.561944961547852,53.056465148925781
+18.561756134033203,53.056598663330078
+18.561588287353516,53.056747436523445
+18.560714721679688,53.057579040527351
+18.559896469116211,53.05833816528321</coordinates>
+    </LineString>
+  </Placemark>
+  <Placemark>
+    <name>678299353</name>
+    <description>0; Path; Unknown; Bad; HasAccess; -1</description>
+    <styleUrl>#17b844fe-ab9c-4867-9653-47805fc5bd5d</styleUrl>
+    <LineString>
+      <coordinates>18.5557861328125,53.054054260253913
+18.554771423339844,53.055538177490234
+18.554729461669925,53.055694580078125
+18.55473518371582,53.055835723876953</coordinates>
+    </LineString>
+  </Placemark>
+  <Placemark>
+    <name>678299354</name>
+    <description>0; Path; Unknown; Bad; HasAccess; -1</description>
+    <styleUrl>#17b844fe-ab9c-4867-9653-47805fc5bd5d</styleUrl>
+    <LineString>
+      <coordinates>18.555902481079102,53.057140350341797
+18.557064056396488,53.057361602783196
+18.557519912719727,53.057472229003906
+18.557943344116211,53.05766296386718
+18.558660507202148,53.058048248291016
+18.558917999267578,53.05816650390625
+18.559783935546875,53.058444976806641</coordinates>
+    </LineString>
+  </Placemark>
+  <Placemark>
+    <name>678299355</name>
+    <description>0; Path; Unknown; Bad; HasAccess; -1</description>
+    <styleUrl>#17b844fe-ab9c-4867-9653-47805fc5bd5d</styleUrl>
+    <LineString>
+      <coordinates>18.558198928833008,53.055011749267578
+18.555902481079102,53.057140350341797
+18.554353713989254,53.058601379394531
+18.554220199584961,53.058753967285156
+18.554086685180664,53.058979034423828
+18.553384780883789,53.06005859375</coordinates>
+    </LineString>
+  </Placemark>
+  <Placemark>
+    <name>678310098</name>
+    <description>0; Path; Unknown; Bad; HasAccess; -1</description>
+    <styleUrl>#17b844fe-ab9c-4867-9653-47805fc5bd5d</styleUrl>
+    <LineString>
+      <coordinates>18.558645248413086,53.059745788574219
+18.559202194213867,53.059932708740234
+18.559354782104492,53.059997558593743
+18.559520721435547,53.060092926025391
+18.559700012207035,53.060230255126953
+18.559829711914062,53.060295104980469
+18.55998611450195,53.060340881347649
+18.560293197631839,53.060394287109375
+18.560752868652344,53.060443878173835
+18.561237335205078,53.060462951660156
+18.561796188354492,53.060520172119141
+18.56224250793457,53.060585021972649
+18.564765930175781,53.060962677001953</coordinates>
+    </LineString>
+  </Placemark>
+  <Placemark>
+    <name>678310100</name>
+    <description>0; Cycleway; Unknown; Bad; HasAccess; -1</description>
+    <styleUrl>#17b844fe-ab9c-4867-9653-47805fc5bd5d</styleUrl>
+    <LineString>
+      <coordinates>18.559896469116211,53.05833816528321
+18.560052871704102,53.058399200439453</coordinates>
+    </LineString>
+  </Placemark>
+  <Placemark>
+    <name>681970180</name>
+    <description>0; Path; Unknown; Bad; HasAccess; -1</description>
+    <styleUrl>#17b844fe-ab9c-4867-9653-47805fc5bd5d</styleUrl>
+    <LineString>
+      <coordinates>18.551378250122067,53.064975738525391
+18.551740646362305,53.065204620361328
+18.553153991699215,53.066150665283203
+18.553812026977539,53.066593170166016
+18.555130004882812,53.067459106445312</coordinates>
+    </LineString>
+  </Placemark>
+  <Placemark>
+    <name>696392576</name>
+    <description>0; Cycleway; AsphaltLike; Excellent; HasAccess; -1</description>
+    <styleUrl>#625ff9e0-9d5d-4b2b-98e9-8e02936e640d</styleUrl>
+    <LineString>
+      <coordinates>18.559896469116211,53.05833816528321
+18.559783935546875,53.058444976806641
+18.559289932250973,53.058921813964844
+18.558504104614258,53.059711456298821
+18.557554244995121,53.060634613037109
+18.55660247802734,53.061557769775391
+18.556606292724613,53.061603546142585
+18.556615829467773,53.061637878417969
+18.556644439697266,53.06166076660157</coordinates>
+    </LineString>
+  </Placemark>
+  <Placemark>
+    <name>754707705</name>
+    <description>0; Unclassified; Unknown; Bad; HasAccess; 916</description>
+    <styleUrl>#17b844fe-ab9c-4867-9653-47805fc5bd5d</styleUrl>
+    <LineString>
+      <coordinates>18.560626983642578,53.058937072753899
+18.559659957885742,53.058769226074219</coordinates>
+    </LineString>
+  </Placemark>
+  <Placemark>
+    <name>948220899</name>
+    <description>0; Footway; Unknown; Bad; HasAccess; -1</description>
+    <styleUrl>#17b844fe-ab9c-4867-9653-47805fc5bd5d</styleUrl>
+    <LineString>
+      <coordinates>18.563287734985352,53.057891845703118
+18.563356399536133,53.057880401611328
+18.563884735107422,53.057968139648438</coordinates>
+    </LineString>
+  </Placemark>
+  <Placemark>
+    <name>970231031</name>
+    <description>0; Unclassified; Unknown; Bad; HasAccess; -1</description>
+    <styleUrl>#17b844fe-ab9c-4867-9653-47805fc5bd5d</styleUrl>
+    <LineString>
+      <coordinates>18.560184478759766,53.058555603027344
+18.560247421264648,53.058494567871101
+18.560400009155273,53.058353424072266
+18.561246871948242,53.057559967041016
+18.561624526977536,53.05720520019532
+18.561668395996094,53.057163238525398</coordinates>
+    </LineString>
+  </Placemark>
+  <Placemark>
+    <name>970231032</name>
+    <description>0; Unclassified; Unknown; Bad; HasAccess; -1</description>
+    <styleUrl>#17b844fe-ab9c-4867-9653-47805fc5bd5d</styleUrl>
+    <LineString>
+      <coordinates>18.560468673706055,53.058547973632812
+18.560247421264648,53.058494567871101</coordinates>
+    </LineString>
+  </Placemark>
+  <Placemark>
+    <name>970231033</name>
+    <description>0; Unclassified; Unknown; Bad; HasAccess; -1</description>
+    <styleUrl>#17b844fe-ab9c-4867-9653-47805fc5bd5d</styleUrl>
+    <LineString>
+      <coordinates>18.560184478759766,53.058555603027344
+18.560514450073242,53.058605194091797</coordinates>
+    </LineString>
+  </Placemark>
+  <Placemark>
+    <name>970231034</name>
+    <description>0; Unclassified; Unknown; Bad; HasAccess; -1</description>
+    <styleUrl>#17b844fe-ab9c-4867-9653-47805fc5bd5d</styleUrl>
+    <LineString>
+      <coordinates>18.56130218505859,53.058483123779297
+18.56132698059082,53.05842208862304
+18.561357498168949,53.058345794677734</coordinates>
+    </LineString>
+  </Placemark>
+  <Placemark>
+    <name>970231035</name>
+    <description>0; Unclassified; Unknown; Bad; HasAccess; -1</description>
+    <styleUrl>#17b844fe-ab9c-4867-9653-47805fc5bd5d</styleUrl>
+    <LineString>
+      <coordinates>18.56132698059082,53.05842208862304
+18.561172485351562,53.058395385742195
+18.561378479003906,53.058021545410149</coordinates>
+    </LineString>
+  </Placemark>
+  <Placemark>
+    <name>970231036</name>
+    <description>0; Unclassified; Unknown; Bad; HasAccess; -1</description>
+    <styleUrl>#17b844fe-ab9c-4867-9653-47805fc5bd5d</styleUrl>
+    <LineString>
+      <coordinates>18.561908721923828,53.057254791259766
+18.561624526977536,53.05720520019532</coordinates>
+    </LineString>
+  </Placemark>
+  <Placemark>
+    <name>970231037</name>
+    <description>0; Footway; Unknown; Bad; HasAccess; -1</description>
+    <styleUrl>#17b844fe-ab9c-4867-9653-47805fc5bd5d</styleUrl>
+    <LineString>
+      <coordinates>18.563884735107422,53.057968139648438
+18.564065933227539,53.057579040527351</coordinates>
+    </LineString>
+  </Placemark>
+  <Placemark>
+    <name>970231038</name>
+    <description>0; Unclassified; Unknown; Bad; HasAccess; -1</description>
+    <styleUrl>#17b844fe-ab9c-4867-9653-47805fc5bd5d</styleUrl>
+    <LineString>
+      <coordinates>18.564008712768551,53.05817794799804
+18.563688278198242,53.058135986328118</coordinates>
+    </LineString>
+  </Placemark>
+  <Placemark>
+    <name>970231039</name>
+    <description>0; Unclassified; Unknown; Bad; HasAccess; -1</description>
+    <styleUrl>#17b844fe-ab9c-4867-9653-47805fc5bd5d</styleUrl>
+    <LineString>
+      <coordinates>18.563287734985352,53.057891845703118
+18.563192367553711,53.058124542236328</coordinates>
+    </LineString>
+  </Placemark>
+  <Placemark>
+    <name>970231040</name>
+    <description>0; Unclassified; Unknown; Bad; HasAccess; -1</description>
+    <styleUrl>#17b844fe-ab9c-4867-9653-47805fc5bd5d</styleUrl>
+    <LineString>
+      <coordinates>18.563138961791992,53.057498931884766
+18.56298828125,53.057842254638672</coordinates>
+    </LineString>
+  </Placemark>
+  <Placemark>
+    <name>970231041</name>
+    <description>0; Unclassified; Unknown; Bad; HasAccess; -1</description>
+    <styleUrl>#17b844fe-ab9c-4867-9653-47805fc5bd5d</styleUrl>
+    <LineString>
+      <coordinates>18.563591003417972,53.058349609374993
+18.564315795898441,53.058460235595703</coordinates>
+    </LineString>
+  </Placemark>
+  <Placemark>
+    <name>970231044</name>
+    <description>0; Footway; Unknown; Bad; HasAccess; -1</description>
+    <styleUrl>#17b844fe-ab9c-4867-9653-47805fc5bd5d</styleUrl>
+    <LineString>
+      <coordinates>18.564592361450195,53.059539794921868
+18.564445495605469,53.059818267822266
+18.564378738403317,53.059909820556641</coordinates>
+    </LineString>
+  </Placemark>
+  <Placemark>
+    <name>970231045</name>
+    <description>0; Unclassified; Unknown; Bad; HasAccess; -1</description>
+    <styleUrl>#17b844fe-ab9c-4867-9653-47805fc5bd5d</styleUrl>
+    <LineString>
+      <coordinates>18.564132690429691,53.05974197387696
+18.564258575439453,53.059482574462884</coordinates>
+    </LineString>
+  </Placemark>
+</Document>

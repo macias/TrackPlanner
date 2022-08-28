@@ -1,0 +1,56 @@
+﻿@using Microsoft.AspNetCore.Components.Web.Extensions.Head
+@using BlazorLeaflet
+
+<Title Value="@($"TrackTurner: {FileName ?? "«not set»"}")"></Title>
+
+<div style="display: grid;
+                          grid-template-columns: 2fr 8fr;
+                          grid-template-rows: 100vh;
+                          place-items: start;">
+    <div  style="width: 100%;height:100%;">
+        <div>
+
+            <EditForm Model="this">
+                <label>
+                    <InputCheckbox @bind-Value="@StableRoads"></InputCheckbox>
+                    Stable roads
+                </label>
+                <label>
+                    <InputCheckbox @bind-Value="@AutoBuild"></InputCheckbox>
+                    Auto build
+                </label>
+                <button @onclick="BuildPlanAsync">Build</button>
+                <button @onclick="CompleteRebuildPlanAsync">Rebuild all</button>
+                <button @onclick="NewProjectAsync">New</button>
+            </EditForm>
+        </div>
+        
+        <div style="width: 100%;overflow:auto; height:100%;">
+            <Markers @ref="markers" MapManager="this"></Markers>
+            <Accordion Collapsed="true">
+                <Header>
+                    <h3>Legend</h3></Header>
+                <Body>
+                <Legend></Legend>
+                </Body>
+            </Accordion>
+
+
+        </div>
+    </div>
+
+    <div style="  height: 100vh;width:100%" >
+        <div style="padding-top:0em">
+                   <button @onclick="saveScheduleAsync">Save</button>
+                   <button @onclick="loadScheduleAsync">Load</button>
+                   <button @onclick="DownloadAsync">Download</button>
+                   <button @onclick="PlanFixedAsync">Fixed</button>
+     
+        </div>
+        <div id="mapContainer" style="width:100%;height: 100%">
+<!--        <div id="mapContainer" class="vh-100 w-auto" style="min-height: 100px; min-width: 100px;">-->
+            <!--<div style="height: 500px; width: 500px;">-->
+            <LeafletMap Map="map"/>
+        </div>
+    </div>
+</div>

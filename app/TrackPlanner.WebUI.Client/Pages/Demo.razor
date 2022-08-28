@@ -1,0 +1,31 @@
+﻿<PageTitle @ref="toggle"></PageTitle>
+<button @onclick="clicked">Re-render</button>
+@if (toggle == null)
+{
+    <p>It is null</p>
+}
+else
+{
+    <p>Not null now</p>
+}
+
+@code
+{
+    private PageTitle? __toggle;
+    private PageTitle? toggle
+    {
+        get { return __toggle; }
+        set
+        {
+            __toggle = value;
+            Console.WriteLine($"Setting null? {value == null}");
+        }
+    }
+
+    private void clicked()
+    {
+        Console.WriteLine("Triggering render");
+        StateHasChanged();
+    }
+
+}

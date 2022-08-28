@@ -1,0 +1,23 @@
+@using TrackPlanner.Data
+@using TrackPlanner.Settings
+@using TrackPlanner.LinqExtensions
+
+@foreach ((string mode, LineDecoration deco) in Program.Configuration.SpeedStyles
+    .Select(it => (it.Key.ToString(),it.Value))
+    .Concat(("Forbidden",Program.Configuration.ForbiddenStyle)))
+{
+    <div>
+        @{
+            if (deco == null)
+            {
+                <i class="fas fa-bug"></i>
+            }
+            else
+            {
+                deco.GetComponents(out int a, out int  r, out int  g, out int  b);
+                <i class="fas fa-square-full" style="color:rgb(@r,@g,@b);"></i>
+            }
+            <span>@mode</span>
+        }
+    </div>
+}

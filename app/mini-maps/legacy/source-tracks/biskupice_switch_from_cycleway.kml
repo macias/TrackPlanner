@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2">
+  <Document>
+    <name>biskupice_switch_from_cycleway2</name>
+    <Style id="line-FF0000-6000-nodesc-normal">
+      <LineStyle>
+        <color>ff0000ff</color>
+        <width>6</width>
+      </LineStyle>
+      <BalloonStyle>
+        <text><![CDATA[<h3>$[name]</h3>]]></text>
+      </BalloonStyle>
+    </Style>
+    <Style id="line-FF0000-6000-nodesc-highlight">
+      <LineStyle>
+        <color>ff0000ff</color>
+        <width>9</width>
+      </LineStyle>
+      <BalloonStyle>
+        <text><![CDATA[<h3>$[name]</h3>]]></text>
+      </BalloonStyle>
+    </Style>
+    <StyleMap id="line-FF0000-6000-nodesc">
+      <Pair>
+        <key>normal</key>
+        <styleUrl>#line-FF0000-6000-nodesc-normal</styleUrl>
+      </Pair>
+      <Pair>
+        <key>highlight</key>
+        <styleUrl>#line-FF0000-6000-nodesc-highlight</styleUrl>
+      </Pair>
+    </StyleMap>
+    <Placemark>
+      <name>route</name>
+      <styleUrl>#line-FF0000-6000-nodesc</styleUrl>
+      <LineString>
+        <tessellate>1</tessellate>
+        <coordinates>
+          18.506283,53.143889,0
+          18.506291,53.143911,0
+          18.506346,53.143975,0
+          18.506543,53.144083,0
+          18.506857,53.144213,0
+          18.506947,53.144266,0
+          18.507217,53.144358,0
+          18.507756,53.144546,0
+          18.507738,53.144563,0
+          18.507712,53.144584,0
+          18.508052,53.144719,0
+          18.508385,53.144848,0
+          18.508268,53.145226,0
+          18.508142,53.145603,0
+          18.508107,53.145711,0
+          18.5078696,53.1463581,0
+        </coordinates>
+      </LineString>
+    </Placemark>
+  </Document>
+</kml>

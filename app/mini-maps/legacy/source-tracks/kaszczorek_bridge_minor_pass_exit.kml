@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2">
+<Document>
+    <name>route</name>
+    <open>1</open>
+    <description>
+    <![CDATA[
+        popisek
+    ]]>
+    </description>
+    <Style id="path"><LineStyle><color>b20000ff</color><width>6</width></LineStyle></Style>
+    <Style id="routepoint"><IconStyle><color>b20000ff</color><Icon><href>http://maps.google.com/mapfiles/kml/shapes/placemark_square.png</href></Icon></IconStyle></Style>
+    <Style id="waypoint"><IconStyle><color>b20000ff</color><Icon><href>http://maps.google.com/mapfiles/kml/shapes/placemark_circle.png</href></Icon></IconStyle></Style>
+    <Folder>
+        <name>1. část</name>
+        <visibility>1</visibility>
+        <open>1</open>
+        <Folder>
+            <name>Itinerar Start -&gt; Toruńska</name>
+            <visibility>1</visibility>
+            <open>0</open>
+            <Placemark>
+                <name>Start</name>
+                <visibility>1</visibility>
+                <description>
+                <![CDATA[
+                    <table>
+                        <tr><td>Longitude: 18.702277690172195</td></tr>
+                        <tr><td>Latitude: 52.998632937669754</td></tr>
+                        <tr><td>Altitude: 39</td></tr>
+                    </table>
+                ]]>
+                </description>
+                <styleUrl>#waypoint</styleUrl>
+                <Point>
+                    <coordinates>
+                        18.702277690172195,52.998632937669754,39
+                    </coordinates>
+                </Point>
+            </Placemark>
+            <Placemark>
+                <name></name>
+                <visibility>1</visibility>
+                <description>
+                <![CDATA[
+                    <table>
+                        <tr><td>Longitude: 18.701505213975906</td></tr>
+                        <tr><td>Latitude: 52.99806497991085</td></tr>
+                        <tr><td>Altitude: 42</td></tr>
+                    </table>
+                ]]>
+                </description>
+                <styleUrl>#waypoint</styleUrl>
+                <Point>
+                    <coordinates>
+                        18.701505213975906,52.99806497991085,42
+                    </coordinates>
+                </Point>
+            </Placemark>
+            <Placemark>
+                <name>Toruńska</name>
+                <visibility>1</visibility>
+                <description>
+                <![CDATA[
+                    <table>
+                        <tr><td>Longitude: 18.702187836170197</td></tr>
+                        <tr><td>Latitude: 52.99744337797165</td></tr>
+                        <tr><td>Altitude: 43</td></tr>
+                    </table>
+                ]]>
+                </description>
+                <styleUrl>#waypoint</styleUrl>
+                <Point>
+                    <coordinates>
+                        18.702187836170197,52.99744337797165,43
+                    </coordinates>
+                </Point>
+            </Placemark>
+            <Placemark>
+                <name>Toruńska</name>
+                <visibility>1</visibility>
+                <description>
+                <![CDATA[
+                    <table>
+                        <tr><td>Longitude: 18.70238497853279</td></tr>
+                        <tr><td>Latitude: 52.99735151231289</td></tr>
+                        <tr><td>Altitude: 43</td></tr>
+                    </table>
+                ]]>
+                </description>
+                <styleUrl>#waypoint</styleUrl>
+                <Point>
+                    <coordinates>
+                        18.70238497853279,52.99735151231289,43
+                    </coordinates>
+                </Point>
+            </Placemark>
+        </Folder>
+        <Folder>
+            <name>Planovani Warszawska -&gt; 657</name>
+            <visibility>1</visibility>
+            <open>0</open>
+            <Placemark>
+                <name>Warszawska</name>
+                <visibility>1</visibility>
+                <description>
+                <![CDATA[
+                    <table>
+                        <tr><td>Longitude: 18.70227500796318</td></tr>
+                        <tr><td>Latitude: 52.99862489104271</td></tr>
+                    </table>
+                ]]>
+                </description>
+                <styleUrl>#routepoint</styleUrl>
+                <Point>
+                    <coordinates>
+                        18.70227500796318,52.99862489104271
+                    </coordinates>
+                </Point>
+            </Placemark>
+            <Placemark>
+                <name>657</name>
+                <visibility>1</visibility>
+                <description>
+                <![CDATA[
+                    <table>
+                        <tr><td>Longitude: 18.702360838651657</td></tr>
+                        <tr><td>Latitude: 52.997330725193024</td></tr>
+                    </table>
+                ]]>
+                </description>
+                <styleUrl>#routepoint</styleUrl>
+                <Point>
+                    <coordinates>
+                        18.702360838651657,52.997330725193024
+                    </coordinates>
+                </Point>
+            </Placemark>
+        </Folder>
+        <Placemark><name>route</name><styleUrl>#path</styleUrl>
+        <LineString>
+            <tessellate>1</tessellate>
+            <coordinates>
+                18.702277690172195,52.998632937669754,39
+                18.70219722390175,52.99860008060932,40
+                18.702124804258347,52.998546436429024,40
+                18.702052384614944,52.99850285053253,41
+                18.7019182741642,52.99838416278362,41
+                18.701774775981903,52.99826480448246,42
+                18.701585680246353,52.9981192946434,42
+                18.701505213975906,52.99806497991085,42
+                18.701595067977905,52.99800530076027,42
+                18.701612502336502,52.99798384308815,42
+                18.701621890068054,52.99795165657997,42
+                18.701675534248352,52.99790807068348,42
+                18.7018820643425,52.99777328968048,43
+                18.701935708522797,52.99772433936596,43
+                18.70198130607605,52.99767538905144,43
+                18.701989352703094,52.99764856696129,43
+                18.701998740434647,52.9976324737072,43
+                18.70201751589775,52.99761638045311,43
+                18.702232092618942,52.99748092889786,43
+                18.702187836170197,52.99744337797165,43
+                18.70219722390175,52.99743801355362,43
+                18.70238497853279,52.99735151231289,43
+            </coordinates>
+        </LineString>
+        </Placemark>
+    </Folder>
+</Document>
+</kml>

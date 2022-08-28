@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <LangVersion>10</LangVersion>
+    <WarningsAsErrors>Nullable</WarningsAsErrors>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="SharpKml.Core" Version="5.2.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\TrackPlanner.Data\TrackPlanner.Data.csproj" />
+    <ProjectReference Include="..\TrackPlanner.Settings\TrackPlanner.Settings.csproj" />
+    <ProjectReference Include="..\TrackPlanner.Shared\TrackPlanner.Shared.csproj" />
+    <ProjectReference Include="..\TrackPlanner.LinqExtensions\TrackPlanner.LinqExtensions.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,24 @@
+@using TrackPlanner.Data
+@inherits TimeInput
+
+<span>
+        @{
+            var last_not_less = Program.Configuration.PlannerPreferences.Breaks.Last(it => it.duration <= Value);
+
+            foreach (var (label,time) in Program.Configuration.PlannerPreferences.Breaks)
+            {
+                var is_match = Value == time;
+                string css_class = $"break-button btn  btn-sm {(is_match ? "btn-primary active" : "btn-light")}";
+                var title = $"{label.ToLowerInvariant()} {DataFormat.Format(time)}";
+                
+                <button type="button" class="@css_class" aria-pressed="@is_match" title="@title" @onclick="() => CurrentValue=time">@(label[0])</button>
+
+                @if (!is_match && label==last_not_less.label)
+                {
+                    <button type="button" class="break-button btn btn-outline-primary btn-sm active" aria-pressed="true" disabled title="between">b</button>
+                }
+            }
+        }
+    @BaseContent
+</span>
+

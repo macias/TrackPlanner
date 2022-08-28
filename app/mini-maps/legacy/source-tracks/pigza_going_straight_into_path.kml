@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2">
+<Document>
+    <name>route</name>
+    <open>1</open>
+    <description>
+    <![CDATA[
+        popisek
+    ]]>
+    </description>
+    <Style id="path"><LineStyle><color>b20000ff</color><width>6</width></LineStyle></Style>
+    <Style id="routepoint"><IconStyle><color>b20000ff</color><Icon><href>http://maps.google.com/mapfiles/kml/shapes/placemark_square.png</href></Icon></IconStyle></Style>
+    <Style id="waypoint"><IconStyle><color>b20000ff</color><Icon><href>http://maps.google.com/mapfiles/kml/shapes/placemark_circle.png</href></Icon></IconStyle></Style>
+    <Folder>
+        <name>1. část</name>
+        <visibility>1</visibility>
+        <open>1</open>
+        <Folder>
+            <name>Itinerar Start -&gt; Wschodnia</name>
+            <visibility>1</visibility>
+            <open>0</open>
+            <Placemark>
+                <name>Start</name>
+                <visibility>1</visibility>
+                <description>
+                <![CDATA[
+                    <table>
+                        <tr><td>Longitude: 18.525686413049698</td></tr>
+                        <tr><td>Latitude: 53.11898298561573</td></tr>
+                        <tr><td>Altitude: 87</td></tr>
+                    </table>
+                ]]>
+                </description>
+                <styleUrl>#waypoint</styleUrl>
+                <Point>
+                    <coordinates>
+                        18.525686413049698,53.11898298561573,87
+                    </coordinates>
+                </Point>
+            </Placemark>
+            <Placemark>
+                <name>Wschodnia</name>
+                <visibility>1</visibility>
+                <description>
+                <![CDATA[
+                    <table>
+                        <tr><td>Longitude: 18.53590965270996</td></tr>
+                        <tr><td>Latitude: 53.1174199283123</td></tr>
+                        <tr><td>Altitude: 83</td></tr>
+                    </table>
+                ]]>
+                </description>
+                <styleUrl>#waypoint</styleUrl>
+                <Point>
+                    <coordinates>
+                        18.53590965270996,53.1174199283123,83
+                    </coordinates>
+                </Point>
+            </Placemark>
+        </Folder>
+        <Folder>
+            <name>Planovani Parkowa -&gt; Wschodnia</name>
+            <visibility>1</visibility>
+            <open>0</open>
+            <Placemark>
+                <name>Parkowa</name>
+                <visibility>1</visibility>
+                <description>
+                <![CDATA[
+                    <table>
+                        <tr><td>Longitude: 18.525687754154205</td></tr>
+                        <tr><td>Latitude: 53.11898432672024</td></tr>
+                    </table>
+                ]]>
+                </description>
+                <styleUrl>#routepoint</styleUrl>
+                <Point>
+                    <coordinates>
+                        18.525687754154205,53.11898432672024
+                    </coordinates>
+                </Point>
+            </Placemark>
+            <Placemark>
+                <name>Wschodnia</name>
+                <visibility>1</visibility>
+                <description>
+                <![CDATA[
+                    <table>
+                        <tr><td>Longitude: 18.535912334918976</td></tr>
+                        <tr><td>Latitude: 53.11743199825287</td></tr>
+                    </table>
+                ]]>
+                </description>
+                <styleUrl>#routepoint</styleUrl>
+                <Point>
+                    <coordinates>
+                        18.535912334918976,53.11743199825287
+                    </coordinates>
+                </Point>
+            </Placemark>
+        </Folder>
+        <Placemark><name>route</name><styleUrl>#path</styleUrl>
+        <LineString>
+            <tessellate>1</tessellate>
+            <coordinates>
+                18.525686413049698,53.11898298561573,87
+                18.525713235139847,53.11896689236164,87
+                18.52591171860695,53.11891324818134,87
+                18.527043610811234,53.118681237101555,89
+                18.527447283267975,53.11860077083111,87
+                18.52752774953842,53.118584007024765,86
+                18.527663201093674,53.118567913770676,85
+                18.528929203748703,53.11839021742344,84
+                18.53019654750824,53.11820715665817,82
+                18.534588664770126,53.1176083534956,82
+                18.53590965270996,53.1174199283123,83
+            </coordinates>
+        </LineString>
+        </Placemark>
+    </Folder>
+</Document>
+</kml>

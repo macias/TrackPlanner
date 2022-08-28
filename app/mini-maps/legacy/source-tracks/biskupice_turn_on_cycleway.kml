@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2">
+<Document>
+    <name>route</name>
+    <open>1</open>
+    <description>
+    <![CDATA[
+        popisek
+    ]]>
+    </description>
+    <Style id="path"><LineStyle><color>b20000ff</color><width>6</width></LineStyle></Style>
+    <Style id="routepoint"><IconStyle><color>b20000ff</color><Icon><href>http://maps.google.com/mapfiles/kml/shapes/placemark_square.png</href></Icon></IconStyle></Style>
+    <Style id="waypoint"><IconStyle><color>b20000ff</color><Icon><href>http://maps.google.com/mapfiles/kml/shapes/placemark_circle.png</href></Icon></IconStyle></Style>
+    <Folder>
+        <name>1. část</name>
+        <visibility>1</visibility>
+        <open>1</open>
+        <Folder>
+            <name>Itinerar Start -&gt; </name>
+            <visibility>1</visibility>
+            <open>0</open>
+            <Placemark>
+                <name>Start</name>
+                <visibility>1</visibility>
+                <description>
+                <![CDATA[
+                    <table>
+                        <tr><td>Longitude: 18.510667383670807</td></tr>
+                        <tr><td>Latitude: 53.137563318014145</td></tr>
+                        <tr><td>Altitude: 84</td></tr>
+                    </table>
+                ]]>
+                </description>
+                <styleUrl>#waypoint</styleUrl>
+                <Point>
+                    <coordinates>
+                        18.510667383670807,53.137563318014145,84
+                    </coordinates>
+                </Point>
+            </Placemark>
+            <Placemark>
+                <name></name>
+                <visibility>1</visibility>
+                <description>
+                <![CDATA[
+                    <table>
+                        <tr><td>Longitude: 18.506166636943817</td></tr>
+                        <tr><td>Latitude: 53.14339376986027</td></tr>
+                        <tr><td>Altitude: 86</td></tr>
+                    </table>
+                ]]>
+                </description>
+                <styleUrl>#waypoint</styleUrl>
+                <Point>
+                    <coordinates>
+                        18.506166636943817,53.14339376986027,86
+                    </coordinates>
+                </Point>
+            </Placemark>
+            <Placemark>
+                <name></name>
+                <visibility>1</visibility>
+                <description>
+                <![CDATA[
+                    <table>
+                        <tr><td>Longitude: 18.507279753684998</td></tr>
+                        <tr><td>Latitude: 53.14437948167324</td></tr>
+                        <tr><td>Altitude: 87</td></tr>
+                    </table>
+                ]]>
+                </description>
+                <styleUrl>#waypoint</styleUrl>
+                <Point>
+                    <coordinates>
+                        18.507279753684998,53.14437948167324,87
+                    </coordinates>
+                </Point>
+            </Placemark>
+        </Folder>
+        <Folder>
+            <name>Planovani Świętego Jana -&gt; Kościelna 10</name>
+            <visibility>1</visibility>
+            <open>0</open>
+            <Placemark>
+                <name>Świętego Jana</name>
+                <visibility>1</visibility>
+                <description>
+                <![CDATA[
+                    <table>
+                        <tr><td>Longitude: 18.51068079471588</td></tr>
+                        <tr><td>Latitude: 53.13757002353668</td></tr>
+                    </table>
+                ]]>
+                </description>
+                <styleUrl>#routepoint</styleUrl>
+                <Point>
+                    <coordinates>
+                        18.51068079471588,53.13757002353668
+                    </coordinates>
+                </Point>
+            </Placemark>
+            <Placemark>
+                <name>Kościelna 10</name>
+                <visibility>1</visibility>
+                <description>
+                <![CDATA[
+                    <table>
+                        <tr><td>Longitude: 18.507285118103027</td></tr>
+                        <tr><td>Latitude: 53.1443727761507</td></tr>
+                    </table>
+                ]]>
+                </description>
+                <styleUrl>#routepoint</styleUrl>
+                <Point>
+                    <coordinates>
+                        18.507285118103027,53.1443727761507
+                    </coordinates>
+                </Point>
+            </Placemark>
+        </Folder>
+        <Placemark><name>route</name><styleUrl>#path</styleUrl>
+        <LineString>
+            <tessellate>1</tessellate>
+            <coordinates>
+                18.510667383670807,53.137563318014145,84
+                18.510505110025406,53.13776783645153,84
+                18.508887737989426,53.13984788954258,85
+                18.507954329252243,53.14108170568943,85
+                18.507019579410553,53.14232088625431,86
+                18.506589084863663,53.142860010266304,86
+                18.506166636943817,53.14339376986027,86
+                18.506210893392563,53.14340986311436,86
+                18.506139814853668,53.14352788031101,86
+                18.506184071302414,53.14366266131401,85
+                18.50629135966301,53.14391076564789,86
+                18.506346344947815,53.143975138664246,87
+                18.50654348731041,53.144083097577095,87
+                18.506857305765152,53.144212514162064,87
+                18.50694715976715,53.14426615834236,87
+                18.507216721773148,53.14435802400112,87
+                18.507279753684998,53.14437948167324,87
+            </coordinates>
+        </LineString>
+        </Placemark>
+    </Folder>
+</Document>
+</kml>

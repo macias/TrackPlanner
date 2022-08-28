@@ -1,0 +1,17 @@
+*
+!app
+!app/**
+!.gitignore
+!README.md
+!LICENSE
+
+**/bin/**
+**/obj/**
+
+**/*.user
+app/.vs/
+app/.idea/
+app/packages/
+**/PublishProfiles
+
+app/TrackPlanner.WebUI.Server/wwwroot/copy_*.json

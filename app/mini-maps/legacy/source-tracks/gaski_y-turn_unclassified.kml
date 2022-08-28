@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2">
+<Document>
+    <name>route</name>
+    <open>1</open>
+    <description>
+    <![CDATA[
+        popisek
+    ]]>
+    </description>
+    <Style id="path"><LineStyle><color>b20000ff</color><width>6</width></LineStyle></Style>
+    <Style id="routepoint"><IconStyle><color>b20000ff</color><Icon><href>http://maps.google.com/mapfiles/kml/shapes/placemark_square.png</href></Icon></IconStyle></Style>
+    <Style id="waypoint"><IconStyle><color>b20000ff</color><Icon><href>http://maps.google.com/mapfiles/kml/shapes/placemark_circle.png</href></Icon></IconStyle></Style>
+    <Folder>
+        <name>1. část</name>
+        <visibility>1</visibility>
+        <open>1</open>
+        <Folder>
+            <name>Itinerar Start -&gt; </name>
+            <visibility>1</visibility>
+            <open>0</open>
+            <Placemark>
+                <name>Start</name>
+                <visibility>1</visibility>
+                <description>
+                <![CDATA[
+                    <table>
+                        <tr><td>Longitude: 18.42560514807701</td></tr>
+                        <tr><td>Latitude: 52.83042758703232</td></tr>
+                        <tr><td>Altitude: 81</td></tr>
+                    </table>
+                ]]>
+                </description>
+                <styleUrl>#waypoint</styleUrl>
+                <Point>
+                    <coordinates>
+                        18.42560514807701,52.83042758703232,81
+                    </coordinates>
+                </Point>
+            </Placemark>
+            <Placemark>
+                <name></name>
+                <visibility>1</visibility>
+                <description>
+                <![CDATA[
+                    <table>
+                        <tr><td>Longitude: 18.421517461538315</td></tr>
+                        <tr><td>Latitude: 52.829184383153915</td></tr>
+                        <tr><td>Altitude: 83</td></tr>
+                    </table>
+                ]]>
+                </description>
+                <styleUrl>#waypoint</styleUrl>
+                <Point>
+                    <coordinates>
+                        18.421517461538315,52.829184383153915,83
+                    </coordinates>
+                </Point>
+            </Placemark>
+        </Folder>
+        <Folder>
+            <name>Planovani 2537C -&gt; 2537C</name>
+            <visibility>1</visibility>
+            <open>0</open>
+            <Placemark>
+                <name>2537C</name>
+                <visibility>1</visibility>
+                <description>
+                <![CDATA[
+                    <table>
+                        <tr><td>Longitude: 18.425638675689697</td></tr>
+                        <tr><td>Latitude: 52.83043093979359</td></tr>
+                    </table>
+                ]]>
+                </description>
+                <styleUrl>#routepoint</styleUrl>
+                <Point>
+                    <coordinates>
+                        18.425638675689697,52.83043093979359
+                    </coordinates>
+                </Point>
+            </Placemark>
+            <Placemark>
+                <name>2537C</name>
+                <visibility>1</visibility>
+                <description>
+                <![CDATA[
+                    <table>
+                        <tr><td>Longitude: 18.421508073806763</td></tr>
+                        <tr><td>Latitude: 52.82919980585575</td></tr>
+                    </table>
+                ]]>
+                </description>
+                <styleUrl>#routepoint</styleUrl>
+                <Point>
+                    <coordinates>
+                        18.421508073806763,52.82919980585575
+                    </coordinates>
+                </Point>
+            </Placemark>
+        </Folder>
+        <Placemark><name>route</name><styleUrl>#path</styleUrl>
+        <LineString>
+            <tessellate>1</tessellate>
+            <coordinates>
+                18.42560514807701,52.83042758703232,81
+                18.42560514807701,52.83042222261429,81
+                18.42556893825531,52.83021032810211,82
+                18.425461649894714,52.83010706305504,82
+                18.425308763980865,52.83006951212883,82
+                18.424698561429977,52.829993069171906,84
+                18.424500077962875,52.829971611499786,84
+                18.42430293560028,52.82995015382767,84
+                18.42410445213318,52.829928025603294,84
+                18.423871099948883,52.829906567931175,84
+                18.423637747764587,52.82987907528877,84
+                18.422829061746597,52.829564586281776,82
+                18.422605097293854,52.82947205007076,82
+                18.422272503376007,52.829380184412,82
+                18.421715945005417,52.82923333346844,83
+                18.421517461538315,52.829184383153915,83
+            </coordinates>
+        </LineString>
+        </Placemark>
+    </Folder>
+</Document>
+</kml>

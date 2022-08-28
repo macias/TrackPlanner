@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <Version>1.0.32</Version>
+    <WarningsAsErrors>Nullable</WarningsAsErrors>
+      </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <WarningsAsErrors>nullable;NU1605</WarningsAsErrors>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Geo" Version="2.0.0" />
+    <PackageReference Include="MathUnit" Version="3.0.0" />
+  </ItemGroup>
+
+</Project>

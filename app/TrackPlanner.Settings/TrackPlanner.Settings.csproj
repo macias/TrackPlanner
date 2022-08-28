@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net5.0</TargetFramework>
+        <Nullable>enable</Nullable>
+    <WarningsAsErrors>Nullable</WarningsAsErrors>
+        </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\TrackPlanner.Data\TrackPlanner.Data.csproj" />
+      <ProjectReference Include="..\TrackPlanner.LinqExtensions\TrackPlanner.LinqExtensions.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Content Include="clientsettings.json">
+        <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      </Content>
+    </ItemGroup>
+
+</Project>

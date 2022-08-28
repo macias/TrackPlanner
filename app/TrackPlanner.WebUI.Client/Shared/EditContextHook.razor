@@ -1,0 +1,10 @@
+
+@ChildContent(@EditContext)
+
+@code {
+
+    [Parameter] public EditContext EditContext { get; set; } = default!;
+
+    [Parameter] public RenderFragment<EditContext> ChildContent { get; set; } = default!;
+
+}

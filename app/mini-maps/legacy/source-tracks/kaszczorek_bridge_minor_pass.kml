@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2">
+<Document>
+    <name>route</name>
+    <open>1</open>
+    <description>
+    <![CDATA[
+        popisek
+    ]]>
+    </description>
+    <Style id="path"><LineStyle><color>b20000ff</color><width>6</width></LineStyle></Style>
+    <Style id="routepoint"><IconStyle><color>b20000ff</color><Icon><href>http://maps.google.com/mapfiles/kml/shapes/placemark_square.png</href></Icon></IconStyle></Style>
+    <Style id="waypoint"><IconStyle><color>b20000ff</color><Icon><href>http://maps.google.com/mapfiles/kml/shapes/placemark_circle.png</href></Icon></IconStyle></Style>
+    <Folder>
+        <name>1. část</name>
+        <visibility>1</visibility>
+        <open>1</open>
+        <Folder>
+            <name>Itinerar Start -&gt; Turystyczna</name>
+            <visibility>1</visibility>
+            <open>0</open>
+            <Placemark>
+                <name>Start</name>
+                <visibility>1</visibility>
+                <description>
+                <![CDATA[
+                    <table>
+                        <tr><td>Longitude: 18.69977116584778</td></tr>
+                        <tr><td>Latitude: 53.002303540706635</td></tr>
+                        <tr><td>Altitude: 40</td></tr>
+                    </table>
+                ]]>
+                </description>
+                <styleUrl>#waypoint</styleUrl>
+                <Point>
+                    <coordinates>
+                        18.69977116584778,53.002303540706635,40
+                    </coordinates>
+                </Point>
+            </Placemark>
+            <Placemark>
+                <name>Na Przełaj</name>
+                <visibility>1</visibility>
+                <description>
+                <![CDATA[
+                    <table>
+                        <tr><td>Longitude: 18.700076937675476</td></tr>
+                        <tr><td>Latitude: 53.001936078071594</td></tr>
+                        <tr><td>Altitude: 41</td></tr>
+                    </table>
+                ]]>
+                </description>
+                <styleUrl>#waypoint</styleUrl>
+                <Point>
+                    <coordinates>
+                        18.700076937675476,53.001936078071594,41
+                    </coordinates>
+                </Point>
+            </Placemark>
+            <Placemark>
+                <name></name>
+                <visibility>1</visibility>
+                <description>
+                <![CDATA[
+                    <table>
+                        <tr><td>Longitude: 18.70021104812622</td></tr>
+                        <tr><td>Latitude: 53.00196826457977</td></tr>
+                        <tr><td>Altitude: 40</td></tr>
+                    </table>
+                ]]>
+                </description>
+                <styleUrl>#waypoint</styleUrl>
+                <Point>
+                    <coordinates>
+                        18.70021104812622,53.00196826457977,40
+                    </coordinates>
+                </Point>
+            </Placemark>
+            <Placemark>
+                <name>Turystyczna</name>
+                <visibility>1</visibility>
+                <description>
+                <![CDATA[
+                    <table>
+                        <tr><td>Longitude: 18.70260089635849</td></tr>
+                        <tr><td>Latitude: 53.00024896860123</td></tr>
+                        <tr><td>Altitude: 40</td></tr>
+                    </table>
+                ]]>
+                </description>
+                <styleUrl>#waypoint</styleUrl>
+                <Point>
+                    <coordinates>
+                        18.70260089635849,53.00024896860123,40
+                    </coordinates>
+                </Point>
+            </Placemark>
+        </Folder>
+        <Folder>
+            <name>Planovani 654 -&gt; Turystyczna</name>
+            <visibility>1</visibility>
+            <open>0</open>
+            <Placemark>
+                <name>654</name>
+                <visibility>1</visibility>
+                <description>
+                <![CDATA[
+                    <table>
+                        <tr><td>Longitude: 18.6997751891613</td></tr>
+                        <tr><td>Latitude: 53.00230219960213</td></tr>
+                    </table>
+                ]]>
+                </description>
+                <styleUrl>#routepoint</styleUrl>
+                <Point>
+                    <coordinates>
+                        18.6997751891613,53.00230219960213
+                    </coordinates>
+                </Point>
+            </Placemark>
+            <Placemark>
+                <name>Turystyczna</name>
+                <visibility>1</visibility>
+                <description>
+                <![CDATA[
+                    <table>
+                        <tr><td>Longitude: 18.702596873044968</td></tr>
+                        <tr><td>Latitude: 53.00024896860123</td></tr>
+                    </table>
+                ]]>
+                </description>
+                <styleUrl>#routepoint</styleUrl>
+                <Point>
+                    <coordinates>
+                        18.702596873044968,53.00024896860123
+                    </coordinates>
+                </Point>
+            </Placemark>
+        </Folder>
+        <Placemark><name>route</name><styleUrl>#path</styleUrl>
+        <LineString>
+            <tessellate>1</tessellate>
+            <coordinates>
+                18.69977116584778,53.002303540706635,40
+                18.699815422296524,53.00225995481014,40
+                18.699950873851776,53.002109080553055,40
+                18.700076937675476,53.001936078071594,41
+                18.70021104812622,53.00196826457977,40
+                18.700256645679474,53.00189785659313,41
+                18.700283467769623,53.00186567008495,41
+                18.700319677591324,53.00183281302452,41
+                18.700543642044067,53.00164371728897,41
+                18.70055302977562,53.00162225961685,41
+                18.700570464134216,53.00160080194473,40
+                18.70070591568947,53.00149820744991,40
+                18.70129868388176,53.00105430185795,40
+                18.701352328062057,53.00101138651371,40
+                18.701415359973907,53.00096780061722,40
+                18.70151326060295,53.00091415643692,40
+                18.7015762925148,53.0008926987648,40
+                18.70163932442665,53.0008652061224,40
+                18.70172917842865,53.00080619752407,40
+                18.701809644699097,53.00074651837349,40
+                18.70210736989975,53.00051383674145,40
+                18.702250868082047,53.00043806433678,40
+                18.702394366264343,53.00036296248436,40
+                18.70260089635849,53.00024896860123,40
+            </coordinates>
+        </LineString>
+        </Placemark>
+    </Folder>
+</Document>
+</kml>

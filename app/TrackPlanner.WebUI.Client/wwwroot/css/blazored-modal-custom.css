@@ -1,0 +1,16 @@
+﻿
+.blazored-modal-container {
+    z-index: 2000;
+}
+
+.blazored-modal-overlay {
+ z-index: 2001;
+}
+
+.blazored-modal-focus-trap {
+    z-index: 2002;
+}
+
+.blazored-modal {
+   z-index: 2003;
+}

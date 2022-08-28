@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2">
+<Document>
+    <name>route</name>
+    <open>1</open>
+    <description>
+    <![CDATA[
+        popisek
+    ]]>
+    </description>
+    <Style id="path"><LineStyle><color>b20000ff</color><width>6</width></LineStyle></Style>
+    <Style id="routepoint"><IconStyle><color>b20000ff</color><Icon><href>http://maps.google.com/mapfiles/kml/shapes/placemark_square.png</href></Icon></IconStyle></Style>
+    <Style id="waypoint"><IconStyle><color>b20000ff</color><Icon><href>http://maps.google.com/mapfiles/kml/shapes/placemark_circle.png</href></Icon></IconStyle></Style>
+    <Folder>
+        <name>1. část</name>
+        <visibility>1</visibility>
+        <open>1</open>
+        <Folder>
+            <name>Itinerar Start -&gt; Prosta</name>
+            <visibility>1</visibility>
+            <open>0</open>
+            <Placemark>
+                <name>Start</name>
+                <visibility>1</visibility>
+                <description>
+                <![CDATA[
+                    <table>
+                        <tr><td>Longitude: 18.525749444961548</td></tr>
+                        <tr><td>Latitude: 53.12008336186409</td></tr>
+                        <tr><td>Altitude: 83</td></tr>
+                    </table>
+                ]]>
+                </description>
+                <styleUrl>#waypoint</styleUrl>
+                <Point>
+                    <coordinates>
+                        18.525749444961548,53.12008336186409,83
+                    </coordinates>
+                </Point>
+            </Placemark>
+            <Placemark>
+                <name>Prosta</name>
+                <visibility>1</visibility>
+                <description>
+                <![CDATA[
+                    <table>
+                        <tr><td>Longitude: 18.522973358631134</td></tr>
+                        <tr><td>Latitude: 53.12157668173313</td></tr>
+                        <tr><td>Altitude: 81</td></tr>
+                    </table>
+                ]]>
+                </description>
+                <styleUrl>#waypoint</styleUrl>
+                <Point>
+                    <coordinates>
+                        18.522973358631134,53.12157668173313,81
+                    </coordinates>
+                </Point>
+            </Placemark>
+            <Placemark>
+                <name>Prosta</name>
+                <visibility>1</visibility>
+                <description>
+                <![CDATA[
+                    <table>
+                        <tr><td>Longitude: 18.517575412988663</td></tr>
+                        <tr><td>Latitude: 53.12848135828972</td></tr>
+                        <tr><td>Altitude: 80</td></tr>
+                    </table>
+                ]]>
+                </description>
+                <styleUrl>#waypoint</styleUrl>
+                <Point>
+                    <coordinates>
+                        18.517575412988663,53.12848135828972,80
+                    </coordinates>
+                </Point>
+            </Placemark>
+        </Folder>
+        <Folder>
+            <name>Planovani Parkowa -&gt; Prosta</name>
+            <visibility>1</visibility>
+            <open>0</open>
+            <Placemark>
+                <name>Parkowa</name>
+                <visibility>1</visibility>
+                <description>
+                <![CDATA[
+                    <table>
+                        <tr><td>Longitude: 18.525765538215637</td></tr>
+                        <tr><td>Latitude: 53.120084032416344</td></tr>
+                    </table>
+                ]]>
+                </description>
+                <styleUrl>#routepoint</styleUrl>
+                <Point>
+                    <coordinates>
+                        18.525765538215637,53.120084032416344
+                    </coordinates>
+                </Point>
+            </Placemark>
+            <Placemark>
+                <name>Prosta</name>
+                <visibility>1</visibility>
+                <description>
+                <![CDATA[
+                    <table>
+                        <tr><td>Longitude: 18.517600893974304</td></tr>
+                        <tr><td>Latitude: 53.128486052155495</td></tr>
+                    </table>
+                ]]>
+                </description>
+                <styleUrl>#routepoint</styleUrl>
+                <Point>
+                    <coordinates>
+                        18.517600893974304,53.128486052155495
+                    </coordinates>
+                </Point>
+            </Placemark>
+        </Folder>
+        <Placemark><name>route</name><styleUrl>#path</styleUrl>
+        <LineString>
+            <tessellate>1</tessellate>
+            <coordinates>
+                18.525749444961548,53.12008336186409,83
+                18.525766879320145,53.120179921388626,83
+                18.5257226228714,53.120303973555565,83
+                18.525516092777252,53.120509162545204,82
+                18.52504000067711,53.12078408896923,81
+                18.524716794490814,53.12093496322632,81
+                18.524401634931564,53.121080473065376,81
+                18.523854464292526,53.121296390891075,80
+                18.523108810186386,53.12151700258255,81
+                18.522973358631134,53.12157668173313,81
+                18.52286607027054,53.12168397009373,81
+                18.521464616060257,53.12349580228329,82
+                18.520072549581528,53.12530696392059,82
+                18.518095761537552,53.12780275940895,81
+                18.517709523439407,53.12830902636051,80
+                18.517575412988663,53.12848135828972,80
+            </coordinates>
+        </LineString>
+        </Placemark>
+    </Folder>
+</Document>
+</kml>

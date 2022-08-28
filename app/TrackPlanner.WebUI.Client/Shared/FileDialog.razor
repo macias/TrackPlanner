@@ -1,0 +1,28 @@
+
+    <h3>/@currentDirectory</h3>
+
+   @if (currentDirectory != "")
+    {
+        <div class="file_dir" @onclick="backToParent"><i class="fas fa-folder file_dir_icon"></i><b>..</b></div>   
+}
+
+@if (directoryData != null)
+{
+ 
+    foreach (var dir in directoryData.Directories)
+    {
+        <div class="file_dir" @onclick="()=>changeDirectory(dir)"><i class="far fa-folder  file_dir_icon"></i><b>@dir</b></div>   
+    }
+    foreach (var file in directoryData.Files)
+    {
+        <div class="file_dir" @onclick="()=> selectFile(file)"><i class="far fa-file file_dir_icon"></i>@file</div>   
+    }
+}
+
+    <CustomTextInput CssStyle="margin:0.5em;" EditContext="editContext" @bind-Value="selectedFileName"   />
+    
+    <div style="  display: flex;align-items: center;">
+    <button  style="flex: 0 1 0; " @onclick="cancelDialog">Cancel</button>
+    <span style="flex: 1 1 0;"></span>
+    <button  style="flex: 0 1 0; "  disabled=@(this.selectedFileName==null) @onclick="confirmDialog">@(Kind== DialogKind.Open?"Open":"Save")</button>
+</div>

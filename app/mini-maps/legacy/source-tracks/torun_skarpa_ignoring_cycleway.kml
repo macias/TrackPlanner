@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="utf-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2">
+<Document>
+    <name>route</name>
+    <open>1</open>
+    <description>
+    <![CDATA[
+        popisek
+    ]]>
+    </description>
+    <Style id="path"><LineStyle><color>b20000ff</color><width>6</width></LineStyle></Style>
+    <Style id="routepoint"><IconStyle><color>b20000ff</color><Icon><href>http://maps.google.com/mapfiles/kml/shapes/placemark_square.png</href></Icon></IconStyle></Style>
+    <Style id="waypoint"><IconStyle><color>b20000ff</color><Icon><href>http://maps.google.com/mapfiles/kml/shapes/placemark_circle.png</href></Icon></IconStyle></Style>
+    <Folder>
+        <name>1. část</name>
+        <visibility>1</visibility>
+        <open>1</open>
+        <Folder>
+            <name>Itinerar Start -&gt; Przy Skarpie</name>
+            <visibility>1</visibility>
+            <open>0</open>
+            <Placemark>
+                <name>Start</name>
+                <visibility>1</visibility>
+                <description>
+                <![CDATA[
+                    <table>
+                        <tr><td>Longitude: 18.668456375598907</td></tr>
+                        <tr><td>Latitude: 53.022592440247536</td></tr>
+                        <tr><td>Altitude: 63</td></tr>
+                    </table>
+                ]]>
+                </description>
+                <styleUrl>#waypoint</styleUrl>
+                <Point>
+                    <coordinates>
+                        18.668456375598907,53.022592440247536,63
+                    </coordinates>
+                </Point>
+            </Placemark>
+            <Placemark>
+                <name></name>
+                <visibility>1</visibility>
+                <description>
+                <![CDATA[
+                    <table>
+                        <tr><td>Longitude: 18.67229998111725</td></tr>
+                        <tr><td>Latitude: 53.01976606249809</td></tr>
+                        <tr><td>Altitude: 66</td></tr>
+                    </table>
+                ]]>
+                </description>
+                <styleUrl>#waypoint</styleUrl>
+                <Point>
+                    <coordinates>
+                        18.67229998111725,53.01976606249809,66
+                    </coordinates>
+                </Point>
+            </Placemark>
+            <Placemark>
+                <name></name>
+                <visibility>1</visibility>
+                <description>
+                <![CDATA[
+                    <table>
+                        <tr><td>Longitude: 18.67584854364395</td></tr>
+                        <tr><td>Latitude: 53.01874481141567</td></tr>
+                        <tr><td>Altitude: 64</td></tr>
+                    </table>
+                ]]>
+                </description>
+                <styleUrl>#waypoint</styleUrl>
+                <Point>
+                    <coordinates>
+                        18.67584854364395,53.01874481141567,64
+                    </coordinates>
+                </Point>
+            </Placemark>
+            <Placemark>
+                <name>Przy Skarpie</name>
+                <visibility>1</visibility>
+                <description>
+                <![CDATA[
+                    <table>
+                        <tr><td>Longitude: 18.675840497016907</td></tr>
+                        <tr><td>Latitude: 53.018599301576614</td></tr>
+                        <tr><td>Altitude: 64</td></tr>
+                    </table>
+                ]]>
+                </description>
+                <styleUrl>#waypoint</styleUrl>
+                <Point>
+                    <coordinates>
+                        18.675840497016907,53.018599301576614,64
+                    </coordinates>
+                </Point>
+            </Placemark>
+            <Placemark>
+                <name>Przy Skarpie</name>
+                <visibility>1</visibility>
+                <description>
+                <![CDATA[
+                    <table>
+                        <tr><td>Longitude: 18.675957173109055</td></tr>
+                        <tr><td>Latitude: 53.018588572740555</td></tr>
+                        <tr><td>Altitude: 64</td></tr>
+                    </table>
+                ]]>
+                </description>
+                <styleUrl>#waypoint</styleUrl>
+                <Point>
+                    <coordinates>
+                        18.675957173109055,53.018588572740555,64
+                    </coordinates>
+                </Point>
+            </Placemark>
+        </Folder>
+        <Folder>
+            <name>Planovani 53.022594N, 18.668454W -&gt; Przy Skarpie</name>
+            <visibility>1</visibility>
+            <open>0</open>
+            <Placemark>
+                <name>53.022594N, 18.668454W</name>
+                <visibility>1</visibility>
+                <description>
+                <![CDATA[
+                    <table>
+                        <tr><td>Longitude: 18.668453693389893</td></tr>
+                        <tr><td>Latitude: 53.02259378135204</td></tr>
+                    </table>
+                ]]>
+                </description>
+                <styleUrl>#routepoint</styleUrl>
+                <Point>
+                    <coordinates>
+                        18.668453693389893,53.02259378135204
+                    </coordinates>
+                </Point>
+            </Placemark>
+            <Placemark>
+                <name>Przy Skarpie</name>
+                <visibility>1</visibility>
+                <description>
+                <![CDATA[
+                    <table>
+                        <tr><td>Longitude: 18.67595449090004</td></tr>
+                        <tr><td>Latitude: 53.018586561083794</td></tr>
+                    </table>
+                ]]>
+                </description>
+                <styleUrl>#routepoint</styleUrl>
+                <Point>
+                    <coordinates>
+                        18.67595449090004,53.018586561083794
+                    </coordinates>
+                </Point>
+            </Placemark>
+        </Folder>
+        <Placemark><name>route</name><styleUrl>#path</styleUrl>
+        <LineString>
+            <tessellate>1</tessellate>
+            <coordinates>
+                18.668456375598907,53.022592440247536,63
+                18.668590486049652,53.022446259856224,63
+                18.6686173081398,53.022419437766075,63
+                18.668636083602905,53.022408708930016,63
+                18.668689727783203,53.02237115800381,63
+                18.668752759695053,53.022338300943375,63
+                18.668823838233948,53.02229002118111,63
+                18.668850660324097,53.02227392792702,63
+                18.668877482414246,53.022251799702644,63
+                18.669219464063644,53.021960109472275,65
+                18.669802844524384,53.021468594670296,66
+                18.669812232255936,53.021463230252266,66
+                18.67019847035408,53.021144047379494,66
+                18.670594096183777,53.020825535058975,66
+                18.671276718378067,53.020268976688385,64
+                18.67147386074066,53.020106703042984,65
+                18.67150068283081,53.020090609788895,65
+                18.67156371474266,53.020063787698746,65
+                18.67159053683281,53.020053058862686,66
+                18.671609312295914,53.02004165947437,66
+                18.67165356874466,53.020014837384224,66
+                18.672003597021103,53.019733875989914,66
+                18.67203176021576,53.019707053899765,66
+                18.672058582305908,53.019690960645676,66
+                18.672076016664505,53.019685596227646,66
+                18.672085404396057,53.019685596227646,66
+                18.672112226486206,53.019690960645676,66
+                18.6721833050251,53.019717782735825,66
+                18.672265112400055,53.019749969244,66
+                18.67229998111725,53.01976606249809,66
+                18.672318756580353,53.01975533366203,66
+                18.67317169904709,53.019063994288445,62
+                18.673225343227386,53.01902577280998,62
+                18.67329776287079,53.018982857465744,62
+                18.67336079478264,53.018956035375595,62
+                18.673414438962936,53.01893390715122,62
+                18.673477470874786,53.0189124494791,62
+                18.673576712608337,53.018880262970924,62
+                18.673666566610336,53.018858805298805,63
+                18.673684000968933,53.018858805298805,63
+                18.673810064792633,53.01883667707443,63
+                18.67414265871048,53.01880985498428,63
+                18.67448329925537,53.018783032894135,64
+                18.67473542690277,53.018761575222015,64
+                18.67497816681862,53.0187501758337,64
+                18.675022423267365,53.0187501758337,64
+                18.675058633089066,53.0187501758337,64
+                18.67510288953781,53.01875554025173,64
+                18.675265163183212,53.018761575222015,64
+                18.675274550914764,53.018761575222015,64
+                18.675301373004913,53.018766939640045,64
+                18.675561547279358,53.01875554025173,64
+                18.675768077373505,53.01874481141567,64
+                18.67584854364395,53.01874481141567,64
+                18.675857931375504,53.018680438399315,64
+                18.675840497016907,53.018599301576614,64
+                18.675957173109055,53.018588572740555,64
+            </coordinates>
+        </LineString>
+        </Placemark>
+    </Folder>
+</Document>
+</kml>

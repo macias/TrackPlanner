@@ -1,0 +1,14 @@
+<h3>Tester start</h3>
+
+@{
+    void RenderName(string name)
+    {
+        <p>Name: <strong>@name</strong></p>
+    }
+}
+@{ RenderName("Mahatma Gandhi"); }
+<CascadingValue Value="@this">
+@{ RenderName("Martin Luther King, Jr."); }
+</CascadingValue>
+
+<h3>Tester end</h3>

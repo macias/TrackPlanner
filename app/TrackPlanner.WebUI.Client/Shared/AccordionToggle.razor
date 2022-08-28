@@ -1,0 +1,11 @@
+@{
+    var chevron = new MarkupString($"<i class='fas fa-chevron-{(Collapsed ? "down" : "up")}' style='margin-right: 1rem;' ></i>");
+}
+
+<div style="  display: flex;align-items: center;"  @onclick="(args) => ToggleAsync()">
+    <div style="flex: 1 1 0;">@Header</div>
+    <div style="flex: 0 1 0; ">
+        @chevron
+    </div>
+</div>
+

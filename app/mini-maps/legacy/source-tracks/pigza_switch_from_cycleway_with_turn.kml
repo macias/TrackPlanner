@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2">
+<Document>
+    <name>route</name>
+    <open>1</open>
+    <description>
+    <![CDATA[
+        popisek
+    ]]>
+    </description>
+    <Style id="path"><LineStyle><color>b20000ff</color><width>6</width></LineStyle></Style>
+    <Style id="routepoint"><IconStyle><color>b20000ff</color><Icon><href>http://maps.google.com/mapfiles/kml/shapes/placemark_square.png</href></Icon></IconStyle></Style>
+    <Style id="waypoint"><IconStyle><color>b20000ff</color><Icon><href>http://maps.google.com/mapfiles/kml/shapes/placemark_circle.png</href></Icon></IconStyle></Style>
+    <Folder>
+        <name>1. část</name>
+        <visibility>1</visibility>
+        <open>1</open>
+        <Folder>
+            <name>Itinerar Start -&gt; Parkowa</name>
+            <visibility>1</visibility>
+            <open>0</open>
+            <Placemark>
+                <name>Start</name>
+                <visibility>1</visibility>
+                <description>
+                <![CDATA[
+                    <table>
+                        <tr><td>Longitude: 18.526827692985535</td></tr>
+                        <tr><td>Latitude: 53.11639532446861</td></tr>
+                        <tr><td>Altitude: 80</td></tr>
+                    </table>
+                ]]>
+                </description>
+                <styleUrl>#waypoint</styleUrl>
+                <Point>
+                    <coordinates>
+                        18.526827692985535,53.11639532446861,80
+                    </coordinates>
+                </Point>
+            </Placemark>
+            <Placemark>
+                <name>Wschodnia</name>
+                <visibility>1</visibility>
+                <description>
+                <![CDATA[
+                    <table>
+                        <tr><td>Longitude: 18.52752774953842</td></tr>
+                        <tr><td>Latitude: 53.118584007024765</td></tr>
+                        <tr><td>Altitude: 86</td></tr>
+                    </table>
+                ]]>
+                </description>
+                <styleUrl>#waypoint</styleUrl>
+                <Point>
+                    <coordinates>
+                        18.52752774953842,53.118584007024765,86
+                    </coordinates>
+                </Point>
+            </Placemark>
+            <Placemark>
+                <name>Parkowa</name>
+                <visibility>1</visibility>
+                <description>
+                <![CDATA[
+                    <table>
+                        <tr><td>Longitude: 18.526638597249985</td></tr>
+                        <tr><td>Latitude: 53.118767738342285</td></tr>
+                        <tr><td>Altitude: 88</td></tr>
+                    </table>
+                ]]>
+                </description>
+                <styleUrl>#waypoint</styleUrl>
+                <Point>
+                    <coordinates>
+                        18.526638597249985,53.118767738342285,88
+                    </coordinates>
+                </Point>
+            </Placemark>
+        </Folder>
+        <Folder>
+            <name>Planovani Świętego Andrzeja Boboli -&gt; Parkowa</name>
+            <visibility>1</visibility>
+            <open>0</open>
+            <Placemark>
+                <name>Świętego Andrzeja Boboli</name>
+                <visibility>1</visibility>
+                <description>
+                <![CDATA[
+                    <table>
+                        <tr><td>Longitude: 18.52681964635849</td></tr>
+                        <tr><td>Latitude: 53.11639867722988</td></tr>
+                    </table>
+                ]]>
+                </description>
+                <styleUrl>#routepoint</styleUrl>
+                <Point>
+                    <coordinates>
+                        18.52681964635849,53.11639867722988
+                    </coordinates>
+                </Point>
+            </Placemark>
+            <Placemark>
+                <name>Parkowa</name>
+                <visibility>1</visibility>
+                <description>
+                <![CDATA[
+                    <table>
+                        <tr><td>Longitude: 18.526631891727448</td></tr>
+                        <tr><td>Latitude: 53.11875566840172</td></tr>
+                    </table>
+                ]]>
+                </description>
+                <styleUrl>#routepoint</styleUrl>
+                <Point>
+                    <coordinates>
+                        18.526631891727448,53.11875566840172
+                    </coordinates>
+                </Point>
+            </Placemark>
+        </Folder>
+        <Placemark><name>route</name><styleUrl>#path</styleUrl>
+        <LineString>
+            <tessellate>1</tessellate>
+            <coordinates>
+                18.526827692985535,53.11639532446861,80
+                18.526926934719086,53.11642214655876,80
+                18.527105301618576,53.11650328338146,81
+                18.52725014090538,53.11660587787628,81
+                18.527366816997528,53.11674065887928,82
+                18.52740302681923,53.116847947239876,82
+                18.527456670999527,53.11730124056339,82
+                18.52755457162857,53.11827152967453,86
+                18.52755457162857,53.11843849718571,86
+                18.52752774953842,53.118584007024765,86
+                18.527483493089676,53.11859540641308,87
+                18.527447283267975,53.11860077083111,87
+                18.527240753173828,53.118643686175346,88
+                18.527043610811234,53.118681237101555,89
+                18.526638597249985,53.118767738342285,88
+            </coordinates>
+        </LineString>
+        </Placemark>
+    </Folder>
+</Document>
+</kml>

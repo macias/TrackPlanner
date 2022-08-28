@@ -1,0 +1,34 @@
+﻿@page "/counter"
+
+<button @onclick="CallbackAsync">CLICK ME</button>
+@{
+    RenderName("Mahatma Gandhi");
+    RenderName("Martin Luther King, Jr.");
+}
+
+<div class="modal_layer_depth">heello</div>
+
+@functions {
+    [Inject] public IModalService Modal  { get; set; } = default!;
+    
+    private void RenderName(string name)
+    {
+        //<p>Name: <strong>@name</strong></p>
+    }
+
+    private async Task CallbackAsync()
+    {
+        var modal_result = await Modal.ShowFileDialogAsync("Load schedule", FileDialog.DialogKind.Open);
+        if (modal_result==null)
+        {
+            Console.WriteLine("Modal was cancelled");
+        }
+        else
+        {
+            Console.WriteLine(modal_result);
+        }
+    }
+
+  
+    }
+}

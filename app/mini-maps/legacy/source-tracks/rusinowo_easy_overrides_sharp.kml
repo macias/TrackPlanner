@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2">
+<Document>
+    <name>route</name>
+    <open>1</open>
+    <description>
+    <![CDATA[
+        popisek
+    ]]>
+    </description>
+    <Style id="path"><LineStyle><color>b20000ff</color><width>6</width></LineStyle></Style>
+    <Style id="routepoint"><IconStyle><color>b20000ff</color><Icon><href>http://maps.google.com/mapfiles/kml/shapes/placemark_square.png</href></Icon></IconStyle></Style>
+    <Style id="waypoint"><IconStyle><color>b20000ff</color><Icon><href>http://maps.google.com/mapfiles/kml/shapes/placemark_circle.png</href></Icon></IconStyle></Style>
+    <Folder>
+        <name>1. část</name>
+        <visibility>1</visibility>
+        <open>1</open>
+        <Folder>
+            <name>Itinerar Start -&gt; </name>
+            <visibility>1</visibility>
+            <open>0</open>
+            <Placemark>
+                <name>Start</name>
+                <visibility>1</visibility>
+                <description>
+                <![CDATA[
+                    <table>
+                        <tr><td>Longitude: 19.320084303617477</td></tr>
+                        <tr><td>Latitude: 53.04441623389721</td></tr>
+                        <tr><td>Altitude: 124</td></tr>
+                    </table>
+                ]]>
+                </description>
+                <styleUrl>#waypoint</styleUrl>
+                <Point>
+                    <coordinates>
+                        19.320084303617477,53.04441623389721,124
+                    </coordinates>
+                </Point>
+            </Placemark>
+            <Placemark>
+                <name></name>
+                <visibility>1</visibility>
+                <description>
+                <![CDATA[
+                    <table>
+                        <tr><td>Longitude: 19.33372065424919</td></tr>
+                        <tr><td>Latitude: 53.05342376232147</td></tr>
+                        <tr><td>Altitude: 126</td></tr>
+                    </table>
+                ]]>
+                </description>
+                <styleUrl>#waypoint</styleUrl>
+                <Point>
+                    <coordinates>
+                        19.33372065424919,53.05342376232147,126
+                    </coordinates>
+                </Point>
+            </Placemark>
+        </Folder>
+        <Folder>
+            <name>Planovani 53.044338N, 19.320063W -&gt; 53.053393N, 19.333796W</name>
+            <visibility>1</visibility>
+            <open>0</open>
+            <Placemark>
+                <name>53.044338N, 19.320063W</name>
+                <visibility>1</visibility>
+                <description>
+                <![CDATA[
+                    <table>
+                        <tr><td>Longitude: 19.32006284594536</td></tr>
+                        <tr><td>Latitude: 53.044337779283524</td></tr>
+                    </table>
+                ]]>
+                </description>
+                <styleUrl>#routepoint</styleUrl>
+                <Point>
+                    <coordinates>
+                        19.32006284594536,53.044337779283524
+                    </coordinates>
+                </Point>
+            </Placemark>
+            <Placemark>
+                <name>53.053393N, 19.333796W</name>
+                <visibility>1</visibility>
+                <description>
+                <![CDATA[
+                    <table>
+                        <tr><td>Longitude: 19.33379575610161</td></tr>
+                        <tr><td>Latitude: 53.0533929169178</td></tr>
+                    </table>
+                ]]>
+                </description>
+                <styleUrl>#routepoint</styleUrl>
+                <Point>
+                    <coordinates>
+                        19.33379575610161,53.0533929169178
+                    </coordinates>
+                </Point>
+            </Placemark>
+        </Folder>
+        <Placemark><name>route</name><styleUrl>#path</styleUrl>
+        <LineString>
+            <tessellate>1</tessellate>
+            <coordinates>
+                19.320084303617477,53.04441623389721,124
+                19.320363253355026,53.04439477622509,124
+                19.320758879184723,53.04440014064312,124
+                19.32124301791191,53.04446518421173,125
+                19.3221053481102,53.04467037320137,128
+                19.324990063905716,53.045615181326866,125
+                19.32660609483719,53.046387657523155,126
+                19.327190816402435,53.04671689867973,127
+                19.327774196863174,53.047046810388565,127
+                19.32823285460472,53.04758124053478,127
+                19.328682124614716,53.04811030626297,127
+                19.32887926697731,53.0483315885067,126
+                19.329085797071457,53.04855890572071,125
+                19.331098794937134,53.05071875452995,125
+                19.33176264166832,53.05144228041172,126
+                19.332427829504013,53.05216044187546,126
+                19.33347925543785,53.05323466658592,126
+                19.33372065424919,53.05342376232147,126
+            </coordinates>
+        </LineString>
+        </Placemark>
+    </Folder>
+</Document>
+</kml>
