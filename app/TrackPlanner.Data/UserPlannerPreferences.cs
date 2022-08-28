@@ -38,22 +38,21 @@ namespace TrackPlanner.Data
         public TimeSpan CampLandingTime { get; set; }
         public TimeSpan HomeLandingTime { get; set; }
         public TimeSpan CheckpointIntervalLimit { get; set; }
-        // todo: change it to dictionary
-        public List<(string label,TimeSpan duration)> Breaks { get; set; }
+        public Dictionary<string ,TimeSpan > Breaks { get; set; }
         public TimeSpan DefaultAnchorBreak { get; set; }
         
         public UserPlannerPreferences()
         {
             this.DefaultAnchorBreak = TimeSpan.FromMinutes(10);
             // todo: change it to dictionary
-            this.Breaks = new List<(string label, TimeSpan duration)>()
+            this.Breaks = new Dictionary<string, TimeSpan>()
             {
-                ("None", TimeSpan.Zero),
-                ("Tiny", TimeSpan.FromMinutes(10)),
-                ("Short" , TimeSpan.FromMinutes(30)),
-                ("Medium" , TimeSpan.FromMinutes(60)),
-                ("Long" , TimeSpan.FromHours(2)),
-                ("Epic" , TimeSpan.FromHours(5)),
+                {"None", TimeSpan.Zero},
+                    {"Tiny", TimeSpan.FromMinutes(10)},
+                    {"Short" , TimeSpan.FromMinutes(30)},
+                    {"Medium" , TimeSpan.FromMinutes(60)},
+                    {"Long" , TimeSpan.FromHours(2)},
+                    {"Epic" , TimeSpan.FromHours(5)},
             };
             
             CheckpointIntervalLimit = TimeSpan.FromMinutes(100);

@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using FluentAssertions;
+using FluentAssertions.Equivalency;
 using Geo;
 using MathUnit;
 using Microsoft.VisualStudio.TestPlatform.TestHost;
@@ -15,6 +16,58 @@ namespace TrackPlanner.Data.Tests
 {
     public class NewtonSerializationTests
     {
+        [Fact]
+        public void UserTurnerPreferencesSerializationTest()
+        {
+            var input = new UserTurnerPreferences()
+            {
+                TurnArmLength = Length.FromKilometers(3),
+            };
+
+            var json_options = NewtonOptionsFactory.BuildJsonOptions(compact:false);
+
+            var json_string = JsonConvert.SerializeObject(input, json_options);
+
+            var output = JsonConvert.DeserializeObject<UserTurnerPreferences>(json_string, json_options);
+
+            output.Should().BeEquivalentTo(input, setApproximateAngleOptions);
+        }
+
+        [Fact]
+        public void UserPlannerPreferencesSerializationTest()
+        {
+            var input = new UserPlannerPreferences()
+            {
+                TrafficSuppression = Length.FromMeters(2),
+                Speeds = new Dictionary<SpeedMode, Speed>()
+                {
+                    {SpeedMode.Asphalt, Speed.FromMetersPerSecond(50)},
+                }
+            };
+            
+            var options = NewtonOptionsFactory.BuildJsonOptions(compact:false);
+
+            var json_string = JsonConvert.SerializeObject(input, options);
+
+            var output = JsonConvert.DeserializeObject<UserPlannerPreferences>(json_string, options);
+
+            output.Should().BeEquivalentTo(input, setApproximateAngleOptions);
+        }
+
+        [Fact]
+        public void RequestPointSerializationTest()
+        {
+            var input = new RequestPoint(GeoPoint.FromDegrees(53.024, 18.60917), true);
+            
+            var options = NewtonOptionsFactory.BuildJsonOptions(compact:false);
+
+            var json_string = JsonConvert.SerializeObject(input, options);
+
+            var output = JsonConvert.DeserializeObject<RequestPoint>(json_string, options);
+
+            output.Should().BeEquivalentTo(input, setApproximateAngleOptions);
+        }
+
         [Fact]
         public void PlanRequestSerializationTest()
         {
@@ -45,7 +98,7 @@ namespace TrackPlanner.Data.Tests
 
             var output = JsonConvert.DeserializeObject<PlanRequest>(json_string, options);
 
-            output.Should().BeEquivalentTo(input);
+            output.Should().BeEquivalentTo(input, setApproximateAngleOptions);
         }
 
         [Fact]
@@ -144,16 +197,28 @@ namespace TrackPlanner.Data.Tests
         [Fact]
         public void AngleSerializationTest()
         {
-            var input = Angle.FromRadians(Math.PI);
+            var input = Angle.FromDegrees(150);
             var options = NewtonOptionsFactory.BuildJsonOptions(compact:false);
 
             var json_string = JsonConvert.SerializeObject(input, options);
-            Assert.Contains("180", json_string);
 
             var output = JsonConvert.DeserializeObject<Angle>(json_string, options);
 
-            Assert.Equal(input, output);
+            input.Should().BeEquivalentTo( output, setApproximateAngleOptions);
         }
+
+        private static EquivalencyAssertionOptions<TExpectation> setApproximateAngleOptions<TExpectation>(EquivalencyAssertionOptions<TExpectation> options)
+        {
+            const int precision = 10;
+
+            // https://stackoverflow.com/questions/36782975/fluent-assertions-approximately-compare-a-classes-properties
+            options
+                .Using<Angle>(ctx => ctx.Subject.Degrees.Should().BeApproximately(ctx.Expectation.Degrees, precision))
+                .When(info => info.Type == typeof(Angle));
+
+            return options;
+        }
+
 
         [Fact]
         public void LengthSerializationTest()

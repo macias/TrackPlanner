@@ -5,17 +5,6 @@ using TrackPlanner.LinqExtensions;
 
 namespace TrackPlanner.Data
 {
-    public record struct RequestPoint
-    {
-        public GeoPoint UserPoint { get; }
-        public bool AllowSmoothing { get; }
-
-        public RequestPoint(GeoPoint userPoint, bool allowSmoothing)
-        {
-            UserPoint = userPoint;
-            this.AllowSmoothing = allowSmoothing;
-        }
-    }
     public sealed class PlanRequest
     {
         // the end of the given list is NOT repeated as the start of the following list

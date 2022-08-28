@@ -10,7 +10,7 @@ namespace TrackPlanner.Data
     public sealed class LegFragment
     {
         public Risk Risk { get; set; }
-        public SpeedMode Mode { get; private set; }
+        public SpeedMode Mode { get; set; }
         public bool IsForbidden { get; set; }
         public List<MapPoint> Places { get; set; }
         // count(steps) is equal to count(places) - 1

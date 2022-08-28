@@ -3,9 +3,10 @@
 
 <span>
         @{
-            var last_not_less = Program.Configuration.PlannerPreferences.Breaks.Last(it => it.duration <= Value);
+            var user_breaks = Program.Configuration.PlannerPreferences.Breaks.OrderBy(x => x.Value).ToList();
+            var last_not_less = user_breaks.Last(it => it.Value <= Value);
 
-            foreach (var (label,time) in Program.Configuration.PlannerPreferences.Breaks)
+            foreach (var (label,time) in user_breaks)
             {
                 var is_match = Value == time;
                 string css_class = $"break-button btn  btn-sm {(is_match ? "btn-primary active" : "btn-light")}";
@@ -13,7 +14,7 @@
                 
                 <button type="button" class="@css_class" aria-pressed="@is_match" title="@title" @onclick="() => CurrentValue=time">@(label[0])</button>
 
-                @if (!is_match && label==last_not_less.label)
+                @if (!is_match && label==last_not_less.Key)
                 {
                     <button type="button" class="break-button btn btn-outline-primary btn-sm active" aria-pressed="true" disabled title="between">b</button>
                 }
