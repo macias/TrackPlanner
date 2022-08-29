@@ -45,7 +45,7 @@ Execute it once and it will run forever (as long as docker is running).
 
 ### Track planner
 
-There is [docker_run.sh](app/docker_run.sh) script for running the program, again please customize the "maps" and "schedules" paths according to your system.
+There is [docker_run.sh](../app/docker_run.sh) script for running the program, again please customize the "maps" and "schedules" paths according to your system.
 ```
 #!/bin/sh
 
