@@ -8,4 +8,4 @@ docker run \
   -p 5200:5200 \
   -v $MAPS:/maps/ \
   -v $SCHEDULES:/schedules/ \
-  --name trackplanner trackplanner
+  --name trackplanner xmacias/trackplanner
