@@ -1,6 +1,8 @@
 *
 !app
 !app/**
+!documentation
+!documentation/**
 !.gitignore
 !README.md
 !LICENSE
