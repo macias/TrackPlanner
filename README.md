@@ -18,5 +18,9 @@ See my PL/EN [blog](https://przypadkopis.wordpress.com/) for other, various in n
 
 # Documentation
 
-* [Running](documentation/Running.md) -- for regular users,
-* [Building](documentation/Building.md) -- for developers,
+* [Running](documentation/Running.md),
+* [Basic usage](documentation/Basics.md),
+
+and something extra for all developers out there:
+
+* [Building](documentation/Building.md).
