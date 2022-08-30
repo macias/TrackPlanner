@@ -24,19 +24,19 @@ Without altering any default options please click three times on the map to crea
 ![Draft plan](images/draft.jpg)
 
 But even this will give you and idea how long your ride will be, and drafted or not you can already organize your ride into days.
-So click on the scissors icon at the middle point. We just divided our ride into to days. Click "rebuild all" and voilà, we have
+So click on the scissors icon at the middle point. We just divided our ride into two days. Click "rebuild all" and voilà, we have
 our first planned trip:
 
 ![Computed plan](images/computed.jpg)
 
-You can alter how time you would like to spend in given place by clicking on predefined break times or you can enter time directly.
-Planner takes such events like snack times, laundry, resupplies into consideration when computing time as well as fatigue. Below each day
-you can read statistics.
+You can alter how time you would like to spend at given place by clicking on predefined break times or you can enter time directly.
+Planner takes such events like snack times, lunch, laundry, resupplies into consideration when computing time, as well the fatigue.
+Below each day you can read statistics.
 
 Please note the checkpoints with the flags, which obviosuly you didn't add by hand. Those are auto-checkpoints added for easier measuring
 ride progress while you are in the wild (it is more comfortable to be 20 minutes until next checkpoint than 4 hours, thus by default they are
 densely placed, but of course you can change the config to your liking). If you would like to change auto checkpoint into permanent one (to add
-a note for it) pin it down.
+a note for it or change break time) pin it down.
 
 To avoid loosing you precisely crafted plan save it often. When you save it you will get:
 * the plan file -- it is a core data file, 
