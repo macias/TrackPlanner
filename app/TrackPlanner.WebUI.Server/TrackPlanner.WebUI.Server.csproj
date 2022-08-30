@@ -16,6 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\TrackPlanner.CommonBackend\TrackPlanner.CommonBackend.csproj" />
     <ProjectReference Include="..\TrackPlanner.WebUI.Client\TrackPlanner.WebUI.Client.csproj" />
   </ItemGroup>
 

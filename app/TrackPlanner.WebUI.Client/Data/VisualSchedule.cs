@@ -8,6 +8,7 @@ namespace TrackPlanner.WebUI.Client.Data
     {
         public UserPlannerPreferences PlannerPreferences { get; }
         public UserTurnerPreferences TurnerPreferences { get; }
+        public UserVisualPreferences VisualPreferences { get; }
         public List<VisualDay<TAnchorVisual,TDayVisual>> Days { get;  }
         public bool StartsAtHome { get; set; }
         public bool EndsAtHome { get; set; }
@@ -32,10 +33,11 @@ namespace TrackPlanner.WebUI.Client.Data
             }
         }
 
-        public VisualSchedule(UserPlannerPreferences plannerPreferences,UserTurnerPreferences turnerPreferences)
+        public VisualSchedule(UserPlannerPreferences plannerPreferences,UserTurnerPreferences turnerPreferences,UserVisualPreferences visualPreferences)
         {
             PlannerPreferences = plannerPreferences;
             TurnerPreferences = turnerPreferences;
+            VisualPreferences = visualPreferences;
             this.Days = new List<VisualDay<TAnchorVisual, TDayVisual>>();
         }
 

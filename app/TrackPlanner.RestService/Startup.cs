@@ -41,11 +41,6 @@ namespace TrackPlanner.RestService
 
             services.AddSingleton<TrackPlanner.Mapping.ILogger>(sp => logger);
 
-            var env_config = new EnvironmentConfiguration();
-            Configuration.GetSection(EnvironmentConfiguration.SectionName).Bind(env_config);
-            //logger.Info($"{nameof(env_config)} {env_config}");
-            env_config.Check();
-
             var rest_config = new RestServiceConfig();
             Configuration.GetSection(RestServiceConfig.SectionName).Bind(rest_config);
             if (false)
@@ -73,7 +68,7 @@ namespace TrackPlanner.RestService
             }
 
             services.AddTransient<PlannerController>(sp => new PlannerController(sp.GetService<TrackPlanner.Mapping.ILogger>(), sp.GetService<IWorker>(),
-                env_config,rest_config,
+                rest_config,
                 baseDirectory));
         }
 

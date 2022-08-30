@@ -19,6 +19,24 @@ namespace TrackPlanner.RestService
         {
             SummaryLightTheme = new();
             SummaryDarkTheme = new();
+
+            CorsOrigins = new[]
+            {
+                "http://localhost:5200",
+            };
+            Maps = "poland";
+            SummaryLightTheme = new SummaryTheme()
+            {
+                BackgroundColor="white",
+                TextColor="black",
+                WarningTextColor="red"
+            };
+            SummaryDarkTheme = new SummaryTheme()
+            {
+                BackgroundColor="black",
+                TextColor="white",
+                WarningTextColor="yellow"
+            };
         }
     }
 }

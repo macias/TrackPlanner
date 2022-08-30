@@ -6,7 +6,9 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using TrackPlanner.CommonBackend;
 using TrackPlanner.Data;
+using TrackPlanner.Data.Serialization;
 using TrackPlanner.RestService.Controllers;
 using TrackPlanner.PathFinder;
 
@@ -57,6 +59,8 @@ namespace TrackPlanner.RestService
 
         public static IHostBuilder CreateHostBuilder(string[] args)
         {
+            var custom_config_path =  ConfigHelper.InitializeConfigFile("restservice_settings.json", new RestServiceConfig());
+            
             /*return Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
@@ -72,13 +76,10 @@ namespace TrackPlanner.RestService
 
                     config.Sources.Clear();
 
-                    string bin_directory = Path.GetDirectoryName(Assembly.GetEntryAssembly()!.Location)!;
-                    
                     config
                         .SetBasePath(env.ContentRootPath)
                         .AddJsonFile("appsettings.json", optional: false, reloadOnChange: false)
-                        .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
-                        .AddJsonFile(System.IO.Path.Combine(bin_directory, $"clientsettings.json"), optional: false)
+                        .AddJsonFile(custom_config_path, optional: false)
                         .AddEnvironmentVariables()
                         .AddCommandLine(args);
 

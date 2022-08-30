@@ -16,7 +16,7 @@ namespace TrackPlanner.DataExchange
 {
     public sealed class TrackWriter
     {
-        public static LineDefinition segmentToKmlIput(EnvironmentConfiguration envConfig, LegFragment fragment)
+        public static LineDefinition segmentToKmlIput(UserVisualPreferences visualPrefs, LegFragment fragment)
         {
             string costFlags(Risk cost)
             {
@@ -32,8 +32,8 @@ namespace TrackPlanner.DataExchange
                 return s;
             }
 
-            var kml_lines = GetKmlSpeedLines(envConfig);
-            var kml_forbidden = new KmlLineDecoration(new SharpKml.Base.Color32(envConfig.ForbiddenStyle.GetAbgrColor()), envConfig.ForbiddenStyle.Width);
+            var kml_lines = GetKmlSpeedLines(visualPrefs);
+            var kml_forbidden = new KmlLineDecoration(new SharpKml.Base.Color32(visualPrefs.ForbiddenStyle.GetAbgrColor()), visualPrefs.ForbiddenStyle.Width);
             
                 string format_ride_time(TimeSpan time)
                 {
@@ -44,7 +44,7 @@ namespace TrackPlanner.DataExchange
                         return time.ToString(@"h\:m");
                 }
 
-                string name = (fragment.IsForbidden? envConfig.ForbiddenStyle: envConfig.SpeedStyles[fragment.Mode]).Label;
+                string name = (fragment.IsForbidden? visualPrefs.ForbiddenStyle: visualPrefs.SpeedStyles[fragment.Mode]).Label;
                 KmlLineDecoration style = fragment.IsForbidden? kml_forbidden : kml_lines[fragment.Mode];
                 
                 
@@ -60,15 +60,15 @@ namespace TrackPlanner.DataExchange
             
         }
 
-        public static Dictionary<SpeedMode, KmlLineDecoration> GetKmlSpeedLines(EnvironmentConfiguration envConfig)
+        public static Dictionary<SpeedMode, KmlLineDecoration> GetKmlSpeedLines(UserVisualPreferences visualPrefs)
         {
-            return envConfig.SpeedStyles.ToDictionary(it => it.Key, it => new KmlLineDecoration(new SharpKml.Base.Color32(it.Value.GetAbgrColor()), it.Value.Width));
+            return visualPrefs.SpeedStyles.ToDictionary(it => it.Key, it => new KmlLineDecoration(new SharpKml.Base.Color32(it.Value.GetAbgrColor()), it.Value.Width));
         }
 
-        private static void saveAsKml(EnvironmentConfiguration envConfig, Stream stream, string title, IEnumerable<LegPlan> legs,IEnumerable<TurnInfo>? turns)
+        private static void saveAsKml(UserVisualPreferences visualPrefs, Stream stream, string title, IEnumerable<LegPlan> legs,IEnumerable<TurnInfo>? turns)
         {
             var input=  new TrackWriterInput() { Title = title };
-            input.Lines.AddRange(legs.SelectMany(it => it.Fragments).Select(seg => segmentToKmlIput(envConfig, seg)));
+            input.Lines.AddRange(legs.SelectMany(it => it.Fragments).Select(seg => segmentToKmlIput(visualPrefs, seg)));
             input.AddTurns(turns);
             input.Waypoints.AddRange(legs.Select(it => it.Fragments.First().Places.First().Point)
                     .Concat(legs.Last().Fragments.Last().Places.Last().Point)
@@ -82,14 +82,14 @@ namespace TrackPlanner.DataExchange
             }
         }
 
-        public static void SaveAsKml(EnvironmentConfiguration envConfig, Stream stream, string title, IEnumerable<LegPlan> legs,IEnumerable<TurnInfo>? turns)
+        public static void SaveAsKml(UserVisualPreferences visualPrefs, Stream stream, string title, IEnumerable<LegPlan> legs,IEnumerable<TurnInfo>? turns)
         {
-            saveAsKml(envConfig,stream,title, legs,turns);
+            saveAsKml(visualPrefs,stream,title, legs,turns);
         }
 
-        public static void SaveAsKml(EnvironmentConfiguration envConfig, Stream stream, string title, TrackPlan plan)
+        public static void SaveAsKml(UserVisualPreferences visualPrefs, Stream stream, string title, TrackPlan plan)
         {
-            SaveAsKml(envConfig, stream,title, plan.Legs, plan.DailyTurns?.SelectMany(x => x));
+            SaveAsKml(visualPrefs, stream,title, plan.Legs, plan.DailyTurns?.SelectMany(x => x));
         }
 
         // https://github.com/samcragg/sharpkml/blob/main/docs/GettingStarted.md

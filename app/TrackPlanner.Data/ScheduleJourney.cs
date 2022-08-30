@@ -25,6 +25,7 @@ namespace TrackPlanner.Data
         public List<ScheduleDay> Days { get; set; } = default!;
         public UserPlannerPreferences PlannerPreferences { get; set; } = default!;
         public UserTurnerPreferences TurnerPreferences { get; set; } = default!;
+        public UserVisualPreferences VisualPreferences { get; set; } = default!;
         
       //  public IScheduleLike Interface => this;
 

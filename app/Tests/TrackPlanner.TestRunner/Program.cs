@@ -3,6 +3,7 @@ using System.Configuration;
 using System.Linq;
 using MathUnit;
 using Microsoft.Extensions.Configuration;
+using TrackPlanner.Data;
 using TrackPlanner.Settings;
 using TrackPlanner.Shared;
 using TrackPlanner.DataExchange;
@@ -60,7 +61,7 @@ namespace TrackPlanner.TestRunner
         {
             var extraction_range = Length.FromMeters(500);
             var snap_limit = Length.FromMeters(5);
-
+/*
             var config_builder = new ConfigurationBuilder()
                 .AddJsonFile(EnvironmentConfiguration.Filename, optional: false)
                 .AddEnvironmentVariables()
@@ -70,7 +71,8 @@ namespace TrackPlanner.TestRunner
             config_builder.GetSection(EnvironmentConfiguration.SectionName).Bind(env_config);
             //logger.Info($"{nameof(env_config)} {env_config}");
             env_config.Check();
-
+*/
+            var visual_prefs = new UserVisualPreferences();
             var app_path = System.IO.Path.Combine(baseDir, "app");
             using (Logger.Create(System.IO.Path.Combine(outputDir, "log.txt"), out ILogger logger))
             {
@@ -81,7 +83,7 @@ namespace TrackPlanner.TestRunner
                         GeoZPoint[] raw_track_plan = TrackReader.LEGACY_Read(System.IO.Path.Combine(app_path, "tracks", filename)).ToArray();
 
                         var mini_map = manager.Map.ExtractMiniMap(logger, manager.Calculator, extraction_range, raw_track_plan);
-                        mini_map.SaveAsKml(env_config, System.IO.Path.Combine(app_path, "mini-maps", filename));
+                        mini_map.SaveAsKml(visual_prefs, System.IO.Path.Combine(app_path, "mini-maps", filename));
                     }
                 }
             }

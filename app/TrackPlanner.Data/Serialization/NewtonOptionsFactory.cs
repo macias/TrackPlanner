@@ -12,7 +12,7 @@ namespace TrackPlanner.Data.Serialization
             options.Converters.Add(new LengthNewtonConverter());
             options.Converters.Add(new SpeedNewtonConverter());
             options.Converters.Add(new NullableLengthNewtonConverter());
-            options.Converters.Add(new DictionaryNewtonConverter<SpeedMode,Speed>());
+          //  options.Converters.Add(new DictionaryNewtonConverter<SpeedMode,Speed>());
         }
         
         public static JsonSerializerSettings BuildJsonOptions(bool compact)

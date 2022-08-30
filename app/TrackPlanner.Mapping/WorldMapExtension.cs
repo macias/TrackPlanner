@@ -18,9 +18,9 @@ namespace TrackPlanner.Mapping
     {
         public static string KmlDangerousTag => "dangerous";
         
-        public static void SaveAsKml(this IWorldMap map, EnvironmentConfiguration envConfig, string path)
+        public static void SaveAsKml(this IWorldMap map, UserVisualPreferences visualPrefs, string path)
         {
-            var speed_lines = TrackWriter.GetKmlSpeedLines(envConfig);
+            var speed_lines = TrackWriter.GetKmlSpeedLines(visualPrefs);
             var title = System.IO.Path.GetFileNameWithoutExtension(path);
 
             var input=  new TrackWriterInput() { Title = title };

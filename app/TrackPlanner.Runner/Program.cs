@@ -362,6 +362,7 @@ namespace TrackPlanner.Runner
 
         private static void RunFinder(ILogger logger)
         {
+            /*
             var builder = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
                 .AddJsonFile(EnvironmentConfiguration.Filename, optional: false);
@@ -370,7 +371,7 @@ namespace TrackPlanner.Runner
 
             var env_config = new EnvironmentConfiguration();
             config.GetSection(EnvironmentConfiguration.SectionName).Bind(env_config);
-            env_config.Check();
+            env_config.Check();*/
             
             // going around highway
             //GeoZPoint[] user_points = new[] { GeoZPoint.FromDegreesMeters(53.07388, 18.75152, null), GeoZPoint.FromDegreesMeters(53.08105, 18.75141, null), };
@@ -540,7 +541,7 @@ namespace TrackPlanner.Runner
 
                     using (FileStream stream = new FileStream(Helper.GetUniqueFileName(outputDir, "distance-track-with-turns.kml"), FileMode.CreateNew))
                     {
-                        TrackWriter.SaveAsKml(env_config, stream, "something meaningful",computed_track);
+                        TrackWriter.SaveAsKml(new UserVisualPreferences(), stream, "something meaningful",computed_track);
                     }
                 }
 
@@ -569,7 +570,7 @@ namespace TrackPlanner.Runner
 
                     using (FileStream stream = new FileStream(Helper.GetUniqueFileName(outputDir, "time-track-with-turns.kml"), FileMode.CreateNew))
                     {
-                        TrackWriter.SaveAsKml(env_config, stream, "something meaningful",computed_track);
+                        TrackWriter.SaveAsKml(new UserVisualPreferences(), stream, "something meaningful",computed_track);
                     }
                 }
             }

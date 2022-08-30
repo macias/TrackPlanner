@@ -107,7 +107,7 @@ namespace TrackPlanner.WebUI.Client.Pages
             base.OnInitialized();
             
             Console.WriteLine($"Creating map with {Program.Configuration.TileServer}");
-            foreach (var entry in Program.Configuration.SpeedStyles)
+            foreach (var entry in Program.Configuration.VisualPreferences.SpeedStyles)
                 Console.WriteLine($"{entry.Key} {entry.Value.AbgrColor}");
 
             this.calcReal = Program.Configuration.Defaults.CalcReal;
@@ -385,6 +385,7 @@ namespace TrackPlanner.WebUI.Client.Pages
                 TrackPlan = this.Plan,
                 PlannerPreferences = this.markers.VisualSchedule.PlannerPreferences.DeepClone(),
                 TurnerPreferences = this.markers.VisualSchedule.TurnerPreferences.DeepClone(),
+                VisualPreferences = this.markers.VisualSchedule.VisualPreferences.DeepClone(),
             };
 
             return schedule;
@@ -442,7 +443,7 @@ namespace TrackPlanner.WebUI.Client.Pages
             {
                 foreach (var fragment in leg.Fragments)
                 {
-                    var deco = fragment.IsForbidden ? Program.Configuration.ForbiddenStyle : Program.Configuration.SpeedStyles[fragment.Mode];
+                    var deco = fragment.IsForbidden ? Program.Configuration.VisualPreferences.ForbiddenStyle : Program.Configuration.VisualPreferences.SpeedStyles[fragment.Mode];
 
                     var line = new Polyline();
                     line.StrokeColor = getColor(deco);

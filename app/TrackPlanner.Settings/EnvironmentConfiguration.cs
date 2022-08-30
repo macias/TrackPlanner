@@ -1,7 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
 using TrackPlanner.Data;
 using TrackPlanner.Data.Serialization;
 
@@ -11,16 +8,14 @@ namespace TrackPlanner.Settings
     public sealed class EnvironmentConfiguration
     {
         public static string SectionName => "EnvironmentConfiguration";
-        public static string Filename => "clientsettings.json";
 
         public string TileServer { get; set; }
         public string PlannerServer { get; set; }
         public TimeSpan PopupTimeout { get; set; }
 
-        public Dictionary<SpeedMode, LineDecoration> SpeedStyles { get; set; }
-        public LineDecoration ForbiddenStyle { get; set; } = default!;
         public UserPlannerPreferences PlannerPreferences { get; set; }
         public UserTurnerPreferences TurnerPreferences { get; set; }
+        public UserVisualPreferences VisualPreferences { get; set; }
         public DefaultPreferences Defaults { get; set; } 
         
 
@@ -28,21 +23,19 @@ namespace TrackPlanner.Settings
         {
             this.Defaults = new DefaultPreferences();
             PopupTimeout = TimeSpan.FromSeconds(10);
-            TileServer = "";
-            PlannerServer = "";
-            SpeedStyles = new Dictionary<SpeedMode, LineDecoration>();
+            TileServer = "http://localhost:8600/tile/";
+            PlannerServer = "http://localhost:8700/";
             this.PlannerPreferences = UserPlannerPreferencesHelper.CreateBikeOriented().SetCustomSpeeds();
             this.TurnerPreferences = new UserTurnerPreferences();
+            this.VisualPreferences = new UserVisualPreferences();
         }
 
         public void Check()
         {
-            if (SpeedStyles == null)
-                throw new ArgumentNullException(nameof(SpeedStyles));
+            if (VisualPreferences == null)
+                throw new ArgumentNullException(nameof(VisualPreferences));
 
-            string missing = String.Join(", ", Enum.GetValues<SpeedMode>().Where(it => !SpeedStyles.ContainsKey(it)));
-            if (missing != "")
-                throw new ArgumentOutOfRangeException($"Missing styles for: {missing}.");
+            VisualPreferences.Check();
         }
 
         public override string ToString()

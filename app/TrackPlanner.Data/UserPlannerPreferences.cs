@@ -68,6 +68,11 @@ namespace TrackPlanner.Data
             this.LaundryOpportunity = TimeSpan.FromHours(11);
             this.LunchDuration = TimeSpan.FromMinutes(15);
             this.LunchOpportunity = TimeSpan.FromHours(13);
+
+            CompactingAngleDeviation = 12;
+            CompactingDistanceDeviation = 15;
+            HourlyStamina = 0.95;
+
         }
 
         public UserPlannerPreferences Complete()

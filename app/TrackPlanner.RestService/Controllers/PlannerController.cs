@@ -27,7 +27,6 @@ namespace TrackPlanner.RestService.Controllers
     [Route(Routes.Planner)]
     public sealed class PlannerController : ControllerBase
     {
-        private readonly EnvironmentConfiguration envConfig;
         private readonly RestServiceConfig serviceConfig;
         private const string schedulesSubdirectory = "schedules";
         private readonly string baseDirectory;
@@ -35,10 +34,9 @@ namespace TrackPlanner.RestService.Controllers
         private readonly IWorker worker;
         private readonly ProxySerializer serializer;
 
-        internal PlannerController(ILogger? logger, IWorker? worker, EnvironmentConfiguration envConfig, RestServiceConfig serviceConfig, string baseDirectory)
+        internal PlannerController(ILogger? logger, IWorker? worker, RestServiceConfig serviceConfig, string baseDirectory)
         {
             this.worker = worker ?? throw new ArgumentNullException(nameof(worker));
-            this.envConfig = envConfig;
             this.serviceConfig = serviceConfig;
             this.baseDirectory = System.IO.Path.GetFullPath(baseDirectory);
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
@@ -99,7 +97,7 @@ namespace TrackPlanner.RestService.Controllers
                     List<TurnInfo>? turns = null;
                     if (turnsMode) 
                         turns = schedule.TrackPlan.DailyTurns[day_idx];
-                    TrackPlanner.DataExchange.TrackWriter.SaveAsKml(this.envConfig, stream, title, legs, turns);
+                    TrackPlanner.DataExchange.TrackWriter.SaveAsKml(schedule.VisualPreferences, stream, title, legs, turns);
                 }
             }
         }

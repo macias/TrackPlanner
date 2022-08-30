@@ -4,6 +4,8 @@ using Microsoft.Extensions.Hosting;
 using System;
 using System.IO;
 using System.Reflection;
+using TrackPlanner.CommonBackend;
+using TrackPlanner.Data.Serialization;
 using TrackPlanner.Settings;
 using TrackPlanner.WebUI.Client;
 
@@ -20,6 +22,9 @@ namespace TrackPlanner.WebUI.Server
 
         public static IHostBuilder CreateHostBuilder(string[] args)
         {
+            var custom_config_path = ConfigHelper.InitializeConfigFile("webui_settings.json", new EnvironmentConfiguration());
+
+
             /*return Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
@@ -42,8 +47,7 @@ namespace TrackPlanner.WebUI.Server
                         .AddEnvironmentVariables()
                         .AddCommandLine(args);
 
-                    string bin_directory = Path.GetDirectoryName(Assembly.GetEntryAssembly()!.Location)!;
-                    System.IO.File.Copy(sourceFileName:System.IO.Path.Combine(bin_directory, EnvironmentConfiguration.Filename),
+                    System.IO.File.Copy(custom_config_path,
                         destFileName:Path.Combine(env.ContentRootPath, "wwwroot", Constants.ConfigFilename), 
                         overwrite:true);
                 })

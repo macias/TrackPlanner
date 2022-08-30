@@ -5,6 +5,8 @@ It can compute shortest routes from A to B, take into the account daily chores (
 so once you load your plan into [TrackRadar](https://github.com/macias/TrackRadar) you can relax and focus on
 the views (unless it is uphill of course).
 
+See my PL/EN [blog](https://przypadkopis.wordpress.com/) for other, various in nature, resources.
+
 # Credits/resources
 
 * I use [JetBrains Rider](https://www.jetbrains.com/rider/) as my IDE for which I was granted open-source license (thank you!),

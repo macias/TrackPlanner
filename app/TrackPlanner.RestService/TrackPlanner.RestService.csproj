@@ -14,6 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\TrackPlanner.CommonBackend\TrackPlanner.CommonBackend.csproj" />
     <ProjectReference Include="..\TrackPlanner.Data\TrackPlanner.Data.csproj" />
     <ProjectReference Include="..\TrackPlanner.RestSymbols\TrackPlanner.RestSymbols.csproj" />
     <ProjectReference Include="..\TrackPlanner.Turner\TrackPlanner.Turner.csproj" />

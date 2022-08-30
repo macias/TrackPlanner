@@ -10,6 +10,8 @@ namespace TrackPlanner.Data.Serialization
     public class DictionaryNewtonConverter<TKey, TValue> : JsonConverter<Dictionary<TKey, TValue>>
         where TKey : notnull
     {
+        // todo: handle enums as TKey in user-friendly manner, strings not ints
+        
         public override Dictionary<TKey, TValue>? ReadJson(Newtonsoft.Json.JsonReader reader, Type objectType, Dictionary<TKey, TValue>? existingValue, bool hasExistingValue,
             Newtonsoft.Json.JsonSerializer serializer)
         {

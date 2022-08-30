@@ -92,7 +92,8 @@ namespace TrackPlanner.WebUI.Client.Shared
         {
             this.editContext = new EditContext(this);
             this.editContext.OnFieldChanged += EditContextOnOnFieldChanged;
-            this.VisualSchedule = new VisualSchedule<BlazorLeaflet.Models.Marker,bool>(Program.Configuration.PlannerPreferences,Program.Configuration.TurnerPreferences);
+            this.VisualSchedule = new VisualSchedule<BlazorLeaflet.Models.Marker,bool>(Program.Configuration.PlannerPreferences,
+                Program.Configuration.TurnerPreferences,Program.Configuration.VisualPreferences);
             this.summary = new CacheGetter<SummaryJourney>(this.GetSummary);
         }
 

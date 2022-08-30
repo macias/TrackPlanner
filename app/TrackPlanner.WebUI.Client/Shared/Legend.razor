@@ -2,9 +2,9 @@
 @using TrackPlanner.Settings
 @using TrackPlanner.LinqExtensions
 
-@foreach ((string mode, LineDecoration deco) in Program.Configuration.SpeedStyles
+@foreach ((string mode, LineDecoration deco) in Program.Configuration.VisualPreferences.SpeedStyles
     .Select(it => (it.Key.ToString(),it.Value))
-    .Concat(("Forbidden",Program.Configuration.ForbiddenStyle)))
+    .Concat(("Forbidden",Program.Configuration.VisualPreferences.ForbiddenStyle)))
 {
     <div>
         @{

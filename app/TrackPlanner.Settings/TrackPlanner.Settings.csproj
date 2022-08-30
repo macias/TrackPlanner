@@ -11,12 +11,4 @@
       <ProjectReference Include="..\TrackPlanner.LinqExtensions\TrackPlanner.LinqExtensions.csproj" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Content Include="clientsettings.json">
-        <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-      </Content>
-    </ItemGroup>
-
 </Project>

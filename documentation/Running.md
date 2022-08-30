@@ -26,7 +26,7 @@ docker run -v $FN:/data/region.osm.pbf \
   --name running-mapnik overv/openstreetmap-tile-server import
 ```
 
-Running it is the first step and I recommend running it once before each season. Please customize it according to your system.
+Running it is the first step and I recommend running it once before each season (please note it can be lengthy process). Please customize it according to your system.
 
 **run-mapnik.sh**
 ```
@@ -45,19 +45,9 @@ Execute it once and it will run forever (as long as docker is running).
 
 ### Track planner
 
-There is [docker_run.sh](../app/docker_run.sh) script for running the program, again please customize the "maps" and "schedules" paths according to your system.
-```
-#!/bin/sh
+There is [docker_run.sh](../app/docker_run.sh) script provided for running the program, again please customize the "maps" and "schedules" paths according to your system.
 
-MAPS=$(realpath  ../maps/)
-SCHEDULES=$(realpath  ../schedules/)
-
-docker run \
-  -p 8700:8700 \
-  -p 5200:5200 \
-  -v $MAPS:/maps/ \
-  -v $SCHEDULES:/schedules/ \
-  --name trackplanner xmacias/trackplanner
-```
+The first run can be very time consuming because program converts OSM map to its own format. Subsequent executions are somewhat faster but even for moderate regions
+like Poland the loading is still slow.
 
 If everything went well, you should be able to access "localhost:5200" address using any web browser and start your planning.

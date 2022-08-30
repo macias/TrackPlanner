@@ -43,6 +43,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TrackPlanner.PathFinder.Tes
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TrackPlanner.Logic.Tests", "Tests\TrackPlanner.Logic.Tests\TrackPlanner.Logic.Tests.csproj", "{7B816947-1A3A-4109-B08E-001C7DB56645}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TrackPlanner.CommonBackend", "TrackPlanner.CommonBackend\TrackPlanner.CommonBackend.csproj", "{A9565CDA-C50D-4CC3-AE91-CD4FC432D2A7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -133,6 +135,10 @@ Global
 		{7B816947-1A3A-4109-B08E-001C7DB56645}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7B816947-1A3A-4109-B08E-001C7DB56645}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7B816947-1A3A-4109-B08E-001C7DB56645}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A9565CDA-C50D-4CC3-AE91-CD4FC432D2A7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A9565CDA-C50D-4CC3-AE91-CD4FC432D2A7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A9565CDA-C50D-4CC3-AE91-CD4FC432D2A7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A9565CDA-C50D-4CC3-AE91-CD4FC432D2A7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
