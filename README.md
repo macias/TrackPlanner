@@ -5,7 +5,7 @@ It can compute shortest routes from A to B, take into the account daily chores (
 so once you load your plan into [TrackRadar](https://github.com/macias/TrackRadar) you can relax and focus on
 the views (unless it is uphill of course).
 
-See my PL/EN [blog](https://przypadkopis.wordpress.com/) for other, various in nature, resources.
+Please read [the documentation](documentation/README.md) to learn how to install and use the program.
 
 # Credits/resources
 
@@ -16,11 +16,6 @@ See my PL/EN [blog](https://przypadkopis.wordpress.com/) for other, various in n
 * flag icon comes from [Google Maps](https://www.gstatic.com/mapspro/images/stock/extended-icons5.png),
 * pin icon comes from [Leaflet.awesome-markers](https://github.com/lennardv2/Leaflet.awesome-markers).
 
-# Documentation
+# Author
 
-* [Running](documentation/Running.md),
-* [Basic usage](documentation/Basics.md),
-
-and something extra for all developers out there:
-
-* [Building](documentation/Building.md).
+See my PL/EN [blog](https://przypadkopis.wordpress.com/) for other, various in nature, resources.

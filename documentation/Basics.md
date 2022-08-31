@@ -29,7 +29,7 @@ our first planned trip:
 
 ![Computed plan](images/computed.jpg)
 
-You can alter how time you would like to spend at given place by clicking on predefined break times or you can enter time directly.
+You can alter how much time you would like to spend at given place by clicking on predefined break times or you can enter time directly.
 Planner takes such events like snack times, lunch, laundry, resupplies into consideration when computing time, as well the fatigue.
 Below each day you can read statistics.
 
