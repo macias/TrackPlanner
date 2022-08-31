@@ -13,7 +13,7 @@ namespace TrackPlanner.RestService
         public SummaryTheme SummaryLightTheme { get; set; }
         public SummaryTheme SummaryDarkTheme { get; set; }
 
-        public SummaryTheme SummaryActiveTheme => UseSummaryLightTheme ? SummaryLightTheme : SummaryDarkTheme;
+        public SummaryTheme GetSummaryActiveTheme() => UseSummaryLightTheme ? SummaryLightTheme : SummaryDarkTheme;
 
         public RestServiceConfig()
         {

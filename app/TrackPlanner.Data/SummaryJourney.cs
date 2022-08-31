@@ -11,6 +11,7 @@ namespace TrackPlanner.Data
         private readonly Lazy<Length> distance;
         public Length Distance => this.distance.Value;
         public List<SummaryDay> Days { get; set; }
+        public UserPlannerPreferences PlannerPreferences { get; init; } = default!;
 
         public SummaryJourney()
         {

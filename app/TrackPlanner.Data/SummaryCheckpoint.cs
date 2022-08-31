@@ -40,5 +40,10 @@ namespace TrackPlanner.Data
             Label = "";
             SnackTimesAt = new List<TimeSpan>();
         }
+
+        public TimeSpan GetSnackTimeDuration(SummaryJourney summary)
+        {
+            return summary.PlannerPreferences.SnackTimeDuration * this.SnackTimesAt.Count;
+        }
     }
 }

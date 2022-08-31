@@ -124,7 +124,7 @@ namespace TrackPlanner.RestService.Controllers
                         <meta charset='utf-8'>
                         <title>Day {day_idx + 1} summary</title>
                         </head>
-<body style='background-color: {this.serviceConfig.SummaryActiveTheme.BackgroundColor}; color:{this.serviceConfig.SummaryActiveTheme.TextColor}'>");
+<body style='background-color: {this.serviceConfig.GetSummaryActiveTheme().BackgroundColor}; color:{this.serviceConfig.GetSummaryActiveTheme().TextColor}'>");
 
                         writer.WriteLine($"<h3>Day {day_idx + 1} summary</h3>");
 
@@ -154,13 +154,13 @@ namespace TrackPlanner.RestService.Controllers
                             {
                                 var events = new List<string>();
                                 if (checkpoint.LaundryAt.HasValue)
-                                    events.Add("laundry");
+                                    events.Add($"laundry ({DataFormat.Format(schedule.PlannerPreferences.LaundryDuration)})");
                                 if (checkpoint.LunchAt.HasValue)
-                                    events.Add("lunch");
+                                    events.Add($"lunch ({DataFormat.Format(schedule.PlannerPreferences.LunchDuration)})");
                                 if (checkpoint.CampRessuplyAt.HasValue)
-                                    events.Add("resupply");
+                                    events.Add($"resupply ({DataFormat.Format(schedule.PlannerPreferences.CampResupplyDuration)})");
                                 if (checkpoint.SnackTimesAt.Count != 0)
-                                    events.Add($"snacks:{checkpoint.SnackTimesAt.Count}");
+                                    events.Add($"snacks: {checkpoint.SnackTimesAt.Count} ({DataFormat.Format(checkpoint.GetSnackTimeDuration(summary))})");
                                 if (events.Any())
                                 {
                                     writer.WriteLine("<div>");
@@ -172,7 +172,7 @@ namespace TrackPlanner.RestService.Controllers
 
                         writer.Write($"<div><b>In total:</b> {TrackPlanner.Data.DataFormat.Format(day.Distance, true)}");
                         if (day.LateCampingBy.HasValue)
-                            writer.Write($", <span style='color:{this.serviceConfig.SummaryActiveTheme.WarningTextColor}'><b>running late by {TrackPlanner.Data.DataFormat.Format(day.LateCampingBy.Value)}</b></span>");
+                            writer.Write($", <span style='color:{this.serviceConfig.GetSummaryActiveTheme().WarningTextColor}'><b>running late by {TrackPlanner.Data.DataFormat.Format(day.LateCampingBy.Value)}</b></span>");
                         writer.Write($"</div>");
                         writer.WriteLine(@" </body>
 </html>");

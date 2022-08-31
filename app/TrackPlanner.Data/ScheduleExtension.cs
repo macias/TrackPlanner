@@ -1,9 +1,6 @@
 using System;
 using System.Collections.Generic;
-using MathUnit;
 using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Runtime.Serialization;
 using TrackPlanner.LinqExtensions;
 
 namespace TrackPlanner.Data
@@ -71,12 +68,12 @@ namespace TrackPlanner.Data
             return legs;
         }
 
-        public static SummaryJourney GetSummary(this IReadOnlySchedule readOnlySchedule)
+        public static SummaryJourney GetSummary(this IReadOnlySchedule schedule)
         {
-            var summary = new SummaryJourney() { };
-            for (int day_idx = 0; day_idx < readOnlySchedule.Days.Count; ++day_idx)
+            var summary = new SummaryJourney() { PlannerPreferences = schedule.PlannerPreferences };
+            for (int day_idx = 0; day_idx < schedule.Days.Count; ++day_idx)
             {
-                var summary_day = createSummaryDay(readOnlySchedule, day_idx);
+                var summary_day = createSummaryDay(schedule, day_idx);
 
                 summary.Days.Add(summary_day);
             }
@@ -130,7 +127,7 @@ namespace TrackPlanner.Data
 
                 if (!dayEndsAtHome(schedule, dayIndex))
                 {
-                    // last resupply except final day, water for camping
+                    // last resupply except final day (water for camping)
 
                     // we find and convert last snack time into camp resupply
                     var snack_point_idx = summary_day.Checkpoints.FindLastIndex(it => it.SnackTimesAt.Any());
@@ -350,7 +347,8 @@ namespace TrackPlanner.Data
             return readOnlySchedule.EndsAtHome && dayIndex == readOnlySchedule.Days.Count - 1;
         }
 
-        private static TimeSpan addShopping(IReadOnlySchedule readOnlySchedule, SummaryDay summaryDay, SummaryCheckpoint summaryPoint, ref TimeSpan shoppingAt, bool campResupply)
+        private static TimeSpan addShopping(IReadOnlySchedule readOnlySchedule, SummaryDay summaryDay, 
+            SummaryCheckpoint summaryPoint, ref TimeSpan shoppingAt, bool campResupply)
         {
             TimeSpan duration;
             if (campResupply)
@@ -375,7 +373,8 @@ namespace TrackPlanner.Data
             return duration;
         }
 
-        private static TimeSpan removeLastSnackTime(IReadOnlySchedule readOnlySchedule, SummaryDay summaryDay, SummaryCheckpoint summaryPoint,out TimeSpan snackTime)
+        private static TimeSpan removeLastSnackTime(IReadOnlySchedule readOnlySchedule, SummaryDay summaryDay,
+            SummaryCheckpoint summaryPoint,out TimeSpan snackTime)
         {
             TimeSpan duration;
 
