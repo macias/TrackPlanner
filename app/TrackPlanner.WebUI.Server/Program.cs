@@ -22,7 +22,7 @@ namespace TrackPlanner.WebUI.Server
 
         public static IHostBuilder CreateHostBuilder(string[] args)
         {
-            var custom_config_path = ConfigHelper.InitializeConfigFile("webui_settings.json", new EnvironmentConfiguration());
+            var custom_config_path = ConfigHelper.InitializeConfigFile("webui_settings.json", EnvironmentConfiguration.SectionName, new EnvironmentConfiguration());
 
 
             /*return Host.CreateDefaultBuilder(args)

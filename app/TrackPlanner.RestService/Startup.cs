@@ -43,6 +43,7 @@ namespace TrackPlanner.RestService
 
             var rest_config = new RestServiceConfig();
             Configuration.GetSection(RestServiceConfig.SectionName).Bind(rest_config);
+            
             if (false)
                 SetupCors(services, rest_config);
             else

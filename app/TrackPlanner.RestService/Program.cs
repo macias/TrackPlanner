@@ -59,7 +59,7 @@ namespace TrackPlanner.RestService
 
         public static IHostBuilder CreateHostBuilder(string[] args)
         {
-            var custom_config_path =  ConfigHelper.InitializeConfigFile("restservice_settings.json", new RestServiceConfig());
+            var custom_config_path =  ConfigHelper.InitializeConfigFile("restservice_settings.json", RestServiceConfig.SectionName, new RestServiceConfig());
             
             /*return Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder =>
