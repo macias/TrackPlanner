@@ -95,75 +95,88 @@ namespace TrackPlanner.Data
             // of the previous day and loop to the global start) 
             if (dayIndex == 0 && day.Anchors.Count == 0)
                 return summary_day;
-            
+
             var last_shopping = start;
 
-                summary_day.Checkpoints.Add(new SummaryCheckpoint()
+            summary_day.Checkpoints.Add(new SummaryCheckpoint()
+            {
+                Arrival = start,
+                Departure = start,
+            });
+            int anchor_idx = dayIndex == 0 ? 1 : 0;
+            for (; anchor_idx < day.Anchors.Count; ++anchor_idx)
+                summary_day.Checkpoints.Add(schedule.createSummaryPoint(summary_day, ref last_shopping,
+                    ref rolling_time, dayIndex, anchor_idx));
+
+            if (schedule.IsLoopedDay(dayIndex))
+                summary_day.Checkpoints.Add(schedule.createSummaryPoint(summary_day, ref last_shopping,
+                    ref rolling_time, dayIndex, anchor_idx));
+
+            Console.WriteLine("DEBUG fixing last checkpoint for the day");
+
+            var last_checkpoint = summary_day.Checkpoints.Last();
+
+            Console.WriteLine("DEBUG adding extra snack time");
+
+            // if there is too big gap between last shopping and the end of the day add one more snack time
+            if (last_checkpoint.Departure - last_shopping > schedule.PlannerPreferences.ShoppingInterval / 2)
+            {
+                TimeSpan shop_at = last_checkpoint.Departure - schedule.PlannerPreferences.EventDuration[TripEvent.SnackTime];
+                shop_at += addTripEventLocally(schedule, summary_day, last_checkpoint, TripEvent.SnackTime);
+            }
+
+            if (!dayEndsAtHome(schedule, dayIndex))
+            {
+                // last resupply except final day (water for camping)
+
+                // we find and convert last snack time into camp resupply
+                var snack_point_idx = summary_day.Checkpoints.FindLastIndex(it => it.EventCount[TripEvent.SnackTime] != 0);
+                Console.WriteLine($"DEBUG extending snack time {snack_point_idx}");
+                if (snack_point_idx != -1)
                 {
-                    Arrival = start,
-                    Departure = start,
-                });
-                int anchor_idx = dayIndex == 0 ? 1 : 0;
-                for (; anchor_idx < day.Anchors.Count; ++anchor_idx)
-                    summary_day.Checkpoints.Add(schedule.createSummaryPoint(summary_day, ref last_shopping,
-                        ref rolling_time, dayIndex, anchor_idx));
+                    var snack_duration = removeTripEventLocally(schedule, summary_day, summary_day.Checkpoints[snack_point_idx], TripEvent.SnackTime);
+                    var resupply_duration = addTripEventLocally(schedule, summary_day, summary_day.Checkpoints[snack_point_idx], TripEvent.Resupply);
+                    var diff_duration = resupply_duration - snack_duration;
 
-                if (schedule.IsLoopedDay(dayIndex))
-                    summary_day.Checkpoints.Add(schedule.createSummaryPoint(summary_day, ref last_shopping,
-                        ref rolling_time, dayIndex, anchor_idx));
-
-                Console.WriteLine("DEBUG fixing last checkpoint for the day");
-                
-                var last_checkpoint = summary_day.Checkpoints.Last();
-
-                Console.WriteLine("DEBUG adding extra snack time");
-
-                // if there is too big gap between last shopping and the end of the day add one more snack time
-                if (last_checkpoint.Departure - last_shopping > schedule.PlannerPreferences.ShoppingInterval / 2)
-                {
-                    TimeSpan shop_at = last_checkpoint.Departure - schedule.PlannerPreferences.SnackTimeDuration;
-                    addShopping(schedule, summary_day, last_checkpoint, ref shop_at, campResupply: false);
-                }
-
-                if (!dayEndsAtHome(schedule, dayIndex))
-                {
-                    // last resupply except final day (water for camping)
-
-                    // we find and convert last snack time into camp resupply
-                    var snack_point_idx = summary_day.Checkpoints.FindLastIndex(it => it.SnackTimesAt.Any());
-                    Console.WriteLine($"DEBUG extending snack time {snack_point_idx}");
-                    if (snack_point_idx != -1)
+                    foreach (var point in summary_day.Checkpoints.Skip(snack_point_idx + 1))
                     {
-                        var snack_duration = removeLastSnackTime(schedule, summary_day, summary_day.Checkpoints[snack_point_idx], out TimeSpan snack_time);
-                        var resupply_duration = addShopping(schedule, summary_day, summary_day.Checkpoints[snack_point_idx], ref snack_time, campResupply: true);
-                        var diff_duration = resupply_duration - snack_duration;
-
-                        foreach (var point in summary_day.Checkpoints.Skip(snack_point_idx + 1))
-                        {
-                            point.Arrival += diff_duration;
-                            point.Departure += diff_duration;
-                        }
+                        point.Arrival += diff_duration;
+                        point.Departure += diff_duration;
                     }
                 }
-                
-                Console.WriteLine("DEBUG clearing last checkpoint for the day");
-                
-                last_checkpoint.Break = TimeSpan.Zero;
-                // since we don't count in break for the last checkpoint we have to shift
-                // arrival time to departure
-                last_checkpoint.Arrival = last_checkpoint.Departure;
+            }
 
-
-                summary_day.Distance = summary_day.Checkpoints.Select(it => it.IncomingDistance).Sum();
-
-                TimeSpan late_camping = last_checkpoint.Arrival - ((!schedule.EndsAtHome || dayIndex < schedule.Days.Count - 1)
-                    ? schedule.PlannerPreferences.CampLandingTime
-                    : schedule.PlannerPreferences.HomeLandingTime);
-                if ( late_camping > TimeSpan.Zero)
+            // moving all events from the last checkpoint to the previous one
+            // rationale: when reading summary it is surprise effect that last checkpoint (most likely camping)
+            // has snack time included, while it is not possible
+            foreach (var trip_event in Enum.GetValues<TripEvent>())
+                while (last_checkpoint.EventCount[trip_event] > 0)
                 {
-                    summary_day.LateCampingBy = late_camping;
+                    removeTripEventLocally(schedule, summary_day, last_checkpoint, trip_event);
+                    var event_duration = addTripEventLocally(schedule, summary_day, summary_day.Checkpoints[^2], trip_event);
+                    last_checkpoint.Arrival += event_duration;
+                    last_checkpoint.Departure += event_duration;
                 }
-            
+
+
+            Console.WriteLine("DEBUG clearing last checkpoint for the day");
+
+            last_checkpoint.Break = TimeSpan.Zero;
+            // since we don't count in break for the last checkpoint we have to shift
+            // arrival time to departure
+            last_checkpoint.Arrival = last_checkpoint.Departure;
+
+
+            summary_day.Distance = summary_day.Checkpoints.Select(it => it.IncomingDistance).Sum();
+
+            TimeSpan late_camping = last_checkpoint.Arrival - ((!schedule.EndsAtHome || dayIndex < schedule.Days.Count - 1)
+                ? schedule.PlannerPreferences.CampLandingTime
+                : schedule.PlannerPreferences.HomeLandingTime);
+            if (late_camping > TimeSpan.Zero)
+            {
+                summary_day.LateCampingBy = late_camping;
+            }
+
 
             return summary_day;
         }
@@ -295,38 +308,22 @@ namespace TrackPlanner.Data
             {
                 lastShopping += schedule.PlannerPreferences.ShoppingInterval;
 
-                addShopping(schedule, summaryDay, summary_point, ref lastShopping, 
+                lastShopping += addTripEventLocally(schedule, summaryDay, summary_point,  
                     // first resupply only on "middle" days, food for next day
-                    campResupply:!is_home_adjacent && !summaryDay.Checkpoints.Any(it => it.CampRessuplyAt.HasValue));
+                    !is_home_adjacent && summaryDay.Checkpoints.All(it => it.EventCount[TripEvent.Resupply] == 0) ? TripEvent.Resupply: TripEvent.SnackTime);
             }
-
-            TimeSpan last_event = lastShopping;
 
             if (!is_home_adjacent
                 && summary_point.Departure > schedule.PlannerPreferences.LaundryOpportunity
-                && summaryDay.Checkpoints.All(it => it.LaundryAt == null))
+                && summaryDay.Checkpoints.All(it => it.EventCount[TripEvent.Laundry]==0))
             {
-                summary_point.LaundryAt = schedule.PlannerPreferences.LaundryOpportunity.Max(last_event);
-                var duration = schedule.PlannerPreferences.LaundryDuration;
-
-                summaryDay.LaundryDuration += duration;
-                summary_point.Break += duration;
-                summary_point.Departure += duration;
-
-                last_event = summary_point.LaundryAt.Value + duration;
+                addTripEventLocally(schedule, summaryDay, summary_point, TripEvent.Laundry);
             }
 
             if (summary_point.Departure > schedule.PlannerPreferences.LunchOpportunity
-                && summaryDay.Checkpoints.All(it => it.LunchAt == null))
+                && summaryDay.Checkpoints.All(it => it.EventCount[TripEvent.Lunch]==0))
             {
-                summary_point.LunchAt = schedule.PlannerPreferences.LunchOpportunity.Max(last_event);
-                var duration = schedule.PlannerPreferences.LunchDuration;
-
-                summaryDay.LunchDuration += duration;
-                summary_point.Break += duration;
-                summary_point.Departure += duration;
-
-                last_event = summary_point.LunchAt.Value + duration;
+                addTripEventLocally(schedule, summaryDay, summary_point, TripEvent.Lunch);
             }
 
             return summary_point;
@@ -347,42 +344,29 @@ namespace TrackPlanner.Data
             return readOnlySchedule.EndsAtHome && dayIndex == readOnlySchedule.Days.Count - 1;
         }
 
-        private static TimeSpan addShopping(IReadOnlySchedule readOnlySchedule, SummaryDay summaryDay, 
-            SummaryCheckpoint summaryPoint, ref TimeSpan shoppingAt, bool campResupply)
+        private static TimeSpan addTripEventLocally(IReadOnlySchedule schedule, SummaryDay summaryDay, 
+            SummaryCheckpoint summaryPoint, TripEvent tripEvent)
         {
-            TimeSpan duration;
-            if (campResupply)
-            {
-                duration = readOnlySchedule.PlannerPreferences.CampResupplyDuration;
-                summaryPoint.CampRessuplyAt = shoppingAt;
-
-                summaryDay.CampResupplyDuration += duration;
-            }
-            else
-            {
-                duration = readOnlySchedule.PlannerPreferences.SnackTimeDuration;
-                summaryPoint.SnackTimesAt.Add(shoppingAt);
-
-                summaryDay.SnackTimesDuration += duration;
-            }
-
-            shoppingAt += duration;
+            TimeSpan duration = schedule.PlannerPreferences.EventDuration[tripEvent];
+            
+            ++summaryPoint.EventCount[tripEvent];
+            
+            summaryDay.EventDuration[tripEvent] += duration;
+            
             summaryPoint.Departure += duration;
             summaryPoint.Break += duration;
 
             return duration;
         }
-
-        private static TimeSpan removeLastSnackTime(IReadOnlySchedule readOnlySchedule, SummaryDay summaryDay,
-            SummaryCheckpoint summaryPoint,out TimeSpan snackTime)
+        
+        private static TimeSpan removeTripEventLocally(IReadOnlySchedule schedule, SummaryDay summaryDay,
+            SummaryCheckpoint summaryPoint,TripEvent tripEvent)
         {
-            TimeSpan duration;
+            TimeSpan duration= schedule.PlannerPreferences.EventDuration[tripEvent];
+            
+            --summaryPoint.EventCount[tripEvent];
 
-            duration = readOnlySchedule.PlannerPreferences.SnackTimeDuration;
-            snackTime = summaryPoint.SnackTimesAt[^1];
-            summaryPoint.SnackTimesAt.RemoveLast();
-
-            summaryDay.SnackTimesDuration -= duration;
+            summaryDay.EventDuration[tripEvent] -= duration;
 
             summaryPoint.Departure -= duration;
             summaryPoint.Break -= duration;

@@ -261,7 +261,7 @@ namespace TrackPlanner.WebUI.Client.Pages
                 Position = e.LatLng,
                 Content = $"{TrackPlanner.Data.DataFormat.Format(running_distance, withUnit:true)} @({TrackPlanner.Data.DataFormat.Format(day.Start+running_time)})"
                           + "<br/>"
-                          + $"{TrackPlanner.Data.DataFormat.Format(day.Distance - running_distance,withUnit:true)} ({TrackPlanner.Data.DataFormat.Format( day.TrueTimeDuration - running_time)})"
+                          + $"{TrackPlanner.Data.DataFormat.Format(day.Distance - running_distance,withUnit:true)} ({TrackPlanner.Data.DataFormat.Format( day.TrueDuration - running_time)})"
                           + "<br/>"
                           + $"{active_fragment.Mode}"
             };

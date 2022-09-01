@@ -152,19 +152,32 @@ namespace TrackPlanner.RestService.Controllers
                                 writer.Write($" &gt;&gt; {Data.DataFormat.Format(checkpoint.Departure)}");
                             writer.WriteLine("</div>");
                             {
-                                var events = new List<string>();
-                                if (checkpoint.LaundryAt.HasValue)
-                                    events.Add($"laundry ({DataFormat.Format(schedule.PlannerPreferences.LaundryDuration)})");
-                                if (checkpoint.LunchAt.HasValue)
-                                    events.Add($"lunch ({DataFormat.Format(schedule.PlannerPreferences.LunchDuration)})");
-                                if (checkpoint.CampRessuplyAt.HasValue)
-                                    events.Add($"resupply ({DataFormat.Format(schedule.PlannerPreferences.CampResupplyDuration)})");
-                                if (checkpoint.SnackTimesAt.Count != 0)
-                                    events.Add($"snacks: {checkpoint.SnackTimesAt.Count} ({DataFormat.Format(checkpoint.GetSnackTimeDuration(summary))})");
-                                if (events.Any())
+                                string event_label(TripEvent tripEvent)
+                                {
+                                    switch (tripEvent)
+                                    {
+                                        case TripEvent.Laundry: return "laundry";
+                                        case TripEvent.Lunch: return "lunch";
+                                        case TripEvent.Resupply: return "resupply";
+                                        case TripEvent.SnackTime: return "snacks";
+                                        default: throw new NotImplementedException(tripEvent.ToString());
+                                    }
+                                }
+
+                                var events = String.Join(", ", Enum.GetValues<TripEvent>().Select(it =>
+                                    {
+                                        var count = checkpoint.EventCount[it];
+                                        if (count == 0)
+                                            return "";
+
+                                        return $"{event_label(it)}: {(count == 1 ? "" : $"{count} ")}({DataFormat.Format(summary.PlannerPreferences.EventDuration[it] * count)}";
+                                    })
+                                    .Where(it => it != ""));
+                                
+                                if (events!="")
                                 {
                                     writer.WriteLine("<div>");
-                                    writer.Write($"<i>{(String.Join(", ", events))}</i>");
+                                    writer.Write($"<i>{events}</i>");
                                     writer.WriteLine("</div>");
                                 }
                             }

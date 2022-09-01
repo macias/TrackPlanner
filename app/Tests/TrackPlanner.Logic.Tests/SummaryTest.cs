@@ -47,8 +47,8 @@ public class SummaryTest
 
         Assert.Equal(Length.FromMeters(1520), summary.Distance );
     }
-    [Fact]
     
+    [Fact]
     public void DayDistancesByLegsTest()
     {
         var schedule = createDummySchedule();
@@ -58,6 +58,17 @@ public class SummaryTest
         
         Assert.Equal(Length.FromMeters(300), legs_0.Select(it => it.UnsimplifiedDistance).Sum() );
         Assert.Equal(Length.FromMeters(1220), legs_1.Select(it => it.UnsimplifiedDistance).Sum());
+    }
+
+    [Fact]
+    public void LastCheckpointPerDayTest()
+    {
+        var schedule = createDummySchedule();
+
+        var summary = schedule.GetSummary();
+
+        Assert.True(summary.Days[0].Checkpoints.Last().EventCount.All(it => it==0));
+        Assert.True(summary.Days[1].Checkpoints.Last().EventCount.All(it => it==0));
     }
 
 }

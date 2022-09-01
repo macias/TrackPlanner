@@ -51,3 +51,6 @@ The first run can be very time consuming because program converts OSM map to its
 like Poland the loading is still slow.
 
 If everything went well, you should be able to access "localhost:5200" address using any web browser and start your planning.
+
+*Please note that while the maps directory binding for docker image are for maps in general, the maps subdirectory within the settings currently point out to the
+subdirectory with single OSM map file.*

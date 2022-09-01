@@ -59,39 +59,19 @@
   }
   void renderStatistics(SummaryDay day)
   {
-    string speed = day.TrueTimeDuration == System.TimeSpan.Zero ? "--" : DataFormat.Format(day.Distance / day.TrueTimeDuration, withUnit: true);
+    string speed = day.TrueDuration == System.TimeSpan.Zero ? "--" : DataFormat.Format(day.Distance / day.TrueDuration, withUnit: true);
 
     <h5>Statistics</h5>
     <div>
-      <b>Time</b> @(DataFormat.Format(day.TrueTimeDuration)) <b>Distance</b> @(DataFormat.Format(day.Distance, withUnit: true)) <b>Speed</b> @(speed)
+      <b>Time</b> @(DataFormat.Format(day.TrueDuration)) <b>Distance</b> @(DataFormat.Format(day.Distance, withUnit: true)) <b>Speed</b> @(speed)
     </div>
     <div>
-      @{
-        var snack_times = day.Checkpoints.SelectMany(it => it.SnackTimesAt).Count();
-        if (snack_times>0)
+      @foreach(var trip_event in Enum.GetValues<TripEvent>())
+      {
+        var count = day.Checkpoints.Sum(it => it.EventCount[trip_event]);
+        if (count>0)
         {
-          <span style="margin-right: 0.5em"><i title="@(TripEvent.SnackTime.ToString())" class="@eventClass(TripEvent.SnackTime)"></i> @(snack_times), @(DataFormat.Format(day.SnackTimesDuration)) </span> 
-        }
-      }
-      @{
-        var camp_resupplies = day.Checkpoints.Count(it => it.CampRessuplyAt.HasValue);
-        if (camp_resupplies>0)
-        {
-          <span style="margin-right: 0.5em"><i title="@(TripEvent.Resupply.ToString())"  class="@(eventClass(TripEvent.Resupply))"></i> @(camp_resupplies) (@DataFormat.Format(day.CampResupplyDuration)) </span>
-        }
-      }
-      @{
-        var lunch_at = day.Checkpoints.Select(it => it.LunchAt).FirstOrDefault(it => it.HasValue);
-        if (lunch_at.HasValue)
-        {
-          <span style="margin-right: 0.5em"><i title="@(TripEvent.Lunch.ToString())"  class="@(eventClass(TripEvent.Lunch))"></i> @DataFormat.Format(lunch_at.Value) (@DataFormat.Format(day.LunchDuration)) </span>
-        }
-      }
-      @{
-        var laundry_at = day.Checkpoints.Select(it => it.LaundryAt).FirstOrDefault(it => it.HasValue);
-        if (laundry_at.HasValue)
-        {
-          <span style="margin-right: 0.5em"><i title="@(TripEvent.Laundry.ToString())"  class="@(eventClass(TripEvent.Laundry))"></i> @DataFormat.Format(laundry_at.Value) (@DataFormat.Format(day.LaundryDuration)) </span>
+          <span style="margin-right: 0.5em"><i title="@(trip_event.ToString())" class="@eventClass(trip_event)"></i> @(count==1?"":$"{count} ")@(DataFormat.Format(day.EventDuration[trip_event])) </span> 
         }
       }
       <i></i>
@@ -155,9 +135,9 @@
         }
       }
 
-      @foreach (var (at,kind) in checkpoint.Events)
+      @foreach (var (kind,duration) in checkpoint.GetEvents(summary))
       {
-        var title = $"{kind} {DataFormat.Format(at)}";
+        var title = $"{kind} {DataFormat.Format(duration)}";
         var css_class = eventClass(kind);
         <i class="@css_class" title="@title" style="margin: 0 2px; color: navy"></i>
       }
