@@ -71,7 +71,7 @@
         var count = day.Checkpoints.Sum(it => it.EventCount[trip_event]);
         if (count>0)
         {
-          <span style="margin-right: 0.5em"><i title="@(trip_event.ToString())" class="@eventClass(trip_event)"></i> @(count==1?"":$"{count} ")@(DataFormat.Format(day.EventDuration[trip_event])) </span> 
+          <span style="margin-right: 0.5em"><i title="@(trip_event.ToString())" class="@trip_event.GetClassIcon()"></i> @(count==1?"":$"{count} ")@(DataFormat.Format(day.EventDuration[trip_event])) </span> 
         }
       }
       <i></i>
@@ -82,17 +82,6 @@
   {
     string css_class = "btn btn-"+(isPinned?(lastOfDay?"warning":"primary"):"secondary");
     <button type="button" class="@css_class">@label</button>
-  }
-
-  string eventClass(TripEvent kind)
-  {
-    return  "fas fa-" + kind switch{
-      TripEvent.Laundry=>"tint",
-      TripEvent.Lunch=>"utensils",
-      TripEvent.Resupply=>"shopping-cart",
-      TripEvent.SnackTime=>"carrot",     
-      _ => throw new ArgumentOutOfRangeException(),
-      };
   }
 
   void renderAnchorRow(SummaryJourney summary, int dayIndex, int checkpointIndex)
@@ -138,7 +127,7 @@
       @foreach (var (kind,duration) in checkpoint.GetEvents(summary))
       {
         var title = $"{kind} {DataFormat.Format(duration)}";
-        var css_class = eventClass(kind);
+        var css_class = kind.GetClassIcon();
         <i class="@css_class" title="@title" style="margin: 0 2px; color: navy"></i>
       }
       @if (!anchor_reused)

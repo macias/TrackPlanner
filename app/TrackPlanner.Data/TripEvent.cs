@@ -1,10 +1,14 @@
-﻿namespace TrackPlanner.Data
+﻿using System;
+
+namespace TrackPlanner.Data
 {
     public enum TripEvent
     {
         SnackTime,
         Resupply,
         Lunch,
-        Laundry
+        Laundry,
+        Shower,
+        Maintenance,
     }
 }

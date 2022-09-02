@@ -32,6 +32,9 @@ namespace TrackPlanner.Data
         public TimeSpan ShoppingInterval { get; set; }
         public TimeSpan LaundryOpportunity { get; set; } // when on average will be possible to make a laundry
         public TimeSpan LunchOpportunity { get; set; } // when we would like to have lunch
+        public TimeSpan ShowerOpportunity { get; set; }
+        public int ShowerEveryDay { get; set; }
+        public int MaintenanceEveryDay { get; set; }
         public TimeSpan CampLandingTime { get; set; }
         public TimeSpan HomeLandingTime { get; set; }
         public TimeSpan CheckpointIntervalLimit { get; set; }
@@ -61,6 +64,10 @@ namespace TrackPlanner.Data
             this.ShoppingInterval = TimeSpan.FromHours(2);
             this.LaundryOpportunity = TimeSpan.FromHours(11);
             this.LunchOpportunity = TimeSpan.FromHours(13);
+            this.ShowerOpportunity = TimeSpan.FromHours(12);
+            this.ShowerEveryDay = 5;
+            this.MaintenanceEveryDay = 2;
+            
 
             this.EventDuration = new Dictionary<TripEvent, TimeSpan>()
             {
@@ -68,6 +75,8 @@ namespace TrackPlanner.Data
                 {TripEvent.Lunch, TimeSpan.FromMinutes(15)},
                 {TripEvent.Resupply, TimeSpan.FromMinutes(20)},
                 {TripEvent.SnackTime, TimeSpan.FromMinutes(10)},
+                {TripEvent.Maintenance, TimeSpan.FromMinutes(10)},
+                {TripEvent.Shower, TimeSpan.FromMinutes(15)},
             };
 
             CompactingAngleDeviation = 12;

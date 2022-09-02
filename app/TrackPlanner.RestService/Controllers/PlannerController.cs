@@ -152,25 +152,13 @@ namespace TrackPlanner.RestService.Controllers
                                 writer.Write($" &gt;&gt; {Data.DataFormat.Format(checkpoint.Departure)}");
                             writer.WriteLine("</div>");
                             {
-                                string event_label(TripEvent tripEvent)
-                                {
-                                    switch (tripEvent)
-                                    {
-                                        case TripEvent.Laundry: return "laundry";
-                                        case TripEvent.Lunch: return "lunch";
-                                        case TripEvent.Resupply: return "resupply";
-                                        case TripEvent.SnackTime: return "snacks";
-                                        default: throw new NotImplementedException(tripEvent.ToString());
-                                    }
-                                }
-
                                 var events = String.Join(", ", Enum.GetValues<TripEvent>().Select(it =>
                                     {
                                         var count = checkpoint.EventCount[it];
                                         if (count == 0)
                                             return "";
 
-                                        return $"{event_label(it)}: {(count == 1 ? "" : $"{count} ")}({DataFormat.Format(summary.PlannerPreferences.EventDuration[it] * count)}";
+                                        return $"{it.GetLabel()}: {(count == 1 ? "" : $"{count} ")}({DataFormat.Format(summary.PlannerPreferences.EventDuration[it] * count)}";
                                     })
                                     .Where(it => it != ""));
                                 

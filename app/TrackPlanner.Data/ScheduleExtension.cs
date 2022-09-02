@@ -96,21 +96,26 @@ namespace TrackPlanner.Data
             if (dayIndex == 0 && day.Anchors.Count == 0)
                 return summary_day;
 
-            var last_shopping = start;
 
-            summary_day.Checkpoints.Add(new SummaryCheckpoint()
-            {
-                Arrival = start,
-                Departure = start,
-            });
+                if (!isHomeAdjacent(schedule, dayIndex) && dayIndex % schedule.PlannerPreferences.MaintenanceEveryDay == 0)
+                    start += schedule.PlannerPreferences.EventDuration[TripEvent.Maintenance];
+                
+                summary_day.Checkpoints.Add(new SummaryCheckpoint()
+                {
+                    Arrival = start,
+                    Departure = start,
+                });
+
+                var last_shopping = start;
+            
             int anchor_idx = dayIndex == 0 ? 1 : 0;
             for (; anchor_idx < day.Anchors.Count; ++anchor_idx)
-                summary_day.Checkpoints.Add(schedule.createSummaryPoint(summary_day, ref last_shopping,
-                    ref rolling_time, dayIndex, anchor_idx));
+                schedule.addSummaryPoint(summary_day, ref last_shopping,
+                    ref rolling_time, dayIndex, anchor_idx);
 
             if (schedule.IsLoopedDay(dayIndex))
-                summary_day.Checkpoints.Add(schedule.createSummaryPoint(summary_day, ref last_shopping,
-                    ref rolling_time, dayIndex, anchor_idx));
+                schedule.addSummaryPoint(summary_day, ref last_shopping,
+                    ref rolling_time, dayIndex, anchor_idx);
 
             Console.WriteLine("DEBUG fixing last checkpoint for the day");
 
@@ -263,7 +268,7 @@ namespace TrackPlanner.Data
             throw new InvalidOperationException($"Couldn't compute day for leg {legIndex}.");
         }
 
-        private static SummaryCheckpoint createSummaryPoint(this IReadOnlySchedule schedule, SummaryDay summaryDay, ref TimeSpan lastShopping,
+        private static void addSummaryPoint(this IReadOnlySchedule schedule, SummaryDay summaryDay, ref TimeSpan lastShopping,
             ref TimeSpan rollingTime,
             int dayIndex, int anchorIndex)
         {
@@ -299,10 +304,11 @@ namespace TrackPlanner.Data
                 Departure = start + break_time,
                 Label = anchor.Label
             };
+            
+            // we add checkpoint to the current day to simplify querying all checkpoints for events
+            summaryDay.Checkpoints.Add(summary_point);
 
-            var starts_at_home = (schedule.StartsAtHome && dayIndex == 0);
-            var ends_at_home = dayEndsAtHome(schedule, dayIndex);
-            var is_home_adjacent = ends_at_home || starts_at_home;
+            var is_home_adjacent = isHomeAdjacent(schedule, dayIndex);
 
             while (summary_point.Departure - lastShopping > schedule.PlannerPreferences.ShoppingInterval)
             {
@@ -313,20 +319,41 @@ namespace TrackPlanner.Data
                     !is_home_adjacent && summaryDay.Checkpoints.All(it => it.EventCount[TripEvent.Resupply] == 0) ? TripEvent.Resupply: TripEvent.SnackTime);
             }
 
-            if (!is_home_adjacent
-                && summary_point.Departure > schedule.PlannerPreferences.LaundryOpportunity
-                && summaryDay.Checkpoints.All(it => it.EventCount[TripEvent.Laundry]==0))
+            while (true)
             {
-                addTripEventLocally(schedule, summaryDay, summary_point, TripEvent.Laundry);
-            }
+                bool changed = false;
+                
+                if (!is_home_adjacent
+                    && summary_point.Departure > schedule.PlannerPreferences.LaundryOpportunity
+                    && summaryDay.Checkpoints.All(it => it.EventCount[TripEvent.Laundry] == 0))
+                {
+                    addTripEventLocally(schedule, summaryDay, summary_point, TripEvent.Laundry);
+                    changed = true;
+                }
 
-            if (summary_point.Departure > schedule.PlannerPreferences.LunchOpportunity
-                && summaryDay.Checkpoints.All(it => it.EventCount[TripEvent.Lunch]==0))
-            {
-                addTripEventLocally(schedule, summaryDay, summary_point, TripEvent.Lunch);
-            }
+                if (!is_home_adjacent && dayIndex % schedule.PlannerPreferences.ShowerEveryDay == 0
+                                      && summary_point.Departure > schedule.PlannerPreferences.ShowerOpportunity
+                                      && summaryDay.Checkpoints.All(it => it.EventCount[TripEvent.Shower] == 0))
+                {
+                    addTripEventLocally(schedule, summaryDay, summary_point, TripEvent.Shower);
+                    changed = true;
+                }
 
-            return summary_point;
+                if (summary_point.Departure > schedule.PlannerPreferences.LunchOpportunity
+                    && summaryDay.Checkpoints.All(it => it.EventCount[TripEvent.Lunch] == 0))
+                {
+                    addTripEventLocally(schedule, summaryDay, summary_point, TripEvent.Lunch);
+                    changed = true;
+                }
+
+                if (!changed)
+                    break;
+            }
+        }
+
+        private static bool isHomeAdjacent(IReadOnlySchedule schedule, int dayIndex)
+        {
+            return (schedule.StartsAtHome && dayIndex == 0) || dayEndsAtHome(schedule, dayIndex);
         }
 
         public static void GetAnchorDetails(this IReadOnlySchedule schedule, int dayIndex, int anchorIndex,out bool isLoopedAnchor,
