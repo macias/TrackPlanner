@@ -147,34 +147,38 @@ namespace TrackPlanner.LinqExtensions
 
         public static Option<T>  FirstOrNone<T>(this IEnumerable<T> enumerable)
         {
-            var iter = enumerable.GetEnumerator();
-            if (!iter.MoveNext())
-                return Option<T>.None;
-            else
-                return new Option<T>(iter.Current);
+            using (var iter = enumerable.GetEnumerator())
+            {
+                if (!iter.MoveNext())
+                    return Option<T>.None;
+                else
+                    return new Option<T>(iter.Current);
+            }
         }
 
         public static void MinMax<T>(this IEnumerable<T> enumerable, out T min, out T max)
         {
-            var iter = enumerable.GetEnumerator();
-            if (!iter.MoveNext())
-                throw new ArgumentException("No elements in collection");
-
-            min = iter.Current;
-            max = iter.Current;
-
-            var comparer = Comparer<T>.Default;
-            while (iter.MoveNext())
+            using (var iter = enumerable.GetEnumerator())
             {
+                if (!iter.MoveNext())
+                    throw new ArgumentException("No elements in collection");
+
+                min = iter.Current;
+                max = iter.Current;
+
+                var comparer = Comparer<T>.Default;
+                while (iter.MoveNext())
                 {
-                    int comp = comparer.Compare(min, iter.Current);
-                    if (comp > 0)
-                        min = iter.Current;
-                }
-                {
-                    int comp = comparer.Compare(max, iter.Current);
-                    if (comp < 0)
-                        max = iter.Current;
+                    {
+                        int comp = comparer.Compare(min, iter.Current);
+                        if (comp > 0)
+                            min = iter.Current;
+                    }
+                    {
+                        int comp = comparer.Compare(max, iter.Current);
+                        if (comp < 0)
+                            max = iter.Current;
+                    }
                 }
             }
         }
@@ -256,18 +260,20 @@ namespace TrackPlanner.LinqExtensions
             }
         }
 
-        public static IEnumerable<TSource> DistinctBy<TSource, TKey>(this IEnumerable<TSource> enumerable, Func<TSource, TKey> selector)
+        /*public static IEnumerable<TSource> DistinctBy<TSource, TKey>(this IEnumerable<TSource> enumerable, Func<TSource, TKey> selector)
         {
             var seen = new HashSet<TKey>();
 
-            var iter = enumerable.GetEnumerator();
-            while (iter.MoveNext())
+            using (var iter = enumerable.GetEnumerator())
             {
-                TKey key = selector(iter.Current);
-                if (seen.Add(key))
-                    yield return iter.Current;
+                while (iter.MoveNext())
+                {
+                    TKey key = selector(iter.Current);
+                    if (seen.Add(key))
+                        yield return iter.Current;
+                }
             }
-        }
+        }*/
 
         public static Dictionary<TKey, IReadOnlyList<TValue>> Intersect<TKey, TValue>(IReadOnlyDictionary<TKey, TValue> first,
             IEnumerable<KeyValuePair<TKey, TValue>> second)

@@ -124,10 +124,9 @@
         }
       }
 
-      @foreach (var (kind,duration) in checkpoint.GetEvents(summary))
+      @foreach (var (label,css_class,duration) in checkpoint.GetEvents(summary))
       {
-        var title = $"{kind} {DataFormat.Format(duration)}";
-        var css_class = kind.GetClassIcon();
+        var title = $"{label} {DataFormat.Format(duration)}";
         <i class="@css_class" title="@title" style="margin: 0 2px; color: navy"></i>
       }
       @if (!anchor_reused)

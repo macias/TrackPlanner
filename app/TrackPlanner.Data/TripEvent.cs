@@ -6,9 +6,5 @@ namespace TrackPlanner.Data
     {
         SnackTime,
         Resupply,
-        Lunch,
-        Laundry,
-        Shower,
-        Maintenance,
     }
 }

@@ -17,17 +17,22 @@ namespace TrackPlanner.Data
         public int? IncomingLegIndex { get; set; }
         public bool IsLooped { get; set; }
         public EnumArray<TripEvent,int> EventCount { get; set; }
+        public int[] UserEventsCounter { get; set; }
         public string Label { get; set; }
 
-        public IEnumerable<(TripEvent kind,TimeSpan duration)> GetEvents(SummaryJourney summary) =>
+        public IEnumerable<(string label, string iconClass, TimeSpan duration)> GetEvents(SummaryJourney summary) =>
             Enum.GetValues<TripEvent>().SelectMany(it => Enumerable.Range(0,this.EventCount[ it])
-                    .Select(_ => (  it,summary.PlannerPreferences.EventDuration[it])))
+                    .Select(_ => (  it.GetLabel(),it.GetClassIcon(), summary.PlannerPreferences.EventDuration[it])))
+                .Concat(Enumerable.Range(0,UserEventsCounter.Length).SelectMany(it => Enumerable.Range(0,this.UserEventsCounter[ it])
+                    .Select(_ => (  summary.PlannerPreferences.UserEvents[it].Label,IconClass: summary.PlannerPreferences.UserEvents[it].ClassIcon, 
+                        summary.PlannerPreferences.UserEvents[it].Duration))))
             .OrderBy(it => it.Item1);
         
-        public SummaryCheckpoint()
+        public SummaryCheckpoint(int eventsCount)
         {
             Label = "";
             this.EventCount = new EnumArray<TripEvent, int>();
+            this.UserEventsCounter = new int[eventsCount];
         }
 
         public TimeSpan GetSnackTimeDuration(SummaryJourney summary)

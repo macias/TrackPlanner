@@ -30,16 +30,12 @@ namespace TrackPlanner.Data
         public TimeSpan NextDayStart { get; set; }
         public Dictionary<TripEvent,TimeSpan> EventDuration { get; set; }
         public TimeSpan ShoppingInterval { get; set; }
-        public TimeSpan LaundryOpportunity { get; set; } // when on average will be possible to make a laundry
-        public TimeSpan LunchOpportunity { get; set; } // when we would like to have lunch
-        public TimeSpan ShowerOpportunity { get; set; }
-        public int ShowerEveryDay { get; set; }
-        public int MaintenanceEveryDay { get; set; }
         public TimeSpan CampLandingTime { get; set; }
         public TimeSpan HomeLandingTime { get; set; }
         public TimeSpan CheckpointIntervalLimit { get; set; }
         public Dictionary<string ,TimeSpan > Breaks { get; set; }
         public TimeSpan DefaultAnchorBreak { get; set; }
+        public UserTripEvent[] UserEvents { get; set; }
 
         public UserPlannerPreferences()
         {
@@ -55,6 +51,46 @@ namespace TrackPlanner.Data
                 {"Epic", TimeSpan.FromHours(5)},
             };
 
+            this.UserEvents = new[]
+            {
+                new UserTripEvent()
+                {
+                    Label ="tires",
+                    ClassIcon  = "fas fa-tire",
+                     Duration = TimeSpan.FromMinutes(15),
+                     EveryDay = 14,
+                },
+                new UserTripEvent()
+                {
+                Label ="chain",
+                ClassIcon  = "fas fa-link",
+                Duration = TimeSpan.FromMinutes(7),
+                EveryDay = 2,
+                },
+                new UserTripEvent()
+                {
+                    Label ="shower",
+                    ClassIcon  = "fas fa-shower",
+                    Duration = TimeSpan.FromMinutes(15),
+                    EveryDay = 5,
+                    Opportunity = TimeSpan.FromHours(12),
+                },
+                new UserTripEvent()
+                {
+                    Label ="laundry",
+                    ClassIcon  = "fas fa-tint",
+                    Duration = TimeSpan.FromMinutes(30),
+                    Opportunity = TimeSpan.FromHours(11),
+                },
+                new UserTripEvent()
+                {
+                    Label ="lunch",
+                    ClassIcon  = "fas fa-utensils",
+                    Duration = TimeSpan.FromMinutes(15),
+                    Opportunity = TimeSpan.FromHours(13),
+                },
+            };
+
             CheckpointIntervalLimit = TimeSpan.FromMinutes(100);
             CampLandingTime = TimeSpan.FromHours(18).Add(TimeSpan.FromMinutes(30));
             HomeLandingTime = TimeSpan.FromHours(20).Add(TimeSpan.FromMinutes(30));
@@ -62,21 +98,11 @@ namespace TrackPlanner.Data
             this.NextDayStart = JourneyStart.Add(TimeSpan.FromMinutes(30));
             this.Speeds = new Dictionary<SpeedMode, Speed>();
             this.ShoppingInterval = TimeSpan.FromHours(2);
-            this.LaundryOpportunity = TimeSpan.FromHours(11);
-            this.LunchOpportunity = TimeSpan.FromHours(13);
-            this.ShowerOpportunity = TimeSpan.FromHours(12);
-            this.ShowerEveryDay = 5;
-            this.MaintenanceEveryDay = 2;
-            
 
             this.EventDuration = new Dictionary<TripEvent, TimeSpan>()
             {
-                {TripEvent.Laundry, TimeSpan.FromMinutes(30)},
-                {TripEvent.Lunch, TimeSpan.FromMinutes(15)},
                 {TripEvent.Resupply, TimeSpan.FromMinutes(20)},
                 {TripEvent.SnackTime, TimeSpan.FromMinutes(10)},
-                {TripEvent.Maintenance, TimeSpan.FromMinutes(10)},
-                {TripEvent.Shower, TimeSpan.FromMinutes(15)},
             };
 
             CompactingAngleDeviation = 12;
