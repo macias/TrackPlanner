@@ -130,7 +130,7 @@ namespace TrackPlanner.PathFinder
             Speed curr_adj_speed;
 
             // segment between user point and cross point
-            bool is_snap = currentPlace.Point.HasValue && targetPlace.Point.HasValue;
+            bool is_snap = !currentPlace.IsNode && !targetPlace.IsNode;
 
             if (is_snap)
             {

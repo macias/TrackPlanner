@@ -252,7 +252,7 @@ namespace TrackPlanner.PathFinder
                 // X----xo x----X
                 // where X -- user point and cross point at the same time, x -- crosspoint, o -- user point
                 // this hack was added, we simply use single snap which was used when finding current path leg
-                buckets[pt_index] = buckets[pt_index].RebuildWithSingleSnap(path[^1].Place.Point!.Value, path[^2].Place.NodeId);
+                buckets[pt_index] = buckets[pt_index].RebuildWithSingleSnap(path[^1].Place.Point, path[^2].Place.NodeId);
             }
 
             // note: adjacent legs have shared place
@@ -530,7 +530,7 @@ namespace TrackPlanner.PathFinder
 
                 // we add user point flag to be sure we have such sequence -- user point, cross point, nodes...., cross point, user point
 
-                if (current_place.Point == end.UserPoint && current_place.IsUserPoint)
+                if (current_place.IsUserPoint && current_place.Point == end.UserPoint)
                 {
                     // we add user point flag to be sure we have such sequence -- user point, cross point, nodes...., cross point, user point
                     List<StepRun> route_steps = recreatePath(collector, backtrack, Placement.UserPoint(start), current_place);
@@ -800,16 +800,6 @@ namespace TrackPlanner.PathFinder
                     adjacent.TryAdd(Placement.Crosspoint(snap.TrackCrosspoint, snap.RoadIdx.RoadMapIndex,place.IsFinal), snap.RoadIdx.RoadMapIndex);
                 }
             }
-        }
-
-        private GeoZPoint getPoint(Placement place)
-        {
-            GeoZPoint a;
-            if (place.IsNode)
-                a = map.Nodes[place.NodeId];
-            else
-                a = place.Point!.Value;
-            return a;
         }
 
         private IReadOnlySet<long> suppressTrafficCost(IEnumerable<RoadBucket> buckets, Length suppressionRange)
