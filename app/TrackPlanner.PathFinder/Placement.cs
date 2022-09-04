@@ -36,7 +36,9 @@ namespace TrackPlanner.PathFinder
         public bool IsPrestart => kind.HasFlag(PlaceKind.Prestart);
         public bool IsFinal => kind.HasFlag(PlaceKind.FinalBlob);
         public bool IsSnapped => kind.HasFlag(PlaceKind.Snapped);
-        public long? NodeId { get; }
+        private  readonly long? nodeId;
+        // consumer should check it via IsNode
+        public long NodeId => this.nodeId!.Value;
 
         public Placement()
         {
@@ -51,7 +53,7 @@ namespace TrackPlanner.PathFinder
             this.associatedRoadId = associatedRoadId;
             this.kind = kind;
             this.Point = point;
-            this.NodeId = null;
+            this.nodeId = null;
         }
 
         public Placement(long nodeId, bool isFinal,bool isSnapped)
@@ -67,17 +69,17 @@ namespace TrackPlanner.PathFinder
 
             this.associatedRoadId = null;
             this.Point = null;
-            NodeId = nodeId;
+            this.nodeId = nodeId;
         }
 
         public GeoZPoint GetPoint(IWorldMap map)
         {
-            return Point ?? map.Nodes[this.NodeId!.Value];
+            return Point ?? map.Nodes[this.nodeId!.Value];
         }
 
         public override int GetHashCode()
         {
-            return HashCode.Combine(Point, kind, NodeId);
+            return HashCode.Combine(Point, kind, nodeId);
         }
 
         public override bool Equals(object? obj)
@@ -89,7 +91,7 @@ namespace TrackPlanner.PathFinder
         {
             return Point == other.Point &&
                    kind == other.kind &&
-                   NodeId == other.NodeId;
+                   nodeId == other.nodeId;
         }
 
         public static bool operator ==(Placement left, Placement right)
@@ -105,10 +107,10 @@ namespace TrackPlanner.PathFinder
         public override string ToString()
         {
             string result;
-            if (this.Point.HasValue)
-                result = $"pt:{this.Point}";
-            else
+            if (this.IsNode)
                 result = $"nd:{this.NodeId}";
+            else
+                result = $"pt:{this.Point}";
 
             return $"{result} k:{this.kind}";
         }

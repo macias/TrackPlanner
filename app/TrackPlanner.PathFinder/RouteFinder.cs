@@ -252,7 +252,7 @@ namespace TrackPlanner.PathFinder
                 // X----xo x----X
                 // where X -- user point and cross point at the same time, x -- crosspoint, o -- user point
                 // this hack was added, we simply use single snap which was used when finding current path leg
-                buckets[pt_index] = buckets[pt_index].RebuildWithSingleSnap(path[^1].Place.Point!.Value, path[^2].Place.NodeId!.Value);
+                buckets[pt_index] = buckets[pt_index].RebuildWithSingleSnap(path[^1].Place.Point!.Value, path[^2].Place.NodeId);
             }
 
             // note: adjacent legs have shared place
@@ -315,7 +315,7 @@ namespace TrackPlanner.PathFinder
                 // keep removing same nodes as long the nodes were in snap-range 
                 if (previousLeg.Steps.Count < 2 || nextLeg.Steps.Count < 2
                                                 // the current one has to be within snap
-                                                || !previousBucket.ReachableNodes.Contains(previousLeg.Steps[^1].Place.NodeId!.Value))
+                                                || !previousBucket.ReachableNodes.Contains(previousLeg.Steps[^1].Place.NodeId))
                     break;
             }
         }
@@ -515,11 +515,11 @@ namespace TrackPlanner.PathFinder
 
                 if (current_place.IsNode && map.Roads[current_info.IncomingRoadId!.Value].IsDangerous)
                 {
-                    this.DEBUG_dangerousNodes.Add(current_place.NodeId!.Value);
+                    this.DEBUG_dangerousNodes.Add(current_place.NodeId);
                 }
 
                 {
-                    if (current_place.IsNode && DEBUG_hotNodes.TryGetValue(current_place.NodeId!.Value, out string? comment))
+                    if (current_place.IsNode && DEBUG_hotNodes.TryGetValue(current_place.NodeId, out string? comment))
                     {
                         logger.Info($"Coming to hot node {current_place.NodeId}/{comment} using road {current_info.IncomingRoadId}");
                     }
@@ -560,7 +560,7 @@ namespace TrackPlanner.PathFinder
 
                     if (backtrack.ContainsKey(adj_place))
                     {
-                        if (current_place.IsNode && DEBUG_hotNodes.TryGetValue(current_place.NodeId!.Value, out string? comment))
+                        if (current_place.IsNode && DEBUG_hotNodes.TryGetValue(current_place.NodeId, out string? comment))
                         {
                             logger.Info($"Adjacent to hot node {current_place.NodeId}/{comment} is already used by outgoing road {incoming_road_map_index}@{adj_place.NodeId}");
                         }
@@ -585,7 +585,7 @@ namespace TrackPlanner.PathFinder
                     {
                         if (adj_place.IsNode && this.userPlannerConfig.HACK_ExactToTarget)
                         {
-                            var adj_bucket = RoadBucket.GetRoadBuckets(new[] {adj_place.NodeId!.Value}, map, grid.Calc, allowSmoothing:false).Single();
+                            var adj_bucket = RoadBucket.GetRoadBuckets(new[] {adj_place.NodeId}, map, grid.Calc, allowSmoothing:false).Single();
 
                             var sub_buckets = new List<RoadBucket>() {adj_bucket, end};
                             var worker = new RouteFinder(logger,this.navigator, map, grid, shortcuts, sysConfig with { DumpProgress = false}, new UserPlannerPreferences() {HACK_ExactToTarget = false}.SetUniformSpeeds(),
@@ -637,7 +637,7 @@ namespace TrackPlanner.PathFinder
                             ++stats.BackwardUpdateCount;
                         
                         {
-                            if (current_place.IsNode && DEBUG_hotNodes.TryGetValue(current_place.NodeId!.Value, out string? comment))
+                            if (current_place.IsNode && DEBUG_hotNodes.TryGetValue(current_place.NodeId, out string? comment))
                             {
                                 logger.Info($"Adjacent to hot node {current_place.NodeId}/{comment} is by outgoing road {incoming_road_map_index}@{adj_place.NodeId}, {(segment_info.IsForbidden ? "forbidden" : "")}, weight {outgoing_weight}, updated {updated}");
                             }
@@ -754,7 +754,7 @@ namespace TrackPlanner.PathFinder
 
                 bool has_adjacent_crosspoints = adjacent.Count > 0;
                 
-                foreach (var adj_road_idx in map.GetAdjacentRoads(current.NodeId!.Value))
+                foreach (var adj_road_idx in map.GetAdjacentRoads(current.NodeId))
                 {
                     var adj_node_id = this.map.GetNode(adj_road_idx);
                     if (!this.constraints.IsAcceptable(adj_node_id))
@@ -806,7 +806,7 @@ namespace TrackPlanner.PathFinder
         {
             GeoZPoint a;
             if (place.IsNode)
-                a = map.Nodes[place.NodeId!.Value];
+                a = map.Nodes[place.NodeId];
             else
                 a = place.Point!.Value;
             return a;

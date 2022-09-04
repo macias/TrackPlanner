@@ -48,7 +48,7 @@ namespace TrackPlanner.Turner.Implementation
             List<TrackNode> track = trackPlaces
                 .Where(it => it.IsNode)
                 .ConsecutiveDistinct()
-                .Select(it => TrackNode.Create(this.map,it.NodeId!.Value)).ToList();
+                .Select(it => TrackNode.Create(this.map,it.NodeId)).ToList();
 
             if (false && this.sysConfig.DebugDirectory != null)
             {

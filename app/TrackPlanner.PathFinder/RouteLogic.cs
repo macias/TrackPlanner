@@ -41,7 +41,7 @@ namespace TrackPlanner.PathFinder
             }
             else if (current.IsNode)
             {
-                roadIds = map.GetRoads(current.NodeId!.Value).Select(it => it.RoadMapIndex);
+                roadIds = map.GetRoads(current.NodeId).Select(it => it.RoadMapIndex);
                 return true;
             }
             else if (current.IsCross)
@@ -81,7 +81,7 @@ namespace TrackPlanner.PathFinder
 
             {
                 bool is_suppressed(Placement pl) => (pl.IsSnapped && !pl.IsFinal)
-                                                    || (pl.NodeId.HasValue && suppressedTraffic.Contains(pl.NodeId.Value));
+                                                    || (pl.IsNode && suppressedTraffic.Contains(pl.NodeId));
 
                 if (incoming_road.IsDangerous)
                 {
@@ -92,9 +92,9 @@ namespace TrackPlanner.PathFinder
                     {
                         ; // default cost
                         if (currentPlace.IsNode)
-                            this.DEBUG_lowCostNodes.Add(currentPlace.NodeId!.Value);
+                            this.DEBUG_lowCostNodes.Add(currentPlace.NodeId);
                         if (targetPlace.IsNode)
-                            this.DEBUG_lowCostNodes.Add(targetPlace.NodeId!.Value);
+                            this.DEBUG_lowCostNodes.Add(targetPlace.NodeId);
 
                         risk_info |= Risk.Suppressed;
                     }
@@ -118,8 +118,8 @@ namespace TrackPlanner.PathFinder
                     }
                 }
                 else if (currentPlace.IsNode && targetPlace.IsNode
-                                                      && this.map.IsBikeFootRoadDangerousNearby(/*roadId: incomingRoadMapIndex, */nodeId: currentPlace.NodeId!.Value)
-                                                      && this.map.IsBikeFootRoadDangerousNearby(/*roadId: incomingRoadMapIndex, */nodeId: targetPlace.NodeId!.Value))
+                                                      && this.map.IsBikeFootRoadDangerousNearby(/*roadId: incomingRoadMapIndex, */nodeId: currentPlace.NodeId)
+                                                      && this.map.IsBikeFootRoadDangerousNearby(/*roadId: incomingRoadMapIndex, */nodeId: targetPlace.NodeId))
                 {
                     risk_info |= Risk.HighTrafficBikeLane;
                     cost_factor = 1.0 + this.userPlannerConfig.AddedBikeFootHighTrafficFactor;
