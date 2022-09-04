@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 
-namespace TrackPlanner.Data
+namespace TrackPlanner.Data.Stored
 {
     public sealed class LineDecoration
     {

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using Newtonsoft.Json;
 
-namespace TrackPlanner.Data
+namespace TrackPlanner.Data.Stored
 {
     public sealed class UserPlannerPreferences
     {

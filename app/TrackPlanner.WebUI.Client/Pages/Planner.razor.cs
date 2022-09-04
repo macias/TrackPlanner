@@ -20,6 +20,7 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.JSInterop;
 using TrackPlanner.Data;
+using TrackPlanner.Data.Stored;
 using TrackPlanner.RestSymbols;
 using TrackPlanner.Settings;
 using TrackPlanner.WebUI.Client.Data;

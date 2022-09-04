@@ -1,10 +1,6 @@
-﻿using MathUnit;
-using System;
-using System.Collections.Generic;
-using System.Runtime.CompilerServices;
-using Newtonsoft.Json;
+﻿using System;
 
-namespace TrackPlanner.Data
+namespace TrackPlanner.Data.Stored
 {
     public sealed class UserTripEvent
     {

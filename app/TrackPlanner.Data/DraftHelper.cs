@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Geo;
 using MathUnit;
+using TrackPlanner.Data.Stored;
 using TrackPlanner.Shared;
 using TrackPlanner.LinqExtensions;
 

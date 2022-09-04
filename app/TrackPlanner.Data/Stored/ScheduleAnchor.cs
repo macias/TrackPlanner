@@ -1,7 +1,7 @@
 using System;
 using Geo;
 
-namespace TrackPlanner.Data
+namespace TrackPlanner.Data.Stored
 {
     public sealed class ScheduleAnchor : IAnchor
     {

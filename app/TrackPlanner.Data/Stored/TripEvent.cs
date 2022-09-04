@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace TrackPlanner.Data
+namespace TrackPlanner.Data.Stored
 {
     public enum TripEvent
     {

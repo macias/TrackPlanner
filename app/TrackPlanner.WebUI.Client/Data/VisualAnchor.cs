@@ -2,6 +2,7 @@ using System;
 using BlazorLeaflet.Models;
 using Geo;
 using TrackPlanner.Data;
+using TrackPlanner.Data.Stored;
 
 namespace TrackPlanner.WebUI.Client.Data
 {

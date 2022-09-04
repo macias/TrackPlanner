@@ -1,6 +1,4 @@
-﻿
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -11,6 +9,7 @@ using SharpKml.Dom;
 using TrackPlanner.Shared;
 using TrackPlanner.DataExchange;
 using TrackPlanner.Mapping.Data;
+using TrackPlanner.Data.Stored;
 
 namespace TrackPlanner.Mapping
 {

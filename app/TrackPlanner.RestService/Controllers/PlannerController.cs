@@ -1,17 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using TrackPlanner.Data.Stored;
+using Microsoft.AspNetCore.Mvc;
 using TrackPlanner.RestSymbols;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
-using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Net;
-using System.Threading.Tasks;
-using MathUnit;
-using Newtonsoft.Json;
-using ProtoBuf;
 using TrackPlanner.Data;
 using TrackPlanner.Data.Serialization;
 using TrackPlanner.RestService.Workers;
@@ -19,7 +14,6 @@ using TrackPlanner.Settings;
 using TrackPlanner.LinqExtensions;
 using TrackPlanner.Mapping;
 using DataFormat = TrackPlanner.Data.DataFormat;
-using JsonSerializer = Newtonsoft.Json.JsonSerializer;
 
 namespace TrackPlanner.RestService.Controllers
 {

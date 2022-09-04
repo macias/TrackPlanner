@@ -5,7 +5,7 @@ using System.Linq;
 using TrackPlanner.Data;
 using TrackPlanner.Data.Serialization;
 
-namespace TrackPlanner.Data
+namespace TrackPlanner.Data.Stored
 {
   
     public sealed class UserVisualPreferences

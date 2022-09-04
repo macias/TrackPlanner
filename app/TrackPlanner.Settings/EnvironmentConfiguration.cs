@@ -1,6 +1,7 @@
 using System;
 using TrackPlanner.Data;
 using TrackPlanner.Data.Serialization;
+using TrackPlanner.Data.Stored;
 
 namespace TrackPlanner.Settings
 {

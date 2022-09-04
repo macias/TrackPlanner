@@ -1,7 +1,7 @@
 ﻿using MathUnit;
 using TrackPlanner.Data.Serialization;
 
-namespace TrackPlanner.Data
+namespace TrackPlanner.Data.Stored
 {
     public sealed class UserTurnerPreferences
     {

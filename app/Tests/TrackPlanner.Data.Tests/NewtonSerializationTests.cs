@@ -8,6 +8,7 @@ using Geo;
 using MathUnit;
 using Microsoft.VisualStudio.TestPlatform.TestHost;
 using TrackPlanner.Data.Serialization;
+using TrackPlanner.Data.Stored;
 using TrackPlanner.Shared;
 using Xunit;
 using TimeSpan = System.TimeSpan;

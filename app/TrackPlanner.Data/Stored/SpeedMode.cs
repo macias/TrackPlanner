@@ -1,6 +1,6 @@
 ﻿using MathUnit;
 
-namespace TrackPlanner.Data
+namespace TrackPlanner.Data.Stored
 {
     public enum SpeedMode // NOTE, it is used as indexer!
     {

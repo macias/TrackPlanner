@@ -1,4 +1,5 @@
 ﻿using MathUnit;
+using TrackPlanner.Data.Stored;
 
 namespace TrackPlanner.Data
 {

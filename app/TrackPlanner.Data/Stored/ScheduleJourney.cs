@@ -4,7 +4,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using TrackPlanner.LinqExtensions;
 
-namespace TrackPlanner.Data
+namespace TrackPlanner.Data.Stored
 {
     public sealed class ScheduleJourney :ISchedule<ScheduleDay,ScheduleAnchor>
     {

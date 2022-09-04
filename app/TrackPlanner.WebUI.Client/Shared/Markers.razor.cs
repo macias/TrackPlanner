@@ -16,6 +16,7 @@ using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.JSInterop;
 using TrackPlanner.Data;
+using TrackPlanner.Data.Stored;
 using TrackPlanner.WebUI.Client.Data;
 using TrackPlanner.WebUI.Client.Pages;
 using TrackPlanner.Shared;

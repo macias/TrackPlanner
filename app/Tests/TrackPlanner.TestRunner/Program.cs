@@ -1,15 +1,10 @@
-﻿using System;
-using System.Configuration;
+﻿using TrackPlanner.Data.Stored;
 using System.Linq;
 using MathUnit;
-using Microsoft.Extensions.Configuration;
-using TrackPlanner.Data;
-using TrackPlanner.Settings;
 using TrackPlanner.Shared;
 using TrackPlanner.DataExchange;
 using TrackPlanner.Mapping;
 using TrackPlanner.PathFinder;
-using TrackPlanner.Tests;
 
 namespace TrackPlanner.TestRunner
 {

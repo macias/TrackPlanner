@@ -8,6 +8,7 @@ using TrackPlanner.Settings;
 using SharpKml.Base;
 using SharpKml.Dom;
 using SharpKml.Engine;
+using TrackPlanner.Data.Stored;
 using TrackPlanner.Shared;
 using TimeSpan = System.TimeSpan;
 using TrackPlanner.LinqExtensions;

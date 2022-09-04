@@ -1,4 +1,5 @@
 using System;
+using TrackPlanner.Data.Stored;
 using Xunit;
 
 namespace TrackPlanner.Data.Tests

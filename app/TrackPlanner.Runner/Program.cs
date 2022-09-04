@@ -1,26 +1,20 @@
-﻿using Geo;
+﻿using TrackPlanner.Data.Stored;
+using Geo;
 using MathUnit;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Threading;
 using Microsoft.Extensions.Configuration;
-using OsmSharp.IO.PBF;
 using TrackPlanner.Data;
 using TrackPlanner.Settings;
-using SharpKml.Dom;
 using TrackPlanner.Shared;
-using TrackPlanner.Turner;
 using TrackPlanner.DataExchange;
-using TrackPlanner.LinqExtensions;
 using TrackPlanner.Mapping;
 using TrackPlanner.Mapping.Data;
 using TrackPlanner.PathFinder;
-using TimeSpan = System.TimeSpan;
 
 namespace TrackPlanner.Runner
 {

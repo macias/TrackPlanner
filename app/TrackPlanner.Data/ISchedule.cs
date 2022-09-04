@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using MathUnit;
+using TrackPlanner.Data.Stored;
 
 namespace TrackPlanner.Data
 {

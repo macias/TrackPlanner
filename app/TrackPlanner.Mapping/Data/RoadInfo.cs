@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using TrackPlanner.Data;
+using TrackPlanner.Data.Stored;
 
 namespace TrackPlanner.Mapping.Data
 {

@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using Blazored.Modal;
 using Force.DeepCloner;
 using TrackPlanner.Data;
+using TrackPlanner.Data.Stored;
 using TrackPlanner.Settings;
 
 namespace TrackPlanner.WebUI.Client

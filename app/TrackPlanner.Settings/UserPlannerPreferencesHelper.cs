@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using TrackPlanner.Data;
+using TrackPlanner.Data.Stored;
 using TrackPlanner.LinqExtensions;
 
 namespace TrackPlanner.Settings

@@ -1,6 +1,7 @@
 @using TrackPlanner.Data
 @using TrackPlanner.Settings
 @using TrackPlanner.LinqExtensions
+@using TrackPlanner.Data.Stored
 
 @foreach ((string mode, LineDecoration deco) in Program.Configuration.VisualPreferences.SpeedStyles
     .Select(it => (it.Key.ToString(),it.Value))
