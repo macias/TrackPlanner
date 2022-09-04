@@ -67,9 +67,9 @@ namespace TrackPlanner.PathFinder
 
         internal SegmentInfo GetSegmentInfo(RoadBucket start, RoadBucket end, long incomingRoadMapIndex, Placement currentPlace, Placement targetPlace)
         {
-            var target_point = targetPlace.GetPoint(map);
+            var target_point = targetPlace.Point;
 
-            Length segment_length = calc.GetDistance(currentPlace.GetPoint(map), target_point);
+            Length segment_length = calc.GetDistance(currentPlace.Point, target_point);
 
             var incoming_road = this.map.Roads[incomingRoadMapIndex];
 

@@ -9,6 +9,11 @@ namespace TrackPlanner.PathFinder
     [StructLayout(LayoutKind.Auto)]
     public readonly struct Placement : IEquatable<Placement>
     {
+        public static Placement Node(long nodeId,GeoZPoint point, bool isFinal, bool isSnapped)
+        {
+            return new Placement(nodeId,point, isFinal, isSnapped);
+        }
+
         public static Placement Prestart(GeoZPoint point, bool isFinal)
         {
             return new Placement(point,associatedRoadId:null, PlaceKind.Prestart | PlaceKind.Snapped, isFinal);
@@ -27,8 +32,7 @@ namespace TrackPlanner.PathFinder
             return new Placement(point,roadId, PlaceKind.Aggregate, isFinal:false);
         }
 
-        private readonly GeoZPoint? point;
-        public GeoZPoint Point => this.point!.Value;
+        public GeoZPoint Point { get; }
         private readonly long? associatedRoadId;
         private readonly PlaceKind kind;
         public bool IsUserPoint => kind.HasFlag(PlaceKind.UserPoint);
@@ -53,11 +57,11 @@ namespace TrackPlanner.PathFinder
                 kind |= PlaceKind.FinalBlob;
             this.associatedRoadId = associatedRoadId;
             this.kind = kind;
-            this.point = point;
+            this.Point = point;
             this.nodeId = null;
         }
 
-        public Placement(long nodeId, bool isFinal,bool isSnapped)
+        private Placement(long nodeId, GeoZPoint point, bool isFinal,bool isSnapped)
         {
             if (isFinal && !isSnapped)
                 throw new ArgumentException();
@@ -69,18 +73,13 @@ namespace TrackPlanner.PathFinder
                 this.kind |= PlaceKind.Snapped;
 
             this.associatedRoadId = null;
-            this.point = null;
+            this.Point = point;
             this.nodeId = nodeId;
-        }
-
-        public GeoZPoint GetPoint(IWorldMap map)
-        {
-            return IsNode? map.Nodes[this.nodeId!.Value] : Point;
         }
 
         public override int GetHashCode()
         {
-            return HashCode.Combine(point, kind, nodeId);
+            return HashCode.Combine(Point, kind, nodeId);
         }
 
         public override bool Equals(object? obj)
@@ -90,7 +89,7 @@ namespace TrackPlanner.PathFinder
 
         public bool Equals(Placement other)
         {
-            return point == other.point &&
+            return Point == other.Point &&
                    kind == other.kind &&
                    nodeId == other.nodeId;
         }

@@ -603,7 +603,7 @@ namespace TrackPlanner.PathFinder
                         }
 
                         if (remaining_direct_distance == null)
-                            remaining_direct_distance = calc.GetDistance(adj_place.GetPoint(map), end.UserPoint);
+                            remaining_direct_distance = calc.GetDistance(adj_place.Point, end.UserPoint);
                     }
 
                     var segment_info = this.logic.GetSegmentInfo(start, end, incoming_road_map_index, current_place, adj_place);
@@ -687,7 +687,7 @@ namespace TrackPlanner.PathFinder
 
                 if (collector != null)
                 {
-                    Length remaining_distance = calc.GetDistance(current_place.GetPoint(map),endPlace.GetPoint(map));
+                    Length remaining_distance = calc.GetDistance(current_place.Point,endPlace.Point);
                     this.logger.Verbose($" direct {remaining_distance} route {current_info.RunningRouteDistance}");
                     collector.Collect(directDistance: remaining_distance, routeDistance: total_routing_distance-current_info.RunningRouteDistance);
                 }
@@ -738,7 +738,7 @@ namespace TrackPlanner.PathFinder
                 {
                     var snap_node = this.map.GetNode(snap.RoadIdx);
                     if (this.constraints.IsAcceptable(snap_node))
-                    adjacent.TryAdd(new Placement(snap_node, place.IsFinal, isSnapped: true), snap.RoadIdx.RoadMapIndex);
+                    adjacent.TryAdd(Placement.Node(snap_node, this.map.Nodes[snap_node], place.IsFinal, isSnapped: true), snap.RoadIdx.RoadMapIndex);
                     adjacent.TryAdd(Placement.UserPoint(bucket), snap.RoadIdx.RoadMapIndex);
                 }
         }
@@ -776,7 +776,7 @@ namespace TrackPlanner.PathFinder
                             }
                         }
                     }*/
-                    adjacent.TryAdd(new Placement(adj_node_id, is_final, isSnapped: is_snapped), adj_road_idx.RoadMapIndex);
+                    adjacent.TryAdd(Placement.Node(adj_node_id, this.map.Nodes[adj_node_id], is_final, isSnapped: is_snapped), adj_road_idx.RoadMapIndex);
                 }
             }
             else

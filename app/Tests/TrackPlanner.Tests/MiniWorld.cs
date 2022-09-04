@@ -72,7 +72,7 @@ namespace TrackPlanner.Tests
             return world_map;
         }
 
-        protected IDisposable ComputePlaces(string filename, out RouteManager manager, out IReadOnlyList<Placement> placements, 
+        private IDisposable computePlaces(string filename, out RouteManager manager, out IReadOnlyList<Placement> placements, 
             params GeoZPoint[] userPoints)
         {
             if (userPoints.Length < 2)
@@ -104,7 +104,7 @@ namespace TrackPlanner.Tests
 
         protected IReadOnlyList<Placement> ComputePlaces(string filename, params GeoZPoint[] userPoints)
         {
-            using (ComputePlaces(filename, out _, out var placements, userPoints))
+            using (computePlaces(filename, out _, out var placements, userPoints))
             {
                 return placements;
             }
@@ -114,7 +114,7 @@ namespace TrackPlanner.Tests
         {
             var logger = new NoLogger();
 
-            using (ComputePlaces(filename, out var manager, out var plan_nodes, userPoints))
+            using (computePlaces(filename, out var manager, out var plan_nodes, userPoints))
             {
                 var turner = new NodeTrackTurner(logger, manager.Map, manager.DebugDirectory!);
 
@@ -140,7 +140,7 @@ namespace TrackPlanner.Tests
                         Assert.Equal(reg.Backward, rev.Backward);
                     }
 
-                    return (plan_nodes.Select(it => it.GetPoint(manager.Map)).ToList(), regular);
+                    return (plan_nodes.Select(it => it.Point).ToList(), regular);
                 }
             }
         }

@@ -58,7 +58,7 @@ namespace TrackPlanner.PathFinder
             {
                 string source = entry.Value.index == 0 ? "@" : this.histData[entry.Value.info.Source].index.ToString();
 
-                input.AddPoint(entry.Key.GetPoint(map), $"{entry.Value.index}{(entry.Key.IsNode?$"#{entry.Key.NodeId}":"")} {entry.Value.weight} from {source}",comment:null, entry.Value.index == 0 ? PointIcon.StarIcon : PointIcon.DotIcon);
+                input.AddPoint(entry.Key.Point, $"{entry.Value.index}{(entry.Key.IsNode?$"#{entry.Key.NodeId}":"")} {entry.Value.weight} from {source}",comment:null, entry.Value.index == 0 ? PointIcon.StarIcon : PointIcon.DotIcon);
 
                 this.lastIndexSaved = entry.Value.index;
             }

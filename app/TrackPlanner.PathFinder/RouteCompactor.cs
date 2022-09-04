@@ -202,7 +202,7 @@ namespace TrackPlanner.PathFinder
             
             foreach (StepRun step in pathSteps)
             {
-                GeoZPoint current_point = step.Place.GetPoint(map);
+                GeoZPoint current_point = step.Place.Point;
 
                 if (leg.Fragments.Any())
                 {
