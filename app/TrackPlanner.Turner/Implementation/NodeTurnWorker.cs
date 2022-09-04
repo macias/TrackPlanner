@@ -46,7 +46,7 @@ namespace TrackPlanner.Turner.Implementation
         public List<TurnInfo> ComputeTurnPoints(IEnumerable<Placement> trackPlaces)
         {
             List<TrackNode> track = trackPlaces
-                .Where(it => it.NodeId.HasValue)
+                .Where(it => it.IsNode)
                 .ConsecutiveDistinct()
                 .Select(it => TrackNode.Create(this.map,it.NodeId!.Value)).ToList();
 
