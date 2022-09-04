@@ -29,11 +29,6 @@ namespace TrackPlanner.Data
             return _this.IsLooped && _this.Days.SelectMany(it => it.Anchors).HasMany();
         }
 
-        public static bool HasMultiplePoints(this IReadOnlySchedule schedule)
-        {
-            return schedule.Days.SelectMany(it => it.Anchors).HasMany();
-        }
-
         public static bool IsLoopedDay(this IReadOnlySchedule readOnlySchedule, int dayIndex)
         {
             return readOnlySchedule.IsLoopActivated() && dayIndex == readOnlySchedule.Days.Count - 1;

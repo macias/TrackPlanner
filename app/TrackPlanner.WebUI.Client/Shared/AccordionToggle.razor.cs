@@ -34,7 +34,7 @@ namespace TrackPlanner.WebUI.Client.Shared
             return this.CollapsedChanged.InvokeAsync(value);
         }
 
-        public async ValueTask ToggleAsync()
+        public async void ToggleAsync()
         {
             Console.WriteLine($"Toggling from collapsed {Collapsed}");
             await setCollapsedAsync(!Collapsed);

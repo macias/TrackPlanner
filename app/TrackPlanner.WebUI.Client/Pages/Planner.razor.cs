@@ -32,7 +32,7 @@ namespace TrackPlanner.WebUI.Client.Pages
 {
     public partial class Planner : IMapManager
     {
-        private Map map = default!;
+        public Map Map { get; private set; }= default!;
 
         private Markers markers = default!;
         public TrackPlan Plan { get; private set; }= new ();
@@ -76,8 +76,8 @@ namespace TrackPlanner.WebUI.Client.Pages
         private readonly DraftHelper draftHelper;
         private CommonDialog commonDialog = default!;
         private PlanWorker planWorker = default!;
-        private bool calcReal;
-        public bool CalcReal => this.calcReal;
+        private bool trueCalculations;
+        public bool TrueCalculations => this.trueCalculations;
 
         public string? FileName { get; set; }
         
@@ -110,18 +110,18 @@ namespace TrackPlanner.WebUI.Client.Pages
             foreach (var entry in Program.Configuration.VisualPreferences.SpeedStyles)
                 Console.WriteLine($"{entry.Key} {entry.Value.AbgrColor}");
 
-            this.calcReal = Program.Configuration.Defaults.CalcReal;
+            this.trueCalculations = Program.Configuration.Defaults.CalcReal;
             this.commonDialog = new CommonDialog(JsRuntime);
             this.planWorker = new PlanWorker(Rest);
             
-            map = new Map(JsRuntime)
+            this.Map = new Map(JsRuntime)
             { 
                 Center = new LatLng {Lat = 53.16844f, Lng = 18.73222f},
                 Zoom = 9.8f
             };
 
             Console.WriteLine("Creating event");
-            map.OnInitialized += () =>
+            this.Map.OnInitialized += () =>
             {
                 Console.WriteLine("Map on init");
 
@@ -130,10 +130,10 @@ namespace TrackPlanner.WebUI.Client.Pages
                     UrlTemplate = Program.Configuration.TileServer + "{z}/{x}/{y}.png",
                     Attribution = "&copy; <a href=\"https://www.openstreetmap.org/copyright\">OpenStreetMap</a> contributors",
                 };
-                map.AddLayer(tile_layer);
+                this.Map.AddLayer(tile_layer);
                 Console.WriteLine("Add on click");
 
-                map.OnClick += onMapClick;
+                this.Map.OnClick += onMapClick;
 
                 Console.WriteLine("Map on init done");
 
@@ -149,24 +149,24 @@ namespace TrackPlanner.WebUI.Client.Pages
 
         public void MarkerRemoved( Marker marker)
         {
-            this.map.RemoveLayer(marker);
+            this.Map.RemoveLayer(marker);
         }
 
         public void BeforeMarkersRemoved()
         {
             removeLegLayers();
             foreach (var marker in this.markers.MarkerElements)
-                this.map.RemoveLayer(marker);
+                this.Map.RemoveLayer(marker);
         }
 
         public void MarkerAdded(Marker marker)
         {
-            map.AddLayer(marker);
+            this.Map.AddLayer(marker);
             Console.WriteLine($"Map layer added");
         }
 
 
-        private async Task DownloadAsync()
+        private void DownloadAsync()
         {
           /*  if (this.Plan == null)
             {
@@ -266,16 +266,16 @@ namespace TrackPlanner.WebUI.Client.Pages
                           + $"{active_fragment.Mode}"
             };
 
-            await p.OpenOnAsync(map);
+            await p.OpenOnAsync(this.Map);
             await Task.Delay(Program.Configuration.PopupTimeout);
-            await p.CloseAsync(map);
+            await p.CloseAsync(this.Map);
         }
 
         public async ValueTask RebuildNeededAsync()
         {
             Console.WriteLine("Planner redrawing");
 
-            await BuildPlanAsync(this.CalcReal && this.AutoBuild);
+            await BuildPlanAsync(this.TrueCalculations && this.AutoBuild);
 
             Console.WriteLine("MarkersOnOnDraftNeededAsync done");
         }
@@ -309,18 +309,18 @@ namespace TrackPlanner.WebUI.Client.Pages
         private void removeLegLayer(InteractiveLayer layer)
         {
             layer.OnMouseOver -= LineOnOnMouseOverAsync;
-            map.RemoveLayer(layer);
+            this.Map.RemoveLayer(layer);
             this.legLayers.Remove(layer);
         }
 
         private Task BuildPlanAsync() // for UI sake
         {
-            return BuildPlanAsync(this.CalcReal);
+            return BuildPlanAsync(this.TrueCalculations);
         }
 
         private  Task CompleteRebuildPlanAsync() // for UI sake
         {
-            return CompleteRebuildPlanAsync(this.CalcReal);
+            return CompleteRebuildPlanAsync(this.TrueCalculations);
         }
 
        
@@ -463,7 +463,7 @@ namespace TrackPlanner.WebUI.Client.Pages
                     line.Shape = shape;
                     line.OnMouseOver += LineOnOnMouseOverAsync;
 
-                    map.AddLayer(line);
+                    this.Map.AddLayer(line);
                     this.legLayers.Add(line, new LayerReference(leg, fragment));
                 }
             }
@@ -475,12 +475,6 @@ namespace TrackPlanner.WebUI.Client.Pages
         {
             try
             {
-                if (!request.GetPointsSequence().HasMany())
-                {
-                    Console.WriteLine("Not enough points for planning.");
-                    return null;
-                }
-
                 var (failure, new_plan) = await this.planWorker.GetPlanAsync(request, calcReal, CancellationToken.None);
 
                 if (failure!=null)
@@ -524,20 +518,6 @@ namespace TrackPlanner.WebUI.Client.Pages
             return plan_request;
         }*/
 
-        private async Task PlanFixedAsync()
-        {
-            await Task.CompletedTask;
-            /*List<GeoPoint> user_points = new List<GeoPoint>  {GeoPoint.FromDegrees(53.024, 18.60917), GeoPoint.FromDegrees(53.15528, 18.61338),};
-            if (this.markers.IsLoopedRoute)
-                user_points.Add(user_points.First());
-
-            await planAsync(new PlanRequest()
-            {
-                UserPoints = user_points.ToArray(),
-                Preferences = Program.Configuration.UserPrefs,
-            });*/
-        }
-        
         private async void onMapClick(object sender, MouseEvent e)
         {
             Console.WriteLine($"Clicked on {e.LatLng.ToPointF()}");
@@ -549,6 +529,12 @@ namespace TrackPlanner.WebUI.Client.Pages
 
         private async Task CompleteRebuildPlanAsync(bool calcReal) 
         {
+            if (!this.markers.HasEnoughPointsForBuild())
+            {
+                Console.WriteLine("Not enough points to build a plan.");
+                return;
+            }
+
             TrackPlan? new_plan = await getPlanAsync(createJourneySchedule(onlyPinned:true).BuildPlanRequest(),calcReal);
             if (new_plan != null)
             {
@@ -570,9 +556,13 @@ namespace TrackPlanner.WebUI.Client.Pages
                 return;
             }
 
-            var anchors_count = markers.AnchorElements.Count();
-            if (anchors_count <= 1)
+            if (!this.markers.HasEnoughPointsForBuild())
+            {
+                Console.WriteLine("Not enough points for refresh build.");
                 return;
+            }
+
+            var anchors_count = markers.AnchorElements.Count();
 
             Console.WriteLine($"DEBUG building only needed legs, in total {this.Plan.Legs.Count}, needed {this.Plan.Legs.Count(it => it.IsDrafted)}");
             var planner_prefs = Program.Configuration.PlannerPreferences.DeepClone();
@@ -586,7 +576,8 @@ namespace TrackPlanner.WebUI.Client.Pages
                     DEBUG_anchors.Add(DEBUG_anchors[0]);
                 
                 var leg_idx = -1;
-                foreach ((GeoPoint prev, GeoPoint next) in createJourneySchedule(onlyPinned:false).BuildPlanRequest().GetPointsSequence().Select(it => it.UserPoint).Slide())
+                foreach ((GeoPoint prev, GeoPoint next) in createJourneySchedule(onlyPinned:false).BuildPlanRequest().GetPointsSequence()
+                             .Select(it => it.UserPoint).Slide())
                 {
                     ++leg_idx;
                     if (!this.Plan.Legs[leg_idx].NeedsRebuild(calcReal))

@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Globalization;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
@@ -270,8 +271,9 @@ namespace TrackPlanner.WebUI.Client.Shared
 
         private void detachMarker(Marker marker)
         {
-            marker.OnMove -= OnDrag;
-            marker.OnMoveEnd -= onDragEndAsync;
+            marker.OnMove -= onMarkerDrag;
+            marker.OnMoveEnd -= onMarkerDragEndAsync;
+            marker.OnClick -= onMarkerClickAsync;
 
             this.MapManager.MarkerRemoved(marker);
         }
@@ -290,7 +292,7 @@ namespace TrackPlanner.WebUI.Client.Shared
             throw new ArgumentException("Marker not found.");
         }
 
-        private void OnDrag(Marker marker, DragEvent evt)
+        private void onMarkerDrag(Marker marker, DragEvent evt)
         {
             this.onDragMarkerLatLng = evt.LatLng;
             
@@ -348,12 +350,24 @@ namespace TrackPlanner.WebUI.Client.Shared
             
             // Console.WriteLine($"Attaching marker with title {marker.Title} and icon {icon.Html}");
 
-            marker.OnMove += OnDrag;
-            marker.OnMoveEnd += onDragEndAsync;
+            marker.OnMove += onMarkerDrag;
+            marker.OnMoveEnd += onMarkerDragEndAsync;
+            marker.OnClick += onMarkerClickAsync;
 
             this.MapManager.MarkerAdded(marker);
             
             return marker;
+        }
+
+        private async void onMarkerClickAsync(InteractiveLayer sender, MouseEvent e)
+        {
+            var marker = (sender as Marker)!;
+            var coords = await askForPositionAsync(marker.Position);
+            if (coords != null)
+            {
+                await setMarkerPositionAsync(marker, coords);
+                await marker.SetLatLngAsync(MapManager.Map, coords);
+            }
         }
 
         private VisualAnchor<Marker> insertAnchor(LatLng coords,int dayIndex,int anchorIndex,bool isPinned)
@@ -388,32 +402,42 @@ namespace TrackPlanner.WebUI.Client.Shared
            return $"{dayIndex + 1}-{anchorIndex + 1+(dayIndex==0?0:1)}";
        }
 
-       private async ValueTask askForPositionAsync()
+       private async void addMarkerByPositionAsync()
        {
-           string? input = await this.commonDialog.PromptAsync("Enter anchor position");
+           var coords = await askForPositionAsync(position: null);
+           if (coords != null)
+               await AddMarkerAsync(coords);
+       }
+
+       private async ValueTask<LatLng?> askForPositionAsync(LatLng? position)
+       {
+           string? initial = null;
+           if (position != null)
+               initial = $"{position.Lat}, {position.Lng}";
+           string? input = await this.commonDialog.PromptAsync("Anchor position",initial);
            if (string.IsNullOrEmpty(input))
-               return;
+               return null;
 
            var parts = input.Split(",").Select(it => it.Trim()).ToList();
            if (parts.Count != 2)
            {
                Console.WriteLine("Expected 'lat,long' input.");
-               return;
+               return null;
            }
 
            if (!float.TryParse(parts[0], out var lat))
            {
                Console.WriteLine($"Unable to parse latitude: {parts[0]}");
-               return;
+               return null;
            }
 
            if (!float.TryParse(parts[1], out var lon))
            {
                Console.WriteLine($"Unable to parse longitude: {parts[1]}");
-               return;
+               return null;
            }
 
-           await AddMarkerAsync(new LatLng(lat:lat,lng:lon));
+           return new LatLng(lat:lat,lng:lon);
        }
        
        private void deletePlaceholder()
@@ -579,17 +603,28 @@ Console.WriteLine($"DEBUG loop ended after {DEBUG_iter} iterations with leg_idx 
            Console.WriteLine($"After deleting marker we have {this.plan.Legs.Count}, previously {DEBUG_leg_count}");
        }
 
-       private async void onDragEndAsync(Marker marker, Event e)
+       private async void onMarkerDragEndAsync(Marker marker, Event e)
+       {
+           await setMarkerPositionAsync(marker,this.onDragMarkerLatLng);
+       }
+
+       private async ValueTask setMarkerPositionAsync(Marker marker,LatLng position)
        {
            this.VisualSchedule.IsModified = true;
-           
-           marker.Position = this.onDragMarkerLatLng;
-           (int day_idx,int anchor_idx) = indexOfMarker(marker);
 
-           resetAnchorSurroundings(day_idx,ref anchor_idx, out _);
+           marker.Position = position;
+           (int day_idx, int anchor_idx) = indexOfMarker(marker);
+
+           resetAnchorSurroundings(day_idx, ref anchor_idx, out _);
 
            await rebuildNeededAsync();
        }
+
+       public bool HasEnoughPointsForBuild()
+       {
+           return this.Days.SelectMany(it => it.Anchors).Where(it => it.IsPinned).HasMany();
+       }
+
 
        public async Task<bool> AddMarkerAsync(LatLng coords)
        {
@@ -602,11 +637,21 @@ Console.WriteLine($"DEBUG loop ended after {DEBUG_iter} iterations with leg_idx 
 
           var anchor = insertAnchor(coords, day_idx, anchor_idx, isPinned: true);
           
-           if (this.AnchorElements.HasMany())
+           if (HasEnoughPointsForBuild())
            {
-               int leg_idx = this.GetIncomingLegIndex(day_idx, anchor_idx) ?? 0;
-               this.plan.Legs.Insert(leg_idx, LegPlan.Missing);
-               Console.WriteLine($"DEBUG AddMarkerAsync legs {this.plan.Legs.Count}");
+               if (this.plan.IsEmpty) // when starting with plan go easy and just remember to add loop leg
+               {
+                   this.plan.Legs.Insert(0, LegPlan.Missing);
+                   if (this.IsLooped)
+                       this.plan.Legs.Insert(0, LegPlan.Missing);
+               }
+               else
+               {
+                   int leg_idx = this.GetIncomingLegIndex(day_idx, anchor_idx) ?? 0;
+                   this.plan.Legs.Insert(leg_idx, LegPlan.Missing);
+               }
+
+               Console.WriteLine($"DEBUG AddMarkerAsync legs count {this.plan.Legs.Count}");
            }
            resetAnchorSurroundings(day_idx, ref anchor_idx, out _);
 

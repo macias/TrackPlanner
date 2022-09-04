@@ -27,7 +27,7 @@
   void renderPlaceholderRow()
   {
     <li style="margin-bottom: 1rem">
-      <i  @onclick="args => askForPositionAsync()" style="margin-left:0.5em;  color: rgb(20,215,20);" class="fas fa-map-marker-alt"></i>
+      <i  @onclick="args => addMarkerByPositionAsync()" style="margin-left:0.5em;  color: rgb(20,215,20);" class="fas fa-map-marker-alt"></i>
       
       <button type="button" style="margin-right: 1rem; float:right" class="btn btn-dark btn-sm"
               @onclick="args => deletePlaceholder()"><i class="fas fa-times-circle"></i></button>

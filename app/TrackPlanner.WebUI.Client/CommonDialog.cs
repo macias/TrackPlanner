@@ -28,9 +28,9 @@ namespace TrackPlanner.WebUI.Client
             return confirmed;
         }
 
-        public async ValueTask<string?> PromptAsync(string message)
+        public async ValueTask<string?> PromptAsync(string message,string? initialValue = null)
         { 
-            var input = await jsRuntime.InvokeAsync<string?>("prompt", message); 
+            var input = await jsRuntime.InvokeAsync<string?>("prompt", message,initialValue); 
             return input;
         }
         
