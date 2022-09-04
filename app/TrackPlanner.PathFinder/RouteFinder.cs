@@ -25,12 +25,15 @@ namespace TrackPlanner.PathFinder
         public static bool TryFindPath(ILogger logger,Navigator navigator, IWorldMap map, RoadGrid grid, SystemConfiguration sysConfig,
             UserPlannerPreferences userPlannerConfig, IReadOnlyList<RequestPoint> userPoints,
             CancellationToken cancellationToken,
-            [MaybeNullWhen(false)] out List<LegRun> pathSteps)
+            [MaybeNullWhen(false)] out List<LegRun> pathSteps,out string? problem)
         {
             var buckets = grid.GetRoadBuckets(userPoints, sysConfig.InitSnapProximityLimit, sysConfig.FinalSnapProximityLimit, requireAllHits: true, singleMiddleSnaps: true);
             var finder = new RouteFinder(logger,navigator, map, grid, new Shortcuts(), sysConfig, userPlannerConfig, buckets, new PathConstraints(), cancellationToken);
-            return finder.tryFindPath(buckets, out pathSteps);
+            var result = finder.tryFindPath(buckets, out pathSteps);
+            problem = finder.problemMessage;
+            return result;
         }
+
 
         public static bool TryFindPath(ILogger logger,Navigator navigator, IWorldMap map, RoadGrid grid, SystemConfiguration sysConfig,
             UserPlannerPreferences userPlannerConfig, IReadOnlyList<NodePoint> userPoints,
@@ -85,6 +88,7 @@ namespace TrackPlanner.PathFinder
         private readonly CancellationToken cancellationToken;
         private readonly RoadGrid grid;
         private readonly Shortcuts shortcuts;
+        private string? problemMessage;
 
         private string? debugDirectory => this.navigator.GetDebug(this.sysConfig.EnableDebugDumping);
 
@@ -268,14 +272,14 @@ namespace TrackPlanner.PathFinder
                 smoothLegs(buckets[bucket_idx],prev,next);
 
                 if (prev.Steps.Last().Place != next.Steps.First().Place)
-                    throw new ArgumentException("Legs are not connected");
+                    this.problemMessage ??= $"Legs {bucket_idx} are not connected";
             }
             
             // ... so we have to have separate loop just for validation
             foreach (var raw_leg in rawLegs)
             {
                 if (raw_leg.Steps.First().IncomingDistance != Length.Zero || raw_leg.Steps.First().IncomingTime != TimeSpan.Zero)
-                    throw new ArgumentOutOfRangeException($"Initial step should be zero, it is {raw_leg.Steps.First().IncomingDistance} in {raw_leg.Steps.First().IncomingTime}");
+                    this.problemMessage ??= $"Initial step should be zero, it is {raw_leg.Steps.First().IncomingDistance} in {raw_leg.Steps.First().IncomingTime}";
 
             }
         }

@@ -7,8 +7,8 @@ namespace TrackPlanner.Data
 {
     public record struct RequestPoint
     {
-        public GeoPoint UserPoint { get; }
-        public bool AllowSmoothing { get; }
+        public GeoPoint UserPoint { get; init;}
+        public bool AllowSmoothing { get; init; }
 
         public RequestPoint(GeoPoint userPoint, bool allowSmoothing)
         {

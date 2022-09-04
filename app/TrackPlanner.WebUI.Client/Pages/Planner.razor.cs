@@ -363,6 +363,10 @@ namespace TrackPlanner.WebUI.Client.Pages
             else
             {
                 Console.WriteLine($"Data loaded successfuly in {(Stopwatch.GetTimestamp()-start)/Stopwatch.Frequency}s");
+                failure = schedule!.TrackPlan.DEBUG_Validate();
+                if (failure != null)
+                    await this.commonDialog.AlertAsync($"Loaded plan is invalid: {failure}");
+                
                 this.FileName = schedule_path;
                 Program.Configuration.PlannerPreferences.UseStableRoads = schedule!.PlannerPreferences.UseStableRoads;
                 this.Plan = schedule.TrackPlan;
@@ -486,10 +490,11 @@ namespace TrackPlanner.WebUI.Client.Pages
                     await this.commonDialog.AlertAsync("Computing route failed");
                 else
                 {
-                    Console.WriteLine("Plan received.");
+                    Console.WriteLine($"Plan received with {new_plan.ProblemMessage}.");
                     failure = new_plan.DEBUG_Validate();
-                    if (failure!=null)
-                        await this.commonDialog.AlertAsync($"Received plan is invalid: {failure}");
+                    if (failure != null)
+                        await this.commonDialog.AlertAsync($"Plan is invalid: {failure}");
+
                     return new_plan;
                 }
             }

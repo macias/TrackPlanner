@@ -31,7 +31,8 @@ namespace TrackPlanner.RestService.Workers
             //foreach (var pt in request.Points)
 //                this.logger.Info($"{pt.UserPoint.Latitude} {pt.UserPoint.Longitude}");
 
-            if (!manager.TryFindRawRoute(request.PlannerPreferences, request.GetPointsSequence().ToList(), CancellationToken.None, out List<LegRun>? legs))
+            if (!manager.TryFindRawRoute(request.PlannerPreferences, request.GetPointsSequence().ToList(), CancellationToken.None, out List<LegRun>? legs,
+                    out string? problem))
             {
                 plan = null;
                 return false;
@@ -55,6 +56,8 @@ namespace TrackPlanner.RestService.Workers
             }
 
             plan = this.manager.CompactRawRoute(request.PlannerPreferences, legs);
+            if (problem != null)
+                plan.ProblemMessage = problem;
             plan.DailyTurns = daily_turns;
 
             return true;

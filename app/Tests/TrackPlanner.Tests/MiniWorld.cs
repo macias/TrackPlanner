@@ -72,7 +72,8 @@ namespace TrackPlanner.Tests
             return world_map;
         }
 
-        private IDisposable computePlaces(string filename, out RouteManager manager, out IReadOnlyList<Placement> placements, params GeoZPoint[] userPoints)
+        private IDisposable computePlaces(string filename, out RouteManager manager, out IReadOnlyList<Placement> placements, 
+            params GeoZPoint[] userPoints)
         {
             if (userPoints.Length < 2)
                 throw new ArgumentOutOfRangeException();
@@ -84,12 +85,17 @@ namespace TrackPlanner.Tests
             var result = RouteManager.Create(logger, new Navigator(baseDirectory), mini_map,
                 new SystemConfiguration() {CompactPreservesRoads = true}, out manager);
 
-            var turner = new NodeTrackTurner(logger, manager.Map, manager.DebugDirectory!);
+            RequestPoint[] req_points = userPoints.Select(it => new RequestPoint(it.Convert(), false)).ToArray();
+            for (int i = 1; i < req_points.Length - 1; ++i)
+            {
+                req_points[i] = req_points[i] with {AllowSmoothing = true};
+            }
 
             List<LegRun>? plan;
-            if (!manager.TryFindRawRoute(user_configuration, userPoints.Select(it => new RequestPoint(it.Convert(), false)).ToArray(),
-                    CancellationToken.None, out plan))
+            if (!manager.TryFindRawRoute(user_configuration, req_points, CancellationToken.None, out plan,out var problem))
                 throw new Exception("Route not found");
+            if (problem != null)
+                throw new Exception(problem);
 
             placements = plan.SelectMany(leg => leg.Steps.Select(it => it.Place)).ToList();
 

@@ -12,7 +12,8 @@ namespace TrackPlanner.Data
         public List<LegPlan> Legs { get; set; }
         public List<List<TurnInfo>> DailyTurns { get; set; } // turns within days
         public bool IsEmpty => this.Legs.Count == 0;
-        
+        public string? ProblemMessage { get; set; }
+
         public TrackPlan()
         {
             this.Legs = new List<LegPlan>();
@@ -21,6 +22,9 @@ namespace TrackPlanner.Data
 
         public string? DEBUG_Validate()
         {
+            if (ProblemMessage != null)
+                return ProblemMessage;
+            
             for (int i=0;i<this.Legs.Count;++i)
             {
               var failure =  Legs[i].DEBUG_Validate(legIndex:i);
