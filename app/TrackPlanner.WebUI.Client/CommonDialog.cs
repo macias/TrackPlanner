@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Linq;
+using System.Threading.Tasks;
 using Geo;
 using MathUnit;
 using Microsoft.JSInterop;
@@ -29,8 +30,9 @@ namespace TrackPlanner.WebUI.Client
         }
 
         public async ValueTask<string?> PromptAsync(string message,string? initialValue = null)
-        { 
-            var input = await jsRuntime.InvokeAsync<string?>("prompt", message,initialValue); 
+        {
+            var parameters = new object?[] {(object?)message, (object?)initialValue}.Where(it => it != null).ToArray();
+            var input = await jsRuntime.InvokeAsync<string?>("prompt", args: parameters); 
             return input;
         }
         
