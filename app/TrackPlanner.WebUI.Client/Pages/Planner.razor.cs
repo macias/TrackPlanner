@@ -27,6 +27,7 @@ using TrackPlanner.WebUI.Client.Data;
 using TrackPlanner.WebUI.Client.Shared;
 using TrackPlanner.Shared;
 using TrackPlanner.LinqExtensions;
+using TrackPlanner.WebUI.Client.Dialogs;
 using TimeSpan = System.TimeSpan;
 
 namespace TrackPlanner.WebUI.Client.Pages
@@ -54,7 +55,7 @@ namespace TrackPlanner.WebUI.Client.Pages
                 
                 // fire&forget
                 #pragma warning disable CS4014
-                BuildPlanAsync();
+                uiBuildPlanAsync();
                 #pragma warning restore CS4014 
             }
         }
@@ -70,7 +71,7 @@ namespace TrackPlanner.WebUI.Client.Pages
                 
                 // fire&forget
 #pragma warning disable CS4014
-                CompleteRebuildPlanAsync();
+                uiCompleteRebuildPlanAsync();
 #pragma warning restore CS4014 
             }
         }
@@ -276,7 +277,7 @@ namespace TrackPlanner.WebUI.Client.Pages
         {
             Console.WriteLine("Planner redrawing");
 
-            await BuildPlanAsync(this.TrueCalculations && this.AutoBuild);
+            await uiBuildPlanAsync(this.TrueCalculations && this.AutoBuild);
 
             Console.WriteLine("MarkersOnOnDraftNeededAsync done");
         }
@@ -314,14 +315,17 @@ namespace TrackPlanner.WebUI.Client.Pages
             this.legLayers.Remove(layer);
         }
 
-        private Task BuildPlanAsync() // for UI sake
+        private async Task uiBuildPlanAsync() // for UI sake
         {
-            return BuildPlanAsync(this.TrueCalculations);
+                await uiBuildPlanAsync(this.TrueCalculations);
         }
 
-        private  Task CompleteRebuildPlanAsync() // for UI sake
+        private  async Task uiCompleteRebuildPlanAsync() // for UI sake
         {
-            return CompleteRebuildPlanAsync(this.TrueCalculations);
+            using (Modal.ShowGuardDialog("Rebuilding..."))
+            {
+                await CompleteRebuildPlanAsync(this.TrueCalculations);
+            }
         }
 
        
@@ -336,7 +340,11 @@ namespace TrackPlanner.WebUI.Client.Pages
             this.markers.Clear();
         }
 
-        
+        private async Task testAsync()
+        {
+            await Task.Delay(TimeSpan.FromSeconds(1));
+        }
+
         private async Task loadScheduleAsync()
         {
             if (this.markers.VisualSchedule.IsModified)
@@ -346,35 +354,42 @@ namespace TrackPlanner.WebUI.Client.Pages
             }
 
             var schedule_path = await Modal.ShowFileDialogAsync("Load schedule", FileDialog.DialogKind.Open);
-            if (schedule_path==null)
+            if (schedule_path == null)
             {
                 Console.WriteLine("Modal was cancelled");
                 return;
-            } 
-            
-            Console.WriteLine("Sending load rquest");
-            long start= Stopwatch.GetTimestamp();
-            var (failure, schedule) = await Rest.GetAsync<ScheduleJourney>(Url.Combine(Program.Configuration.PlannerServer, Routes.Planner, Methods.Get_LoadSchedule),
-                new RestQuery().Add(Parameters.Path,schedule_path),
-                CancellationToken.None);
+            }
+
+            string? failure;
+            ScheduleJourney ? schedule;
+            long start = Stopwatch.GetTimestamp();
+            using (Modal.ShowGuardDialog("Loading..."))
+            {
+
+                Console.WriteLine("Sending load rquest");
+                ( failure,  schedule) = await Rest.GetAsync<ScheduleJourney>(Url.Combine(Program.Configuration.PlannerServer, Routes.Planner, Methods.Get_LoadSchedule),
+                    new RestQuery().Add(Parameters.Path, schedule_path),
+                    CancellationToken.None);
+            }
+
             if (failure != null)
             {
                 Console.WriteLine(failure);
             }
             else
             {
-                Console.WriteLine($"Data loaded successfuly in {(Stopwatch.GetTimestamp()-start)/Stopwatch.Frequency}s");
+                Console.WriteLine($"Data loaded successfuly in {(Stopwatch.GetTimestamp() - start) / Stopwatch.Frequency}s");
                 failure = schedule!.TrackPlan.DEBUG_Validate();
                 if (failure != null)
                     await this.commonDialog.AlertAsync($"Loaded plan is invalid: {failure}");
-                
+
                 this.FileName = schedule_path;
                 Program.Configuration.PlannerPreferences.UseStableRoads = schedule!.PlannerPreferences.UseStableRoads;
                 this.Plan = schedule.TrackPlan;
                 this.markers.SetSchedule(schedule);
                 recreateLegLayers();
                 this.markers.ResetSummary();
-                
+
                 Console.WriteLine("Calling state has changed");
             }
         }
@@ -416,16 +431,19 @@ namespace TrackPlanner.WebUI.Client.Pages
 
             var schedule = createJourneySchedule(onlyPinned:false);
 
-            var (failure, _) = await Rest.PostAsync<ValueTuple>(Url.Combine(Program.Configuration.PlannerServer, Routes.Planner, Methods.Post_SaveSchedule),
-               new SaveRequest() { Schedule = schedule, Path = this.FileName}, CancellationToken.None);
-            if (failure != null)
+            using (Modal.ShowGuardDialog("Saving..."))
             {
-                Console.WriteLine(failure);
-            }
-            else
-            {
-                Console.WriteLine("Save successful.");
-                this.markers.VisualSchedule.IsModified = false;
+                var (failure, _) = await Rest.PostAsync<ValueTuple>(Url.Combine(Program.Configuration.PlannerServer, Routes.Planner, Methods.Post_SaveSchedule),
+                    new SaveRequest() {Schedule = schedule, Path = this.FileName}, CancellationToken.None);
+                if (failure != null)
+                {
+                    Console.WriteLine(failure);
+                }
+                else
+                {
+                    Console.WriteLine("Save successful.");
+                    this.markers.VisualSchedule.IsModified = false;
+                }
             }
         }
         
@@ -554,88 +572,94 @@ namespace TrackPlanner.WebUI.Client.Pages
             Console.WriteLine($"Complete rebuild: done.");
         }
 
-        private async Task BuildPlanAsync(bool calcReal) 
+        private async Task uiBuildPlanAsync(bool calcReal) 
         {
-            if (this.Plan.IsEmpty)
+            using (calcReal? Modal.ShowGuardDialog("Building..."):null)
             {
-                await CompleteRebuildPlanAsync(calcReal);
-                return;
-            }
-
-            if (!this.markers.HasEnoughPointsForBuild())
-            {
-                Console.WriteLine("Not enough points for refresh build.");
-                return;
-            }
-
-            var anchors_count = markers.AnchorElements.Count();
-
-            Console.WriteLine($"DEBUG building only needed legs, in total {this.Plan.Legs.Count}, needed {this.Plan.Legs.Count(it => it.IsDrafted)}");
-            var planner_prefs = Program.Configuration.PlannerPreferences.DeepClone();
-            var turner_prefs = Program.Configuration.TurnerPreferences.DeepClone();
-
-            var replacements = new List<(int index, List<LegPlan> legs)>();
-
-            {
-                var DEBUG_anchors = this.markers.AnchorElements.ToList();
-                if (this.markers.IsLooped)
-                    DEBUG_anchors.Add(DEBUG_anchors[0]);
-                
-                var leg_idx = -1;
-                foreach ((GeoPoint prev, GeoPoint next) in createJourneySchedule(onlyPinned:false).BuildPlanRequest().GetPointsSequence()
-                             .Select(it => it.UserPoint).Slide())
+                if (this.Plan.IsEmpty)
                 {
-                    ++leg_idx;
-                    if (!this.Plan.Legs[leg_idx].NeedsRebuild(calcReal))
-                        continue;
-
-                    Console.WriteLine($"DEBUG, BuildPlanAsync {leg_idx}/{this.Plan.Legs.Count}, count {anchors_count}, markers loop {this.markers.IsLooped}");
-                    if (!DEBUG_anchors[leg_idx].IsPinned || !DEBUG_anchors[leg_idx + 1].IsPinned)
-                    {
-                        var (DEBUG_day_idx, DEBUG_anchor_idx,_) = this.markers.LegIndexToStartingDayAnchor(leg_idx);
-                        throw new InvalidOperationException($"Impossible scenario, partial rebuilding on auto-anchors leg:{leg_idx} = {DEBUG_day_idx}:{DEBUG_anchor_idx} with {DEBUG_anchors[leg_idx].IsPinned} and {DEBUG_anchors[leg_idx + 1].IsPinned} of {this.markers.DEBUG_PinsToString()}.");
-                    }
-
-                    var request = new PlanRequest()
-                    {
-                        PlannerPreferences = planner_prefs,
-                        TurnerPreferences = turner_prefs,
-                        DailyPoints = new List<List<RequestPoint>>()
-                        {
-                            new List<RequestPoint>() {new RequestPoint( prev, allowSmoothing:false), 
-                                new RequestPoint( next, allowSmoothing:false)}
-                        }
-                    };
-
-                    TrackPlan? partial_plan = await getPlanAsync(request, calcReal);
-                    if (partial_plan == null)
-                        continue;
-
-                    replacements.Add((leg_idx, partial_plan.Legs));
+                    await CompleteRebuildPlanAsync(calcReal);
+                    return;
                 }
+
+                if (!this.markers.HasEnoughPointsForBuild())
+                {
+                    Console.WriteLine("Not enough points for refresh build.");
+                    return;
+                }
+
+                var anchors_count = markers.AnchorElements.Count();
+
+                Console.WriteLine($"DEBUG building only needed legs, in total {this.Plan.Legs.Count}, needed {this.Plan.Legs.Count(it => it.IsDrafted)}");
+                var planner_prefs = Program.Configuration.PlannerPreferences.DeepClone();
+                var turner_prefs = Program.Configuration.TurnerPreferences.DeepClone();
+
+                var replacements = new List<(int index, List<LegPlan> legs)>();
+
+                {
+                    var DEBUG_anchors = this.markers.AnchorElements.ToList();
+                    if (this.markers.IsLooped)
+                        DEBUG_anchors.Add(DEBUG_anchors[0]);
+
+                    var leg_idx = -1;
+                    foreach ((GeoPoint prev, GeoPoint next) in createJourneySchedule(onlyPinned: false).BuildPlanRequest().GetPointsSequence()
+                                 .Select(it => it.UserPoint).Slide())
+                    {
+                        ++leg_idx;
+                        if (!this.Plan.Legs[leg_idx].NeedsRebuild(calcReal))
+                            continue;
+
+                        Console.WriteLine($"DEBUG, BuildPlanAsync {leg_idx}/{this.Plan.Legs.Count}, count {anchors_count}, markers loop {this.markers.IsLooped}");
+                        if (!DEBUG_anchors[leg_idx].IsPinned || !DEBUG_anchors[leg_idx + 1].IsPinned)
+                        {
+                            var (DEBUG_day_idx, DEBUG_anchor_idx, _) = this.markers.LegIndexToStartingDayAnchor(leg_idx);
+                            throw new InvalidOperationException($"Impossible scenario, partial rebuilding on auto-anchors leg:{leg_idx} = {DEBUG_day_idx}:{DEBUG_anchor_idx} with {DEBUG_anchors[leg_idx].IsPinned} and {DEBUG_anchors[leg_idx + 1].IsPinned} of {this.markers.DEBUG_PinsToString()}.");
+                        }
+
+                        var request = new PlanRequest()
+                        {
+                            PlannerPreferences = planner_prefs,
+                            TurnerPreferences = turner_prefs,
+                            DailyPoints = new List<List<RequestPoint>>()
+                            {
+                                new List<RequestPoint>()
+                                {
+                                    new RequestPoint(prev, allowSmoothing: false),
+                                    new RequestPoint(next, allowSmoothing: false)
+                                }
+                            }
+                        };
+
+                        TrackPlan? partial_plan = await getPlanAsync(request, calcReal);
+                        if (partial_plan == null)
+                            continue;
+
+                        replacements.Add((leg_idx, partial_plan.Legs));
+                    }
+                }
+
+                foreach (var (idx, legs) in replacements.AsEnumerable().Reverse())
+                {
+                    this.Plan.Legs.RemoveAt(idx);
+                    this.Plan.Legs.InsertRange(idx, legs);
+                    addMapLegs(legs);
+                }
+
+
+                var current_legs = this.Plan.Legs.ToHashSet();
+                // remove all invalid now (pointing out to removed legs) layers
+                int remove_count = 0;
+                foreach (var layer in this.legLayers.Where(it => !current_legs.Contains(it.Value.LegRef)).Select(it => it.Key).ToArray())
+                {
+                    ++remove_count;
+                    removeLegLayer(layer);
+                }
+
+                Console.WriteLine($"DEBUG build-needed removed {remove_count} leg fragment layers");
+
+                this.markers.RebuildAutoAnchors();
+                this.markers.ResetSummary();
             }
-
-            foreach (var (idx, legs) in replacements.AsEnumerable().Reverse())
-            {
-                this.Plan.Legs.RemoveAt(idx);
-                this.Plan.Legs.InsertRange(idx, legs);
-                addMapLegs(legs);
-            }
-
-
-            var current_legs = this.Plan.Legs.ToHashSet();
-            // remove all invalid now (pointing out to removed legs) layers
-            int remove_count = 0;
-            foreach (var layer in this.legLayers.Where(it => !current_legs.Contains(it.Value.LegRef)).Select(it => it.Key).ToArray())
-            {
-                ++remove_count;
-                removeLegLayer(layer);
-            }
-            
-            Console.WriteLine($"DEBUG build-needed removed {remove_count} leg fragment layers");
-
-            this.markers.RebuildAutoAnchors();
-            this.markers.ResetSummary();
         }
 
 

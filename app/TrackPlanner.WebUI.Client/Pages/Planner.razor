@@ -19,8 +19,8 @@
                     <InputCheckbox @bind-Value="@AutoBuild"></InputCheckbox>
                     Auto build
                 </label>
-                <button @onclick="BuildPlanAsync">Build</button>
-                <button @onclick="CompleteRebuildPlanAsync">Rebuild all</button>
+                <button @onclick="uiBuildPlanAsync">Build</button>
+                <button @onclick="uiCompleteRebuildPlanAsync">Rebuild all</button>
                 <button @onclick="NewProjectAsync">New</button>
             </EditForm>
         </div>
@@ -43,6 +43,7 @@
         <div style="padding-top:0em">
                    <button @onclick="saveScheduleAsync">Save</button>
                    <button @onclick="loadScheduleAsync">Load</button>
+                   <button @onclick="testAsync">TESTING</button>
      
         </div>
         <div id="mapContainer" style="width:100%;height: 100%">

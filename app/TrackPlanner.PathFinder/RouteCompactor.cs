@@ -247,7 +247,7 @@ namespace TrackPlanner.PathFinder
                 }
 
                 var fragment = leg.Fragments.Last();
-                fragment.Places.Add(new MapPoint(current_point, step.Place.NodeId));
+                fragment.Places.Add(new MapPoint(current_point, step.Place.IsNode ? step.Place.NodeId:null));
                 fragment.RoadIds.Add(step.IncomingRoadMapIndex);
                 fragment.RawTime += step.IncomingTime;
                 fragment.UnsimplifiedDistance += step.IncomingDistance;

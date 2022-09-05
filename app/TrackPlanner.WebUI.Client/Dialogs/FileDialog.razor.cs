@@ -11,7 +11,7 @@ using Microsoft.JSInterop;
 using TrackPlanner.Data;
 using TrackPlanner.RestSymbols;
 
-namespace TrackPlanner.WebUI.Client.Shared
+namespace TrackPlanner.WebUI.Client.Dialogs
 {
     public partial class FileDialog
     {

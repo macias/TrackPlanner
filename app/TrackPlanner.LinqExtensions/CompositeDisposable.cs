@@ -4,7 +4,7 @@ using System.Linq;
 
 #nullable enable
 
-namespace TrackPlanner.Mapping
+namespace TrackPlanner.LinqExtensions
 {
     public sealed class CompositeDisposable : IDisposable
     {
@@ -12,22 +12,18 @@ namespace TrackPlanner.Mapping
         
         private readonly IReadOnlyList<Action> disposables;
 
-        private CompositeDisposable(params Action[] reversedDisposables)
+        public CompositeDisposable(params Action[] disposables)
         {
-            this.disposables = reversedDisposables;
+            this.disposables = disposables;
         }
 
-        public CompositeDisposable(IEnumerable<IDisposable> disposables) : this(disposables.Reverse().Select<IDisposable,Action>(it => it.Dispose).ToArray())
+        public CompositeDisposable(IEnumerable<IDisposable> disposables) : this(disposables.Select<IDisposable,Action>(it => it.Dispose).ToArray())
         {
         }
 
-        public static CompositeDisposable Combine(IDisposable a, Action b)
+        public static CompositeDisposable Combine(Action a, IDisposable b)
         {
-            return new CompositeDisposable(() =>
-            {
-                b();
-                a.Dispose();
-            });
+            return new CompositeDisposable(a, b.Dispose);
         }
 
         public void Dispose()

@@ -7,6 +7,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading;
 using TrackPlanner.Data;
+using TrackPlanner.LinqExtensions;
 using TrackPlanner.Settings;
 using TrackPlanner.Shared;
 using TrackPlanner.Mapping;
@@ -81,7 +82,8 @@ namespace TrackPlanner.PathFinder
 
                     disposable = osm_reader.ReadOsmMap(map_paths.Single(), onlyRoads: true, out var out_map, out this.grid);
                     this.Map = out_map;
-                    disposable = CompositeDisposable.Combine(disposable, () => { logger.Info($"STATS {nameof(this.Map)} {this.Map.GetStats()}; {nameof(this.grid)} {this.grid.GetStats()}"); });
+                    disposable = CompositeDisposable.Combine(() => { logger.Info($"STATS {nameof(this.Map)} {this.Map.GetStats()}; {nameof(this.grid)} {this.grid.GetStats()}"); },
+                        disposable);
                     Console.WriteLine($"Loading map in {(Stopwatch.GetTimestamp() - start) / Stopwatch.Frequency} s");
                 }
             }
