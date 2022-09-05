@@ -101,10 +101,12 @@ namespace TrackPlanner.PathFinder
             CancellationToken token, [MaybeNullWhen(false)] out List<LegRun> route,out string? problem)
         {
             // the last point of given leg is repeated as the first point of the following leg
-            return RouteFinder.TryFindPath(logger, this.navigator, this.Map, grid, this.SysConfig, userPlannerConfig, userPoints, token, out route,out problem);
+            return RouteFinder.TryFindPath(logger, this.navigator, this.Map, grid, this.SysConfig, userPlannerConfig, 
+                userPoints, token, out route,out problem);
         }
 
-        public bool TryFindRoute(UserPlannerPreferences userPlannerConfig, IReadOnlyList<RequestPoint> userPoints, CancellationToken token, [MaybeNullWhen(false)] out TrackPlan track)
+        public bool TryFindCompactRoute(UserPlannerPreferences userPlannerConfig, IReadOnlyList<RequestPoint> userPoints, 
+            CancellationToken token, [MaybeNullWhen(false)] out TrackPlan track)
         {
             if (!TryFindRawRoute(userPlannerConfig, userPoints, token, out var legs, out var problem))
             {

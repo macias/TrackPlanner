@@ -28,8 +28,10 @@ namespace TrackPlanner.PathFinder
             CancellationToken cancellationToken,
             [MaybeNullWhen(false)] out List<LegRun> pathSteps,out string? problem)
         {
-            var buckets = grid.GetRoadBuckets(userPoints, sysConfig.InitSnapProximityLimit, sysConfig.FinalSnapProximityLimit, requireAllHits: true, singleMiddleSnaps: true);
-            var finder = new RouteFinder(logger,navigator, map, grid, new Shortcuts(), sysConfig, userPlannerConfig, buckets, new PathConstraints(), cancellationToken);
+            var buckets = grid.GetRoadBuckets(userPoints, sysConfig.InitSnapProximityLimit, sysConfig.FinalSnapProximityLimit, 
+                requireAllHits: true, singleMiddleSnaps: true);
+            var finder = new RouteFinder(logger,navigator, map, grid, new Shortcuts(), sysConfig, userPlannerConfig, buckets, 
+                new PathConstraints(), cancellationToken);
             var result = finder.tryFindPath(buckets, out pathSteps);
             problem = finder.problemMessage;
             return result;
@@ -265,7 +267,7 @@ namespace TrackPlanner.PathFinder
 
         private void smoothLegs(IReadOnlyList<RoadBucket> buckets, List<LegRun> rawLegs)
         {
-            int bucket_idx = -1;
+            int bucket_idx = 0;
             // for looped request do not smooth out start/end and do not force start/end point to be exactly the same
             foreach (var (prev, next) in rawLegs.Slide()) // NOTE: in case of single leg this loop won't run at all... 
             {

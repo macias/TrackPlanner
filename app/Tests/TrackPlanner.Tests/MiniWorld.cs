@@ -27,12 +27,21 @@ namespace TrackPlanner.Tests
 
         private static readonly Navigator navigator = new Navigator(baseDirectory);
 
-        protected static void SaveData(IEnumerable<GeoZPoint> plan, IEnumerable<TurnInfo> turns, string mapFilename)
+        protected static void SaveData(IEnumerable<Placement> plan, string mapFilename)
         {
             var input = new TrackWriterInput() {Title = null};
-            input.AddLine(plan, name: null, new KmlLineDecoration(new Color32(0, 0, 0, 255), 1));
-            input.AddTurns(turns, PointIcon.CircleIcon);
+            int index = -1;
+            foreach (var place in plan)
+            {
+                ++index;
+                input.AddPoint(place.Point, $"[{index}] {place}", comment: null, PointIcon.DotIcon);
+            }
 
+            saveToKml(input,mapFilename);
+        }
+
+        private static void saveToKml(TrackWriterInput input,string mapFilename)
+        {
             var kml = input.BuildDecoratedKml();
 
             using (var stream = new FileStream(Helper.GetUniqueFileName(navigator.GetOutput(), "test-" + System.IO.Path.GetFileName(mapFilename)),
@@ -40,6 +49,15 @@ namespace TrackPlanner.Tests
             {
                 kml.Save(stream);
             }
+        }
+
+        protected static void SaveData(IEnumerable<Placement> plan, IEnumerable<TurnInfo> turns, string mapFilename)
+        {
+            var input = new TrackWriterInput() {Title = null};
+            input.AddLine(plan.Select(it => it.Point).ToArray(), name: null, new KmlLineDecoration(new Color32(0, 0, 0, 255), 1));
+            input.AddTurns(turns, PointIcon.CircleIcon);
+
+            saveToKml(input,mapFilename);
         }
 
         private static WorldMapMemory loadMiniMap(ILogger logger, string filename)
@@ -110,7 +128,7 @@ namespace TrackPlanner.Tests
             }
         }
 
-        protected (IReadOnlyList<GeoZPoint> plan, IReadOnlyList<TurnInfo> turns) ComputeTurns(string filename, params GeoZPoint[] userPoints)
+        protected (IReadOnlyList<Placement> plan, IReadOnlyList<TurnInfo> turns) ComputeTurns(string filename, params GeoZPoint[] userPoints)
         {
             var logger = new NoLogger();
 
@@ -140,7 +158,7 @@ namespace TrackPlanner.Tests
                         Assert.Equal(reg.Backward, rev.Backward);
                     }
 
-                    return (plan_nodes.Select(it => it.Point).ToList(), regular);
+                    return (plan_nodes, regular);
                 }
             }
         }

@@ -527,7 +527,7 @@ namespace TrackPlanner.Runner
                 {
                     double start = Stopwatch.GetTimestamp();
 
-                    if (!manager.TryFindRoute(UserPlannerPreferencesHelper.CreateBikeOriented().SetUniformSpeeds(), user_points.Select(it => new RequestPoint(it.Convert(),false)).ToArray(), 
+                    if (!manager.TryFindCompactRoute(UserPlannerPreferencesHelper.CreateBikeOriented().SetUniformSpeeds(), user_points.Select(it => new RequestPoint(it.Convert(),false)).ToArray(), 
                             CancellationToken.None, out var computed_track))
                         throw new Exception();
 
@@ -547,7 +547,7 @@ namespace TrackPlanner.Runner
                     TrackPlan? computed_track;
                     if (user_points != null)
                     {
-                        if (!manager.TryFindRoute(user_configuration, user_points.Select(it => new RequestPoint(it.Convert(),false)).ToArray(), 
+                        if (!manager.TryFindCompactRoute(user_configuration, user_points.Select(it => new RequestPoint(it.Convert(),false)).ToArray(), 
                                 CancellationToken.None, out computed_track))
                             throw new Exception("Route not found");
                     }
