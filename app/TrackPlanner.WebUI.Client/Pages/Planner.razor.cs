@@ -494,7 +494,7 @@ namespace TrackPlanner.WebUI.Client.Pages
             Console.WriteLine($"We have {legs.Count} legs, added as {this.legLayers.Count} fragments to the map.");
         }
 
-        private async ValueTask<TrackPlan?> getPlanAsync(PlanRequest request,bool calcReal)
+        private async ValueTask<(string? problem,TrackPlan? plan)> getPlanAsync(PlanRequest request,bool calcReal)
         {
             try
             {
@@ -503,29 +503,24 @@ namespace TrackPlanner.WebUI.Client.Pages
                 if (failure!=null)
                 {
                     Console.WriteLine(failure);
-                    await this.commonDialog.AlertAsync("Failure");
+                    return (failure, null);
                 }
                 else if (new_plan?.Legs == null)
-                    await this.commonDialog.AlertAsync("Computing route failed");
+                    return ("Computing route failed", null);
                 else
                 {
-                    Console.WriteLine($"Plan received with {new_plan.ProblemMessage}.");
                     failure = new_plan.DEBUG_Validate();
-                    if (failure != null)
-                        await this.commonDialog.AlertAsync($"Plan is invalid: {failure}");
+                    Console.WriteLine($"Plan received with {failure}.");
 
-                    return new_plan;
+                    return (failure,new_plan);
                 }
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
-                await this.commonDialog.AlertAsync("Error");
+                return ($"Error {ex.Message}",null);
             }
-
-            return null;
         }
-
         
         /*private PlanRequest buildPlanRequest()
         {
@@ -559,7 +554,12 @@ namespace TrackPlanner.WebUI.Client.Pages
                 return;
             }
 
-            TrackPlan? new_plan = await getPlanAsync(createJourneySchedule(onlyPinned:true).BuildPlanRequest(),calcReal);
+            (string? problem,TrackPlan? new_plan) = await getPlanAsync(createJourneySchedule(onlyPinned:true).BuildPlanRequest(),calcReal);
+            if (problem != null)
+            {
+                await this.commonDialog.AlertAsync(problem);
+            }
+            
             if (new_plan != null)
             {
                 this.Plan = new_plan;
@@ -601,6 +601,8 @@ namespace TrackPlanner.WebUI.Client.Pages
                     if (this.markers.IsLooped)
                         DEBUG_anchors.Add(DEBUG_anchors[0]);
 
+                    string? first_problem = null;
+                    int problem_count = 0;
                     var leg_idx = -1;
                     foreach ((GeoPoint prev, GeoPoint next) in createJourneySchedule(onlyPinned: false).BuildPlanRequest().GetPointsSequence()
                                  .Select(it => it.UserPoint).Slide())
@@ -630,12 +632,20 @@ namespace TrackPlanner.WebUI.Client.Pages
                             }
                         };
 
-                        TrackPlan? partial_plan = await getPlanAsync(request, calcReal);
+                        (string? problem,TrackPlan? partial_plan) = await getPlanAsync(request, calcReal);
+                        first_problem ??= problem;
+                        if (problem != null)
+                            ++problem_count;
+
                         if (partial_plan == null)
                             continue;
 
                         replacements.Add((leg_idx, partial_plan.Legs));
                     }
+                    
+                    if (first_problem!=null)
+                        await this.commonDialog.AlertAsync($"{problem_count} problems, first: {first_problem}");
+                    
                 }
 
                 foreach (var (idx, legs) in replacements.AsEnumerable().Reverse())
