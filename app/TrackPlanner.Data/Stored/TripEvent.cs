@@ -2,9 +2,24 @@
 
 namespace TrackPlanner.Data.Stored
 {
-    public enum TripEvent
+    public sealed class TripEvent
     {
-        SnackTime,
-        Resupply,
+        public string Label { get; set; } = "";
+        private string? category;
+        public string Category
+        {
+            get { return this.category ?? Label; }
+            set { this.category = value; }
+        }
+        public string ClassIcon { get; set; } = "";
+        public int EveryDay { get; set; } = 1;
+        public TimeSpan Duration { get; set; }
+        public bool SkipBeforeHome { get; set; }
+        public bool SkipAfterHome { get; set; }
+        // only one can be set, if both are not set, the system assume the event is one time only (per day)
+        public TimeSpan? Interval { get; set; }
+        public TimeSpan? ClockTime { get; set; } 
     }
 }
+
+

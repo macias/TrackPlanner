@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using MathUnit;
 using TrackPlanner.Data.Stored;
-using TrackPlanner.Shared;
 
 namespace TrackPlanner.Data
 {
@@ -17,14 +16,13 @@ namespace TrackPlanner.Data
         public TimeSpan TrueDuration => Checkpoints.Count==0? TimeSpan.Zero : this.Checkpoints[^1].Arrival - this.Checkpoints[0].Arrival;
         public Length Distance { get; set; }
         public TimeSpan? LateCampingBy { get; set; }
-        public EnumArray<TripEvent,TimeSpan> EventDuration { get; set; }
-        public TimeSpan[] UserEventDuration { get; set; }
+        public TimeSpan[] EventDuration { get; set; }
+        public string? Problem { get; set; }
 
         public SummaryDay(int eventsCount)
         {
             this.Checkpoints = new List<SummaryCheckpoint>();
-            this.EventDuration = new EnumArray<TripEvent, TimeSpan>();
-            this.UserEventDuration = new TimeSpan[eventsCount];
+            this.EventDuration = new TimeSpan[eventsCount];
         }
 
     }

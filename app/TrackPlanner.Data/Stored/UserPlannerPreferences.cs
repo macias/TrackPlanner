@@ -1,8 +1,7 @@
 ﻿using MathUnit;
 using System;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
-using Newtonsoft.Json;
+using System.Linq;
 
 namespace TrackPlanner.Data.Stored
 {
@@ -21,26 +20,36 @@ namespace TrackPlanner.Data.Stored
         public TimeSpan JoiningHighTraffic { get; set; }
         public bool HACK_ExactToTarget { get; set; }
         
-        public double CompactingAngleDeviation { get; set; } // degrees
-        public double CompactingDistanceDeviation { get; set; } // meters
+        public Angle CompactingAngleDeviation { get; set; } 
+        public Length CompactingDistanceDeviation { get; set; } 
         public double HourlyStamina { get; set; }
         public bool UseStableRoads { get; set; }
 
         public TimeSpan JourneyStart { get; set; }
         public TimeSpan NextDayStart { get; set; }
-        public Dictionary<TripEvent,TimeSpan> EventDuration { get; set; }
-        public TimeSpan ShoppingInterval { get; set; }
         public TimeSpan CampLandingTime { get; set; }
         public TimeSpan HomeLandingTime { get; set; }
         public TimeSpan CheckpointIntervalLimit { get; set; }
         public Dictionary<string ,TimeSpan > Breaks { get; set; }
         public TimeSpan DefaultAnchorBreak { get; set; }
-        public UserTripEvent[] UserEvents { get; set; }
+        
+        private TripEvent[] tripEvents = Array.Empty<TripEvent>();
+        public TripEvent[] TripEvents
+        {
+            get { return this.tripEvents; }
+            set
+            {
+                // first go events without interval, because those should be processed at once
+                // think about snack time (it has intervals) and resupply (it does not)
+                // resupply has priority over snack time (you can buy banana for sure when you are doing big shopping
+                // but you cannot squeeze big shopping while purchasing banana)
+                this.tripEvents = value.OrderBy(it => it.Interval != null).ToArray();
+            }
+        }
 
         public UserPlannerPreferences()
         {
             this.DefaultAnchorBreak = TimeSpan.FromMinutes(10);
-            // todo: change it to dictionary
             this.Breaks = new Dictionary<string, TimeSpan>()
             {
                 {"None", TimeSpan.Zero},
@@ -51,43 +60,72 @@ namespace TrackPlanner.Data.Stored
                 {"Epic", TimeSpan.FromHours(5)},
             };
 
-            this.UserEvents = new[]
+            this.TripEvents = new[]
             {
-                new UserTripEvent()
+                new TripEvent()
                 {
                     Label ="tires",
                     ClassIcon  = "fas fa-tire",
                      Duration = TimeSpan.FromMinutes(15),
                      EveryDay = 14,
                 },
-                new UserTripEvent()
+                new TripEvent()
                 {
                 Label ="chain",
                 ClassIcon  = "fas fa-link",
                 Duration = TimeSpan.FromMinutes(7),
                 EveryDay = 2,
                 },
-                new UserTripEvent()
+                new TripEvent()
                 {
                     Label ="shower",
                     ClassIcon  = "fas fa-shower",
                     Duration = TimeSpan.FromMinutes(15),
                     EveryDay = 5,
-                    Opportunity = TimeSpan.FromHours(12),
+                    ClockTime = TimeSpan.FromHours(12),
                 },
-                new UserTripEvent()
+                new TripEvent()
                 {
                     Label ="laundry",
                     ClassIcon  = "fas fa-tint",
                     Duration = TimeSpan.FromMinutes(30),
-                    Opportunity = TimeSpan.FromHours(11),
+                    ClockTime = TimeSpan.FromHours(11),
                 },
-                new UserTripEvent()
+                new TripEvent()
                 {
                     Label ="lunch",
                     ClassIcon  = "fas fa-utensils",
                     Duration = TimeSpan.FromMinutes(15),
-                    Opportunity = TimeSpan.FromHours(13),
+                    ClockTime = TimeSpan.FromHours(13),
+                },
+                new TripEvent()
+                {
+                    Label = "snacks",
+                    Category = "shopping",
+                    ClassIcon  = "fas fa-carrot",
+                 Duration    = TimeSpan.FromMinutes(10),
+                 Interval = TimeSpan.FromHours(2),
+                },
+                new TripEvent()
+                {
+                Label = "resupply",
+                Category = "shopping",
+                ClassIcon  = "fas fa-shopping-cart",
+                Duration    = TimeSpan.FromMinutes(20),
+                // the first resupply of the day (food for breakfast and supper) 
+                ClockTime = TimeSpan.Zero,
+                SkipAfterHome = true,
+                SkipBeforeHome = true, // when hitting home we don't need this
+                },
+                new TripEvent()
+                {
+                    Label = "resupply",
+                    Category = "shopping",
+                    ClassIcon  = "fas fa-shopping-cart",
+                    Duration    = TimeSpan.FromMinutes(20),
+                    // last resupply for the day, usually water for the evening
+                    ClockTime = TimeSpan.FromHours(24),
+                    SkipBeforeHome = true,
                 },
             };
 
@@ -97,16 +135,9 @@ namespace TrackPlanner.Data.Stored
             JourneyStart = TimeSpan.FromHours(9);
             this.NextDayStart = JourneyStart.Add(TimeSpan.FromMinutes(30));
             this.Speeds = new Dictionary<SpeedMode, Speed>();
-            this.ShoppingInterval = TimeSpan.FromHours(2);
 
-            this.EventDuration = new Dictionary<TripEvent, TimeSpan>()
-            {
-                {TripEvent.Resupply, TimeSpan.FromMinutes(20)},
-                {TripEvent.SnackTime, TimeSpan.FromMinutes(10)},
-            };
-
-            CompactingAngleDeviation = 12;
-            CompactingDistanceDeviation = 15;
+            CompactingAngleDeviation = Angle.FromDegrees( 12);
+            CompactingDistanceDeviation = Length.FromMeters( 15);
             HourlyStamina = 0.95;
         }
 
@@ -114,9 +145,9 @@ namespace TrackPlanner.Data.Stored
         {
             var prefs = this;
             
-            if (CompactingAngleDeviation < 0 || CompactingAngleDeviation >= (Angle.PI / 4).Degrees)
+            if (CompactingAngleDeviation < Angle.Zero || CompactingAngleDeviation >= (Angle.PI / 4))
                 throw new ArgumentOutOfRangeException($"{nameof(CompactingAngleDeviation)} = {CompactingAngleDeviation}");
-            if (CompactingDistanceDeviation<0 || CompactingDistanceDeviation>=100)
+            if (CompactingDistanceDeviation<Length.Zero || CompactingDistanceDeviation.Meters>=100)
                 throw new ArgumentOutOfRangeException($"{nameof(CompactingDistanceDeviation)} = {CompactingDistanceDeviation}");
             if (!prefs.Speeds.ContainsKey(SpeedMode.Paved))
                 prefs.Speeds[SpeedMode.Paved] = prefs.Speeds[SpeedMode.HardBlocks];

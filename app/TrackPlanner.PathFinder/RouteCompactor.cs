@@ -32,7 +32,7 @@ namespace TrackPlanner.PathFinder
                 flattenRoundabouts(leg.Steps);
             var plan = splitLegs(legs);
             
-            if (this.userPlannerPrefs.CompactingDistanceDeviation== 0 || this.userPlannerPrefs.CompactingAngleDeviation== 0)
+            if (this.userPlannerPrefs.CompactingDistanceDeviation== Length.Zero || this.userPlannerPrefs.CompactingAngleDeviation== Angle.Zero)
                 this.logger.Verbose("Skipping simplification");
             else
             {
@@ -66,7 +66,7 @@ namespace TrackPlanner.PathFinder
                     {
                         Angle curr_bearing = this.calc.GetBearing(fragment.Places[i].Point, fragment.Places[i + 1].Point);
 
-                        if (this.calc.GetAbsoluteBearingDifference(curr_bearing, base_bearing) > Angle.FromDegrees(this.userPlannerPrefs.CompactingAngleDeviation))
+                        if (this.calc.GetAbsoluteBearingDifference(curr_bearing, base_bearing) > this.userPlannerPrefs.CompactingAngleDeviation)
                         {
                             goto END_IDX_LOOP;
                         }
@@ -76,7 +76,7 @@ namespace TrackPlanner.PathFinder
                     {
                         (Length dist, _, _) = this.calc.GetDistanceToArcSegment(fragment.Places[i].Point, fragment.Places[end_idx].Point, fragment.Places[start_idx].Point);
 
-                        if (dist > Length.FromMeters(this.userPlannerPrefs.CompactingDistanceDeviation))
+                        if (dist > this.userPlannerPrefs.CompactingDistanceDeviation)
                         {
                             goto END_IDX_LOOP;
                         }

@@ -67,8 +67,8 @@ public class SummaryTest
 
         var summary = schedule.GetSummary();
 
-        Assert.False(summary.Days[0].Checkpoints.Last().GetEvents(summary).Any());
-        Assert.False(summary.Days[1].Checkpoints.Last().GetEvents(summary).Any());
+        Assert.False(summary.Days[0].Checkpoints.Last().GetAtomicEvents(summary).Any());
+        Assert.False(summary.Days[1].Checkpoints.Last().GetAtomicEvents(summary).Any());
     }
 
 }

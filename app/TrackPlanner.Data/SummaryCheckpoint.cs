@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using MathUnit;
 using TrackPlanner.Data.Stored;
-using TrackPlanner.Shared;
-using TrackPlanner.LinqExtensions;
 
 namespace TrackPlanner.Data
 {
@@ -17,28 +15,19 @@ namespace TrackPlanner.Data
         public TimeSpan RollingTime { get; set; }
         public int? IncomingLegIndex { get; set; }
         public bool IsLooped { get; set; }
-        public EnumArray<TripEvent,int> EventCount { get; set; }
-        public int[] UserEventsCounter { get; set; }
+        public int[] EventsCounter { get; set; }
         public string Label { get; set; }
 
-        public IEnumerable<(string label, string iconClass, TimeSpan duration)> GetEvents(SummaryJourney summary) =>
-            Enum.GetValues<TripEvent>().SelectMany(it => Enumerable.Range(0,this.EventCount[ it])
-                    .Select(_ => (  it.GetLabel(),it.GetClassIcon(), summary.PlannerPreferences.EventDuration[it])))
-                .Concat(Enumerable.Range(0,UserEventsCounter.Length).SelectMany(it => Enumerable.Range(0,this.UserEventsCounter[ it])
-                    .Select(_ => (  summary.PlannerPreferences.UserEvents[it].Label,IconClass: summary.PlannerPreferences.UserEvents[it].ClassIcon, 
-                        summary.PlannerPreferences.UserEvents[it].Duration))))
+        public IEnumerable<(string label, string iconClass, TimeSpan duration)> GetAtomicEvents(SummaryJourney summary) =>
+            Enumerable.Range(0,EventsCounter.Length).SelectMany(it => Enumerable.Range(0,this.EventsCounter[ it])
+                    .Select(_ => (  summary.PlannerPreferences.TripEvents[it].Label,IconClass: summary.PlannerPreferences.TripEvents[it].ClassIcon, 
+                        summary.PlannerPreferences.TripEvents[it].Duration)))
             .OrderBy(it => it.Item1);
         
         public SummaryCheckpoint(int eventsCount)
         {
             Label = "";
-            this.EventCount = new EnumArray<TripEvent, int>();
-            this.UserEventsCounter = new int[eventsCount];
-        }
-
-        public TimeSpan GetSnackTimeDuration(SummaryJourney summary)
-        {
-            return summary.PlannerPreferences.EventDuration[TripEvent.SnackTime]*this.EventCount[TripEvent.SnackTime];
+            this.EventsCounter = new int[eventsCount];
         }
     }
 }

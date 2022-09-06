@@ -146,7 +146,7 @@ namespace TrackPlanner.RestService.Controllers
                                 writer.Write($" &gt;&gt; {Data.DataFormat.Format(checkpoint.Departure)}");
                             writer.WriteLine("</div>");
                             {
-                                var events = String.Join(", ", Enum.GetValues<TripEvent>().Select(it =>
+                                var events = String.Join(", ", Enum.GetValues<TripEvent2>().Select(it =>
                                     {
                                         var count = checkpoint.EventCount[it];
                                         if (count == 0)
