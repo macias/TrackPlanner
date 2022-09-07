@@ -40,6 +40,7 @@ namespace TrackPlanner.WebUI.Client.Shared
         public VisualSchedule<BlazorLeaflet.Models.Marker,bool> VisualSchedule { get; }
         UserPlannerPreferences IReadOnlySchedule.PlannerPreferences => this.VisualSchedule.PlannerPreferences;
         UserTurnerPreferences IReadOnlySchedule.TurnerPreferences => this.VisualSchedule.TurnerPreferences;
+        UserRouterPreferences IReadOnlySchedule.RouterPreferences => this.VisualSchedule.RouterPreferences;
         public List<VisualDay> Days => this.VisualSchedule.Days;
         IReadOnlyList<IReadOnlyDay> IReadOnlySchedule.Days => this.Days;
         TrackPlan IReadOnlySchedule.TrackPlan => this.plan;
@@ -95,6 +96,7 @@ namespace TrackPlanner.WebUI.Client.Shared
             this.editContext = new EditContext(this);
             this.editContext.OnFieldChanged += EditContextOnOnFieldChanged;
             this.VisualSchedule = new VisualSchedule<BlazorLeaflet.Models.Marker,bool>(Program.Configuration.PlannerPreferences,
+                Program.Configuration.RouterPreferences,
                 Program.Configuration.TurnerPreferences,Program.Configuration.VisualPreferences);
             this.summary = new CacheGetter<SummaryJourney>(this.GetSummary);
         }

@@ -14,6 +14,7 @@ namespace TrackPlanner.Data
         TrackPlan TrackPlan { get; }
         UserPlannerPreferences PlannerPreferences { get; }
         UserTurnerPreferences TurnerPreferences { get; }
+        UserRouterPreferences RouterPreferences { get; }
     }
 
     public interface ISchedule<TDay,TAnchor> : IReadOnlySchedule

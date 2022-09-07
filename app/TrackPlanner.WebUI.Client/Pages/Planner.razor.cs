@@ -61,13 +61,13 @@ namespace TrackPlanner.WebUI.Client.Pages
         }
         public bool StableRoads
         {
-            get { return Program.Configuration.PlannerPreferences.UseStableRoads; }
+            get { return Program.Configuration.RouterPreferences.UseStableRoads; }
             set
             {
-                if (Program.Configuration.PlannerPreferences.UseStableRoads == value)
+                if (Program.Configuration.RouterPreferences.UseStableRoads == value)
                     return;
                 
-                Program.Configuration.PlannerPreferences.UseStableRoads = value;
+                Program.Configuration.RouterPreferences.UseStableRoads = value;
                 
                 // fire&forget
 #pragma warning disable CS4014
@@ -230,7 +230,7 @@ namespace TrackPlanner.WebUI.Client.Pages
             foreach (var leg in this.Plan.Legs.Skip(day_starting_leg).Take(leg_idx-day_starting_leg))
             {
                 running_distance += leg.UnsimplifiedDistance;
-                var true_time = DataHelper.CalcTrueTime(running_time,leg.UnsimplifiedDistance,leg.RawTime,Program.Configuration.PlannerPreferences.GetLowRidingSpeedLimit(), Program.Configuration.PlannerPreferences.HourlyStamina );
+                var true_time = DataHelper.CalcTrueTime(running_time,leg.UnsimplifiedDistance,leg.RawTime,Program.Configuration.RouterPreferences.GetLowRidingSpeedLimit(), Program.Configuration.PlannerPreferences.HourlyStamina );
                 running_time += true_time;
             }
 
@@ -249,10 +249,10 @@ namespace TrackPlanner.WebUI.Client.Pages
 
                 // and finally the last portion along the segment
                 partial_leg_distance += along_fragment;
-                partial_leg_time += along_fragment / Program.Configuration.PlannerPreferences.Speeds[active_fragment.Mode];
+                partial_leg_time += along_fragment / Program.Configuration.RouterPreferences.Speeds[active_fragment.Mode];
                 
                 var true_time = DataHelper.CalcTrueTime(running_time,partial_leg_distance,partial_leg_time,
-                    Program.Configuration.PlannerPreferences.GetLowRidingSpeedLimit(), Program.Configuration.PlannerPreferences.HourlyStamina );
+                    Program.Configuration.RouterPreferences.GetLowRidingSpeedLimit(), Program.Configuration.PlannerPreferences.HourlyStamina );
                 running_time += true_time;
             }
             
@@ -384,7 +384,7 @@ namespace TrackPlanner.WebUI.Client.Pages
                     await this.commonDialog.AlertAsync($"Loaded plan is invalid: {failure}");
 
                 this.FileName = schedule_path;
-                Program.Configuration.PlannerPreferences.UseStableRoads = schedule!.PlannerPreferences.UseStableRoads;
+                Program.Configuration.RouterPreferences.UseStableRoads = schedule!.RouterPreferences.UseStableRoads;
                 this.Plan = schedule.TrackPlan;
                 this.markers.SetSchedule(schedule);
                 recreateLegLayers();
@@ -404,6 +404,7 @@ namespace TrackPlanner.WebUI.Client.Pages
                 IsLooped = this.markers.IsLooped,
                 TrackPlan = this.Plan,
                 PlannerPreferences = this.markers.VisualSchedule.PlannerPreferences.DeepClone(),
+                RouterPreferences = this.markers.VisualSchedule.RouterPreferences.DeepClone(),
                 TurnerPreferences = this.markers.VisualSchedule.TurnerPreferences.DeepClone(),
                 VisualPreferences = this.markers.VisualSchedule.VisualPreferences.DeepClone(),
             };
@@ -414,9 +415,10 @@ namespace TrackPlanner.WebUI.Client.Pages
         private async Task saveScheduleAsync()
         {
             Console.WriteLine($"Filename is null {FileName==null}");
-            if (this.FileName == null)
+            string? schedule_path = this.FileName;
+            if (schedule_path == null)
             {
-                var schedule_path = await Modal.ShowFileDialogAsync("Save schedule", FileDialog.DialogKind.Save);
+                schedule_path = await Modal.ShowFileDialogAsync("Save schedule", FileDialog.DialogKind.Save);
                 if (schedule_path == null)
                 {
                     Console.WriteLine("Modal was cancelled");
@@ -425,25 +427,26 @@ namespace TrackPlanner.WebUI.Client.Pages
 
                 if (System.IO.Path.GetExtension(schedule_path).ToLowerInvariant() != SystemCommons.ProjectFileExtension)
                     schedule_path += SystemCommons.ProjectFileExtension;
-
-                this.FileName = schedule_path;
             }
 
             var schedule = createJourneySchedule(onlyPinned:false);
 
+            string? failure ;
             using (Modal.ShowGuardDialog("Saving..."))
             {
-                var (failure, _) = await Rest.PostAsync<ValueTuple>(Url.Combine(Program.Configuration.PlannerServer, Routes.Planner, Methods.Post_SaveSchedule),
-                    new SaveRequest() {Schedule = schedule, Path = this.FileName}, CancellationToken.None);
-                if (failure != null)
-                {
-                    Console.WriteLine(failure);
-                }
-                else
-                {
-                    Console.WriteLine("Save successful.");
-                    this.markers.VisualSchedule.IsModified = false;
-                }
+                (failure, _) = await Rest.PostAsync<ValueTuple>(Url.Combine(Program.Configuration.PlannerServer, Routes.Planner, Methods.Post_SaveSchedule),
+                    new SaveRequest() {Schedule = schedule, Path = schedule_path}, CancellationToken.None);
+            }
+
+            if (failure == null)
+            {
+                if (this.FileName == null)
+                    this.FileName = schedule_path;
+                this.markers.VisualSchedule.IsModified = false;
+            }
+            else
+            {
+                await this.commonDialog.AlertAsync($"Saved failed: {failure}");
             }
         }
         
@@ -591,7 +594,7 @@ namespace TrackPlanner.WebUI.Client.Pages
                 var anchors_count = markers.AnchorElements.Count();
 
                 Console.WriteLine($"DEBUG building only needed legs, in total {this.Plan.Legs.Count}, needed {this.Plan.Legs.Count(it => it.IsDrafted)}");
-                var planner_prefs = Program.Configuration.PlannerPreferences.DeepClone();
+                var router_prefs = Program.Configuration.RouterPreferences.DeepClone();
                 var turner_prefs = Program.Configuration.TurnerPreferences.DeepClone();
 
                 var replacements = new List<(int index, List<LegPlan> legs)>();
@@ -620,7 +623,7 @@ namespace TrackPlanner.WebUI.Client.Pages
 
                         var request = new PlanRequest()
                         {
-                            PlannerPreferences = planner_prefs,
+                            RouterPreferences = router_prefs,
                             TurnerPreferences = turner_prefs,
                             DailyPoints = new List<List<RequestPoint>>()
                             {

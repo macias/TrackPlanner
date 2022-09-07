@@ -35,9 +35,9 @@ namespace TrackPlanner.Data.Tests
         }
 
         [Fact]
-        public void UserPlannerPreferencesSerializationTest()
+        public void UserRouterPreferencesSerializationTest()
         {
-            var input = new UserPlannerPreferences()
+            var input = new UserRouterPreferences()
             {
                 TrafficSuppression = Length.FromMeters(2),
                 Speeds = new Dictionary<SpeedMode, Speed>()
@@ -83,7 +83,7 @@ namespace TrackPlanner.Data.Tests
                 {
                     TurnArmLength = Length.FromKilometers(3),
                 },
-                PlannerPreferences = new UserPlannerPreferences()
+                RouterPreferences = new UserRouterPreferences()
                 {
                     TrafficSuppression = Length.FromMeters(2),
                     Speeds = new Dictionary<SpeedMode, Speed>()

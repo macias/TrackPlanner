@@ -26,6 +26,7 @@ namespace TrackPlanner.Data.Stored
         public UserPlannerPreferences PlannerPreferences { get; set; } = default!;
         public UserTurnerPreferences TurnerPreferences { get; set; } = default!;
         public UserVisualPreferences VisualPreferences { get; set; } = default!;
+        public UserRouterPreferences RouterPreferences { get; set; } = default!;
         
       //  public IScheduleLike Interface => this;
 
@@ -55,8 +56,8 @@ namespace TrackPlanner.Data.Stored
             var plan_request = new PlanRequest()
             {
                 DailyPoints = daily_points,
-                PlannerPreferences = PlannerPreferences,
                 TurnerPreferences = TurnerPreferences,
+                RouterPreferences = RouterPreferences,
                 
             };
             

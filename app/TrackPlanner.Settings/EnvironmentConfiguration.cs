@@ -17,6 +17,7 @@ namespace TrackPlanner.Settings
         public UserPlannerPreferences PlannerPreferences { get; set; }
         public UserTurnerPreferences TurnerPreferences { get; set; }
         public UserVisualPreferences VisualPreferences { get; set; }
+        public UserRouterPreferences RouterPreferences { get; set; }
         public DefaultPreferences Defaults { get; set; } 
         
 
@@ -26,7 +27,8 @@ namespace TrackPlanner.Settings
             PopupTimeout = TimeSpan.FromSeconds(10);
             TileServer = "http://localhost:8600/tile/";
             PlannerServer = "http://localhost:8700/";
-            this.PlannerPreferences = UserPlannerPreferencesHelper.CreateBikeOriented().SetCustomSpeeds();
+            this.RouterPreferences = UserRouterPreferencesHelper.CreateBikeOriented().SetCustomSpeeds();
+            this.PlannerPreferences = new UserPlannerPreferences();
             this.TurnerPreferences = new UserTurnerPreferences();
             this.VisualPreferences = new UserVisualPreferences();
         }

@@ -372,7 +372,7 @@ namespace TrackPlanner.Runner
             // going through range
             GeoZPoint[]? user_points = null;
             NodePoint[]? user_places = null;
-            var user_configuration = UserPlannerPreferencesHelper.CreateBikeOriented().SetCustomSpeeds();
+            var user_configuration = UserRouterPreferencesHelper.CreateBikeOriented().SetCustomSpeeds();
 
             if (false)
             {
@@ -472,7 +472,7 @@ namespace TrackPlanner.Runner
                     NodePoint.CreateNode(9223673711) ,  
                     NodePoint.CreatePoint(  GeoZPoint.FromDegreesMeters(            53.59299850463868, 17.86724090576172, null)),  
                 };
-                user_configuration = new UserPlannerPreferences() {HACK_ExactToTarget = false}.SetUniformSpeeds();
+                user_configuration = new UserRouterPreferences() {HACK_ExactToTarget = false}.SetUniformSpeeds();
             }
             if (false)
             {
@@ -527,7 +527,7 @@ namespace TrackPlanner.Runner
                 {
                     double start = Stopwatch.GetTimestamp();
 
-                    if (!manager.TryFindCompactRoute(UserPlannerPreferencesHelper.CreateBikeOriented().SetUniformSpeeds(), user_points.Select(it => new RequestPoint(it.Convert(),false)).ToArray(), 
+                    if (!manager.TryFindCompactRoute(UserRouterPreferencesHelper.CreateBikeOriented().SetUniformSpeeds(), user_points.Select(it => new RequestPoint(it.Convert(),false)).ToArray(), 
                             CancellationToken.None, out var computed_track))
                         throw new Exception();
 

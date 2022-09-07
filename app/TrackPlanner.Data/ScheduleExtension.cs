@@ -330,7 +330,7 @@ namespace TrackPlanner.Data
                 var DEBUG_context = $"{dayIndex}:{anchorIndex} {schedule.DEBUG_PinsToString()}";
                 leg = schedule.TrackPlan.GetLeg(leg_idx, DEBUG_context);
             }
-            var true_time = DataHelper.CalcTrueTime(rollingTime, leg.UnsimplifiedDistance, leg.RawTime, schedule.PlannerPreferences.GetLowRidingSpeedLimit(),
+            var true_time = DataHelper.CalcTrueTime(rollingTime, leg.UnsimplifiedDistance, leg.RawTime, schedule.RouterPreferences.GetLowRidingSpeedLimit(),
                 schedule.PlannerPreferences.HourlyStamina);
             rollingTime += true_time;
             start += true_time;

@@ -1,17 +1,15 @@
 ﻿using MathUnit;
 using System;
 using System.Collections.Generic;
-using TrackPlanner.Data;
 using TrackPlanner.Data.Stored;
-using TrackPlanner.LinqExtensions;
 
 namespace TrackPlanner.Settings
 {
-    public static class UserPlannerPreferencesHelper
+    public static class UserRouterPreferencesHelper
     {
-        public static UserPlannerPreferences CreateBikeOriented()
+        public static UserRouterPreferences CreateBikeOriented()
         {
-            return new UserPlannerPreferences()
+            return new UserRouterPreferences()
             {
                 AddedMotorDangerousTrafficFactor = 0.80,
                 AddedBikeFootHighTrafficFactor = 0.75,
@@ -24,7 +22,7 @@ namespace TrackPlanner.Settings
             };
         }
 
-        public static UserPlannerPreferences SetCustomSpeeds(this UserPlannerPreferences prefs)
+        public static UserRouterPreferences SetCustomSpeeds(this UserRouterPreferences prefs)
         {
             prefs.Speeds = new Dictionary<SpeedMode, Speed>()
             {
@@ -43,7 +41,7 @@ namespace TrackPlanner.Settings
             return prefs.Complete();
         }
 
-        public static UserPlannerPreferences SetUniformSpeeds(this UserPlannerPreferences prefs)
+        public static UserRouterPreferences SetUniformSpeeds(this UserRouterPreferences prefs)
         {
             foreach (var mode in Enum.GetValues<SpeedMode>())
             {

@@ -13,15 +13,15 @@ namespace TrackPlanner.PathFinder
     {
         private readonly ILogger logger;
         private readonly IWorldMap map;
-        private readonly UserPlannerPreferences userPlannerPrefs;
+        private readonly UserRouterPreferences userPrefs;
         private readonly bool compactPreservesRoads;
         private readonly ApproximateCalculator calc;
 
-        public RouteCompactor(ILogger logger, IWorldMap map,UserPlannerPreferences userPlannerPrefs, bool compactPreservesRoads)
+        public RouteCompactor(ILogger logger, IWorldMap map,UserRouterPreferences userPrefs, bool compactPreservesRoads)
         {
             this.logger = logger;
             this.map = map;
-            this.userPlannerPrefs = userPlannerPrefs;
+            this.userPrefs = userPrefs;
             this.compactPreservesRoads = compactPreservesRoads;
             this.calc = new ApproximateCalculator();
         }
@@ -32,7 +32,7 @@ namespace TrackPlanner.PathFinder
                 flattenRoundabouts(leg.Steps);
             var plan = splitLegs(legs);
             
-            if (this.userPlannerPrefs.CompactingDistanceDeviation== Length.Zero || this.userPlannerPrefs.CompactingAngleDeviation== Angle.Zero)
+            if (this.userPrefs.CompactingDistanceDeviation== Length.Zero || this.userPrefs.CompactingAngleDeviation== Angle.Zero)
                 this.logger.Verbose("Skipping simplification");
             else
             {
@@ -43,7 +43,7 @@ namespace TrackPlanner.PathFinder
                        removed+= simplifySegment(fragment);
                 }
                 
-                this.logger.Verbose($"{removed} nodes removed when simplifying route with {this.userPlannerPrefs.CompactingAngleDeviation}°, {this.userPlannerPrefs.CompactingDistanceDeviation}m.");
+                this.logger.Verbose($"{removed} nodes removed when simplifying route with {this.userPrefs.CompactingAngleDeviation}°, {this.userPrefs.CompactingDistanceDeviation}m.");
             }
             
             this.logger.Info($"{plan.Legs.SelectMany(l => l.Fragments).SelectMany(s => s.Places).Count()} points on the track.");
@@ -66,7 +66,7 @@ namespace TrackPlanner.PathFinder
                     {
                         Angle curr_bearing = this.calc.GetBearing(fragment.Places[i].Point, fragment.Places[i + 1].Point);
 
-                        if (this.calc.GetAbsoluteBearingDifference(curr_bearing, base_bearing) > this.userPlannerPrefs.CompactingAngleDeviation)
+                        if (this.calc.GetAbsoluteBearingDifference(curr_bearing, base_bearing) > this.userPrefs.CompactingAngleDeviation)
                         {
                             goto END_IDX_LOOP;
                         }
@@ -76,7 +76,7 @@ namespace TrackPlanner.PathFinder
                     {
                         (Length dist, _, _) = this.calc.GetDistanceToArcSegment(fragment.Places[i].Point, fragment.Places[end_idx].Point, fragment.Places[start_idx].Point);
 
-                        if (dist > this.userPlannerPrefs.CompactingDistanceDeviation)
+                        if (dist > this.userPrefs.CompactingDistanceDeviation)
                         {
                             goto END_IDX_LOOP;
                         }
@@ -189,10 +189,10 @@ namespace TrackPlanner.PathFinder
             int expected_leg_pieces;
             {
                 var time_total = pathSteps.Select(it => it.IncomingTime).Sum();
-                expected_leg_pieces = (int) Math.Ceiling(time_total / this.userPlannerPrefs.CheckpointIntervalLimit);
+                expected_leg_pieces = (int) Math.Ceiling(time_total / this.userPrefs.CheckpointIntervalLimit);
                 leg_time_limit = time_total / expected_leg_pieces;
                 
-                this.logger.Info($"Leg total time {time_total} with limit {this.userPlannerPrefs.CheckpointIntervalLimit} split into {expected_leg_pieces} pieces, each {leg_time_limit}");
+                this.logger.Info($"Leg total time {time_total} with limit {this.userPrefs.CheckpointIntervalLimit} split into {expected_leg_pieces} pieces, each {leg_time_limit}");
             }
 
             var leg = new LegPlan() {AutoAnchored = false};

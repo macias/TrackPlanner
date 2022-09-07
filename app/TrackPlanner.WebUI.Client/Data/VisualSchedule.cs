@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.Linq;
-using TrackPlanner.Data;
 using TrackPlanner.Data.Stored;
 
 namespace TrackPlanner.WebUI.Client.Data
@@ -9,6 +8,7 @@ namespace TrackPlanner.WebUI.Client.Data
     {
         public UserPlannerPreferences PlannerPreferences { get; }
         public UserTurnerPreferences TurnerPreferences { get; }
+        public UserRouterPreferences RouterPreferences { get; }
         public UserVisualPreferences VisualPreferences { get; }
         public List<VisualDay<TAnchorVisual,TDayVisual>> Days { get;  }
         public bool StartsAtHome { get; set; }
@@ -34,9 +34,11 @@ namespace TrackPlanner.WebUI.Client.Data
             }
         }
 
-        public VisualSchedule(UserPlannerPreferences plannerPreferences,UserTurnerPreferences turnerPreferences,UserVisualPreferences visualPreferences)
+        public VisualSchedule(UserPlannerPreferences plannerPreferences,UserRouterPreferences routerPreferences,
+            UserTurnerPreferences turnerPreferences,UserVisualPreferences visualPreferences)
         {
             PlannerPreferences = plannerPreferences;
+            RouterPreferences = routerPreferences;
             TurnerPreferences = turnerPreferences;
             VisualPreferences = visualPreferences;
             this.Days = new List<VisualDay<TAnchorVisual, TDayVisual>>();

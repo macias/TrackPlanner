@@ -98,7 +98,7 @@ namespace TrackPlanner.Tests
 
             var logger = new NoLogger();
             var mini_map = loadMiniMap(logger, filename);
-            var user_configuration = UserPlannerPreferencesHelper.CreateBikeOriented().SetCustomSpeeds();
+            var user_configuration = UserRouterPreferencesHelper.CreateBikeOriented().SetCustomSpeeds();
 
             var result = RouteManager.Create(logger, new Navigator(baseDirectory), mini_map,
                 new SystemConfiguration() {CompactPreservesRoads = true}, out manager);

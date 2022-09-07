@@ -5,7 +5,6 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using MathUnit;
 using TrackPlanner.Data;
-using TrackPlanner.Settings;
 using TrackPlanner.Shared;
 using TrackPlanner.Mapping;
 using TrackPlanner.Mapping.Data;
@@ -14,18 +13,18 @@ namespace TrackPlanner.PathFinder
 {
     public class RouteLogic
     {
-        private readonly UserPlannerPreferences userPlannerConfig;
+        private readonly UserRouterPreferences userConfig;
         private readonly Speed fastest;
         private readonly IReadOnlySet<long> suppressedTraffic;
         private readonly HashSet<long> DEBUG_lowCostNodes;
         private readonly IWorldMap map;
         private readonly IGeoCalculator calc;
 
-        public RouteLogic(IWorldMap map,IGeoCalculator calc,UserPlannerPreferences userPlannerConfig,Speed fastest, IReadOnlySet<long> suppressedTraffic)
+        public RouteLogic(IWorldMap map,IGeoCalculator calc,UserRouterPreferences userConfig,Speed fastest, IReadOnlySet<long> suppressedTraffic)
         {
             this.map = map;
             this.calc = calc;
-            this.userPlannerConfig = userPlannerConfig;
+            this.userConfig = userConfig;
             this.fastest = fastest;
             this.suppressedTraffic = suppressedTraffic;
             this.DEBUG_lowCostNodes = new HashSet<long>();
@@ -100,7 +99,7 @@ namespace TrackPlanner.PathFinder
                     }
                     else
                     {
-                        cost_factor = 1.0 + this.userPlannerConfig.AddedMotorDangerousTrafficFactor;
+                        cost_factor = 1.0 + this.userConfig.AddedMotorDangerousTrafficFactor;
                     }
                 }
                 else if (incoming_road.IsUncomfortable)
@@ -114,7 +113,7 @@ namespace TrackPlanner.PathFinder
                     }
                     else
                     {
-                        cost_factor = 1.0 + this.userPlannerConfig.AddedMotorUncomfortableTrafficFactor;
+                        cost_factor = 1.0 + this.userConfig.AddedMotorUncomfortableTrafficFactor;
                     }
                 }
                 else if (currentPlace.IsNode && targetPlace.IsNode
@@ -122,7 +121,7 @@ namespace TrackPlanner.PathFinder
                                                       && this.map.IsBikeFootRoadDangerousNearby(/*roadId: incomingRoadMapIndex, */nodeId: targetPlace.NodeId))
                 {
                     risk_info |= Risk.HighTrafficBikeLane;
-                    cost_factor = 1.0 + this.userPlannerConfig.AddedBikeFootHighTrafficFactor;
+                    cost_factor = 1.0 + this.userConfig.AddedBikeFootHighTrafficFactor;
                     //logger.Info($"Higher cost {cost_factor} for way {incoming_road_id}");
                 }
             }
@@ -142,17 +141,17 @@ namespace TrackPlanner.PathFinder
             }
             else
             {
-                curr_adj_speed = this.userPlannerConfig.Speeds[incoming_speed_mode];
+                curr_adj_speed = this.userConfig.Speeds[incoming_speed_mode];
             }
 
             TimeSpan added_run_time = segment_length / curr_adj_speed;
             TravelCost added_run_cost = new TravelCost(added_run_time, cost_factor);
             // crossing or joining high-traffic road
-            if (this.userPlannerConfig.JoiningHighTraffic != TimeSpan.Zero && !incoming_road.IsMassiveTraffic && tryGetIcomingRoadIds(targetPlace, start, end, out IEnumerable<long>? road_ids))
+            if (this.userConfig.JoiningHighTraffic != TimeSpan.Zero && !incoming_road.IsMassiveTraffic && tryGetIcomingRoadIds(targetPlace, start, end, out IEnumerable<long>? road_ids))
             {
                 if (road_ids.Any(it => this.map.Roads[it].IsMassiveTraffic)) // we are hitting high-traffic road
                 {
-                    TimeSpan join_traffic = this.userPlannerConfig.JoiningHighTraffic;
+                    TimeSpan join_traffic = this.userConfig.JoiningHighTraffic;
                     added_run_time += join_traffic;
                     added_run_cost += new TravelCost(join_traffic, 1.0); // we add it in separate step, because cost factor of crossing is constant
                 }

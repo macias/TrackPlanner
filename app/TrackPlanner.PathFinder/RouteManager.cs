@@ -99,64 +99,64 @@ namespace TrackPlanner.PathFinder
 
         }
 
-        public bool TryFindRawRoute(UserPlannerPreferences userPlannerConfig, IReadOnlyList<RequestPoint> userPoints, 
+        public bool TryFindRawRoute(UserRouterPreferences userConfig, IReadOnlyList<RequestPoint> userPoints, 
             CancellationToken token, [MaybeNullWhen(false)] out List<LegRun> route,out string? problem)
         {
             // the last point of given leg is repeated as the first point of the following leg
-            return RouteFinder.TryFindPath(logger, this.navigator, this.Map, grid, this.SysConfig, userPlannerConfig, 
+            return RouteFinder.TryFindPath(logger, this.navigator, this.Map, grid, this.SysConfig, userConfig, 
                 userPoints, token, out route,out problem);
         }
 
-        public bool TryFindCompactRoute(UserPlannerPreferences userPlannerConfig, IReadOnlyList<RequestPoint> userPoints, 
+        public bool TryFindCompactRoute(UserRouterPreferences userConfig, IReadOnlyList<RequestPoint> userPoints, 
             CancellationToken token, [MaybeNullWhen(false)] out TrackPlan track)
         {
-            if (!TryFindRawRoute(userPlannerConfig, userPoints, token, out var legs, out var problem))
+            if (!TryFindRawRoute(userConfig, userPoints, token, out var legs, out var problem))
             {
                 track = default;
                 return false;
             }
 
-            track = CompactRawRoute(userPlannerConfig, legs);
+            track = CompactRawRoute(userConfig, legs);
             if (problem != null)
                 track.ProblemMessage = problem;
 
             return true;
         }
 
-        public TrackPlan CompactRawRoute(UserPlannerPreferences userPlannerConfig, List<LegRun> legs)
+        public TrackPlan CompactRawRoute(UserRouterPreferences userConfig, List<LegRun> legs)
         {
-            var compactor = new RouteCompactor(this.logger, this.Map, userPlannerConfig, this.SysConfig.CompactPreservesRoads);
+            var compactor = new RouteCompactor(this.logger, this.Map, userConfig, this.SysConfig.CompactPreservesRoads);
 
             return compactor.Compact(legs);
         }
 
-        public bool TryFindRoute(UserPlannerPreferences userPlannerConfig,IReadOnlyList<NodePoint>  userPlaces,bool allowSmoothing,
+        public bool TryFindRoute(UserRouterPreferences userConfig,IReadOnlyList<NodePoint>  userPlaces,bool allowSmoothing,
             CancellationToken token, [MaybeNullWhen(false)] out TrackPlan track)
         {
-            if (!RouteFinder.TryFindPath(logger,this.navigator, this.Map, grid, this.SysConfig,userPlannerConfig, userPlaces,allowSmoothing:allowSmoothing, token, out var legs))
+            if (!RouteFinder.TryFindPath(logger,this.navigator, this.Map, grid, this.SysConfig,userConfig, userPlaces,allowSmoothing:allowSmoothing, token, out var legs))
             {
                 track = default;
                 return false;
             }
 
-            var compactor = new RouteCompactor(logger, this.Map, userPlannerConfig, this.SysConfig.CompactPreservesRoads);
+            var compactor = new RouteCompactor(logger, this.Map, userConfig, this.SysConfig.CompactPreservesRoads);
             track = compactor.Compact(legs);
             return true;
         }
 
-        public bool TryFindRoute(UserPlannerPreferences userPlannerConfig,IReadOnlyList<long>  mapNodes,
+        public bool TryFindRoute(UserRouterPreferences userConfig,IReadOnlyList<long>  mapNodes,
             in PathConstraints constraints,
             bool allowSmoothing,
             CancellationToken token, [MaybeNullWhen(false)] out TrackPlan track)
         {
             bool DUMMY_ALLOW_SMOOTHING = false;
-            if (!RouteFinder.TryFindPath(logger, this.navigator, this.Map, grid, new Shortcuts(), this.SysConfig,userPlannerConfig, mapNodes,constraints,allowSmoothing, token, out var legs))
+            if (!RouteFinder.TryFindPath(logger, this.navigator, this.Map, grid, new Shortcuts(), this.SysConfig,userConfig, mapNodes,constraints,allowSmoothing, token, out var legs))
             {
                 track = default;
                 return false;
             }
 
-            var compactor = new RouteCompactor(logger, this.Map, userPlannerConfig, this.SysConfig.CompactPreservesRoads);
+            var compactor = new RouteCompactor(logger, this.Map, userConfig, this.SysConfig.CompactPreservesRoads);
             track = compactor.Compact(legs);
             return true;
         }

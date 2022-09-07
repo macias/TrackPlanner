@@ -45,7 +45,7 @@ namespace TrackPlanner.Data
             splitIntoPieces(segment,startIndex,userPrefs);
         }*/
         
-        private LegPlan buildDraftLeg(GeoPoint start, GeoPoint end, UserPlannerPreferences userPlannerPrefs)
+        private LegPlan buildDraftLeg(GeoPoint start, GeoPoint end, UserRouterPreferences prefs)
         {
             var fragment = new LegFragment()
                 {
@@ -61,7 +61,7 @@ namespace TrackPlanner.Data
 
             fillFragmentDistances(fragment);
             
-            fragment.RawTime = fragment.UnsimplifiedDistance / userPlannerPrefs.Speeds[fragment.Mode];
+            fragment.RawTime = fragment.UnsimplifiedDistance / prefs.Speeds[fragment.Mode];
 
             var leg = new LegPlan()
             {
@@ -83,7 +83,7 @@ namespace TrackPlanner.Data
             };
             foreach (var (prev, next) in request.GetPointsSequence().Slide())
             {
-                LegPlan leg = buildDraftLeg(prev.UserPoint, next.UserPoint, request.PlannerPreferences);
+                LegPlan leg = buildDraftLeg(prev.UserPoint, next.UserPoint, request.RouterPreferences);
                 result.Legs.Add(leg);
             }
 

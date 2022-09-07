@@ -14,13 +14,15 @@ namespace TrackPlanner.Logic.Tests.Data
         public TrackPlan TrackPlan { get; set; }
         public UserPlannerPreferences PlannerPreferences { get; set; }
         public UserTurnerPreferences TurnerPreferences { get; set; }
+        public UserRouterPreferences RouterPreferences { get; set; }
 
         public DummyReadOnlySchedule()
         {
-            this.PlannerPreferences = new UserPlannerPreferences().SetCustomSpeeds();
             this.Days = new List<DummyDay>();
             this.TrackPlan = new TrackPlan();
+            this.RouterPreferences = new UserRouterPreferences().SetCustomSpeeds();
             this.TurnerPreferences = new UserTurnerPreferences();
+            this.PlannerPreferences = new UserPlannerPreferences();
         }
     }
 }

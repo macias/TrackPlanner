@@ -213,10 +213,10 @@ namespace TrackPlanner.RestService.Controllers
 
             if (schedule == null)
                 return false;
-            if (schedule.PlannerPreferences == null)
+            if (schedule.RouterPreferences == null)
             {
                 this.logger.Warning($"No preferences saved, using defaults.");
-                schedule.PlannerPreferences = UserPlannerPreferencesHelper.CreateBikeOriented().SetCustomSpeeds();
+                schedule.RouterPreferences = UserRouterPreferencesHelper.CreateBikeOriented().SetCustomSpeeds();
             }
 
             return true;
