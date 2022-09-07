@@ -25,10 +25,9 @@ namespace TrackPlanner.TestRunner
             //new CompactDictionaryTest().LongResizingTest();
 
          //   new Program().ExtractMiniMapFromFile(args, "gaski.kml");
-            new Program().extractMiniMapFromPoints("zakrzewko.kml",
-                GeoZPoint.FromDegreesMeters(53.097324, 18.640022, 0),
-                GeoZPoint.FromDegreesMeters(53.102116, 18.646202, 0),
-                GeoZPoint.FromDegreesMeters(53.110565, 18.661394, 0)
+            new Program().extractMiniMapFromPoints("fijewo-shortcut.kml",
+                GeoZPoint.FromDegreesMeters(53.392567, 18.934572, 0),
+                GeoZPoint.FromDegreesMeters(53.401714, 18.9353, 0)
             );
             //new MiniWorldTurnTest().LipionkaTest();
         }
