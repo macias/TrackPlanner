@@ -58,7 +58,7 @@
               @onclick="args => mergeDayToPrevious(args, dayIndex)"><i class="fas fa-link"></i></button>
     </li>
   }
-  void renderStatistics(SummaryDay day)
+  void renderStatistics(SummaryDay day,UserPlannerPreferences plannerPreferences)
   {
     string speed = day.TrueDuration == System.TimeSpan.Zero ? "--" : DataFormat.Format(day.Distance / day.TrueDuration, withUnit: true);
 
@@ -67,13 +67,9 @@
       <b>Time</b> @(DataFormat.Format(day.TrueDuration)) <b>Distance</b> @(DataFormat.Format(day.Distance, withUnit: true)) <b>Speed</b> @(speed)
     </div>
     <div>
-      @foreach(var trip_event in Enum.GetValues<TripEvent2>())
+      @foreach(var event_stats in ScheduleLikeExtension.GetEventStats(day.GetEventCounters(), plannerPreferences))
       {
-        var count = day.Checkpoints.Sum(it => it.EventCount[trip_event]);
-        if (count>0)
-        {
-          <span style="margin-right: 0.5em"><i title="@(trip_event.ToString())" class="@trip_event.GetClassIcon()"></i> @(count==1?"":$"{count} ")@(DataFormat.Format(day.EventDuration[trip_event])) </span> 
-        }
+          <span style="margin-right: 0.5em"><i title="@(event_stats.label)" class="@event_stats.classIcon"></i> @(DataFormat.FormatEvent(event_stats.count, event_stats.duration)) </span> 
       }
       <i></i>
     </div>
@@ -234,7 +230,7 @@
             renderInsertionButton(day_idx, anchor_idx);
           
 
-          renderStatistics(day);
+          renderStatistics(day,summary.Value.PlannerPreferences);
 
 
         }

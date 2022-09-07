@@ -146,17 +146,11 @@ namespace TrackPlanner.RestService.Controllers
                                 writer.Write($" &gt;&gt; {Data.DataFormat.Format(checkpoint.Departure)}");
                             writer.WriteLine("</div>");
                             {
-                                var events = String.Join(", ", Enum.GetValues<TripEvent2>().Select(it =>
-                                    {
-                                        var count = checkpoint.EventCount[it];
-                                        if (count == 0)
-                                            return "";
+                                var events = String.Join(", ",
+                                    ScheduleLikeExtension.GetEventStats(checkpoint.EventCounters, summary.PlannerPreferences)
+                                        .Select(it => $"{it.label}: {Data.DataFormat.FormatEvent(it.count,it.duration)}"));
 
-                                        return $"{it.GetLabel()}: {(count == 1 ? "" : $"{count} ")}({DataFormat.Format(summary.PlannerPreferences.EventDuration[it] * count)}";
-                                    })
-                                    .Where(it => it != ""));
-                                
-                                if (events!="")
+                                if (events != "")
                                 {
                                     writer.WriteLine("<div>");
                                     writer.Write($"<i>{events}</i>");

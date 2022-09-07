@@ -8,6 +8,22 @@ namespace TrackPlanner.Data
 {
     public static class ScheduleLikeExtension
     {
+        public static IEnumerable<(string label, string classIcon, int count, TimeSpan duration)> GetEventStats(int[] eventCounters,UserPlannerPreferences preferences)
+        {
+            return
+                Enumerable.Range(0, eventCounters.Length)
+                    .GroupBy(it => preferences.TripEvents[it].Label)
+                    .Select(group_it =>
+                    {
+                        var first_event = preferences.TripEvents[group_it.First()];
+                        var total_count = group_it.Select(it => eventCounters[it]).Sum();
+                        var total_duration = group_it.Select(it => preferences.TripEvents[it].Duration * eventCounters[it]).Sum();
+
+                        return (first_event.Label, first_event.ClassIcon, total_count, total_duration);
+                    })
+                    .Where(it => it.total_count!=0);
+        }
+
         public static (TDay current,TDay added) SplitDay<TDay,TAnchor>(this ISchedule<TDay,TAnchor> schedule,int dayIndex, int anchorIndex)
         where TDay : IDay<TAnchor>,new()
         where TAnchor : IAnchor
@@ -84,7 +100,7 @@ namespace TrackPlanner.Data
             var start = day.Start;
             TimeSpan rolling_time = TimeSpan.Zero;
 
-            var summary_day = new SummaryDay(eventsCount: schedule.PlannerPreferences.TripEvents.Length) {Start = start};
+            var summary_day = new SummaryDay() {Start = start};
             // if we don't have anything (we just started from scratch) do not create any checkpoints as well
             // just an empty day, that's all,
             // NOTE: for last day, looped, not having any anchors is a valid scenario (it starts from the beginning
@@ -112,7 +128,10 @@ namespace TrackPlanner.Data
                     ref rolling_time, dayIndex, anchor_idx));
             }
 
-            var last_events = schedule.PlannerPreferences.TripEvents.Select(it => it.Category).ToDictionary(it => it, _ => start);
+            var last_events = schedule.PlannerPreferences.TripEvents
+                .Select(it => it.Category)
+                .Distinct()
+                .ToDictionary(it => it, _ => start);
 
             for (int i = 0; i < summary_day.Checkpoints.Count; ++i)
                 addDayTripEvents(schedule, summary_day, i, last_events, dayIndex);
@@ -135,7 +154,7 @@ namespace TrackPlanner.Data
 
                     if (!isValidEventDay(user_event, dayIndex, is_home_start, is_home_end)
                         // it is already added
-                        || summary_day.Checkpoints.Any(it => it.EventsCounter[event_idx] > 0))
+                        || summary_day.Checkpoints.Any(it => it.EventCounters[event_idx] > 0))
                         continue;
 
                     if (last_events[user_event.Category] == start) // we need to add extra event
@@ -152,7 +171,7 @@ namespace TrackPlanner.Data
                             var sub_event = schedule.PlannerPreferences.TripEvents[sub_event_idx];
                             if (sub_event.Category!=user_event.Category) 
                                 continue;
-                            var sub_point_idx = summary_day.Checkpoints.FindLastIndex(it => it.EventsCounter[sub_event_idx] != 0);
+                            var sub_point_idx = summary_day.Checkpoints.FindLastIndex(it => it.EventCounters[sub_event_idx] != 0);
                             if (sub_point_idx==-1)
                                 continue;
 
@@ -175,9 +194,10 @@ namespace TrackPlanner.Data
             // moving all events from the last checkpoint to the previous one
             // rationale: when reading summary it is surprise effect that last checkpoint (most likely camping)
             // has snack time included, while it is not possible
+            if (summary_day.Checkpoints.Count>1)
             {
-                for (int event_idx = 0; event_idx < last_checkpoint.EventsCounter.Length; ++event_idx)
-                    while (last_checkpoint.EventsCounter[event_idx] > 0)
+                for (int event_idx = 0; event_idx < last_checkpoint.EventCounters.Length; ++event_idx)
+                    while (last_checkpoint.EventCounters[event_idx] > 0)
                     {
                         removeTripEvent(schedule, summary_day, summary_day.Checkpoints.Count-1, event_idx);
                         addTripEvent(schedule, summary_day, summary_day.Checkpoints.Count-2, event_idx);
@@ -250,9 +270,11 @@ namespace TrackPlanner.Data
                         return (day_idx, local_leg_idx, starting_day_idx);
                     }
                     else
+                    {
                         // for opening legs on next days, the starting anchor is last one from previous day
                         // we indicate it by returning effectively -1 for such case
                         return (day_idx, local_leg_idx - 1, starting_day_idx);
+                    }
                 }
 
                 local_leg_idx -= leg_count;
@@ -354,8 +376,10 @@ namespace TrackPlanner.Data
                     }
                     else
                     {
-                        add_event = current_summary_point.Departure > (user_event.ClockTime ?? TimeSpan.Zero)
-                                    && summaryDay.Checkpoints.All(it => it.EventsCounter[event_idx] == 0);
+                        // we treat time-clocks set to null as non-starters of the day
+                        add_event = (summaryPointIndex!=0 || user_event.ClockTime!=null) 
+                            && current_summary_point.Departure > (user_event.ClockTime ?? TimeSpan.Zero)
+                                    && summaryDay.Checkpoints.All(it => it.EventCounters[event_idx] == 0);
                     }
 
                     if (add_event)
@@ -383,11 +407,6 @@ namespace TrackPlanner.Data
                    && dayIndex % tripEvent.EveryDay == 0;
         }
 
-        private static bool isHomeAdjacent(IReadOnlySchedule schedule, int dayIndex)
-        {
-            return dayStartsAtHome(schedule, dayIndex) || dayEndsAtHome(schedule, dayIndex);
-        }
-
         private static bool dayStartsAtHome(IReadOnlySchedule schedule, int dayIndex)
         {
             return (schedule.StartsAtHome && dayIndex == 0);
@@ -412,10 +431,9 @@ namespace TrackPlanner.Data
             int summaryPointIndex, int userEventIndex)
         {
             var duration = schedule.PlannerPreferences.TripEvents[userEventIndex].Duration;
-            summaryDay.EventDuration[userEventIndex] += duration;
             
             SummaryCheckpoint summary_point = summaryDay.Checkpoints[summaryPointIndex];
-            ++summary_point.EventsCounter[userEventIndex];
+            ++summary_point.EventCounters[userEventIndex];
           
             summary_point.Departure += duration;
             summary_point.Break += duration;
@@ -434,10 +452,9 @@ namespace TrackPlanner.Data
             int summaryPointIndex,int userEventIndex)
         {
             var duration = schedule.PlannerPreferences.TripEvents[userEventIndex].Duration;
-            summaryDay.EventDuration[userEventIndex] -= duration;
 
             SummaryCheckpoint summary_point = summaryDay.Checkpoints[summaryPointIndex];
-            --summary_point.EventsCounter[userEventIndex];
+            --summary_point.EventCounters[userEventIndex];
 
             summary_point.Departure -= duration;
             summary_point.Break -= duration;

@@ -67,14 +67,18 @@ namespace TrackPlanner.Data.Stored
                     Label ="tires",
                     ClassIcon  = "fas fa-tire",
                      Duration = TimeSpan.FromMinutes(15),
+                     ClockTime = TimeSpan.Zero,
                      EveryDay = 14,
+                     SkipAfterHome = true,
                 },
                 new TripEvent()
                 {
                 Label ="chain",
                 ClassIcon  = "fas fa-link",
                 Duration = TimeSpan.FromMinutes(7),
+                ClockTime = TimeSpan.Zero,
                 EveryDay = 2,
+                SkipAfterHome = true,
                 },
                 new TripEvent()
                 {
@@ -83,13 +87,17 @@ namespace TrackPlanner.Data.Stored
                     Duration = TimeSpan.FromMinutes(15),
                     EveryDay = 5,
                     ClockTime = TimeSpan.FromHours(12),
+                    SkipAfterHome = true,
+                    SkipBeforeHome = true,
                 },
                 new TripEvent()
                 {
                     Label ="laundry",
-                    ClassIcon  = "fas fa-tint",
+                    ClassIcon  = "fas fa-tshirt",
                     Duration = TimeSpan.FromMinutes(30),
                     ClockTime = TimeSpan.FromHours(11),
+                    SkipAfterHome = true,
+                    SkipBeforeHome = true,
                 },
                 new TripEvent()
                 {
@@ -113,7 +121,7 @@ namespace TrackPlanner.Data.Stored
                 ClassIcon  = "fas fa-shopping-cart",
                 Duration    = TimeSpan.FromMinutes(20),
                 // the first resupply of the day (food for breakfast and supper) 
-                ClockTime = TimeSpan.Zero,
+                ClockTime = null, // setting null to avoid starter of the day
                 SkipAfterHome = true,
                 SkipBeforeHome = true, // when hitting home we don't need this
                 },

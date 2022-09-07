@@ -36,6 +36,24 @@ public class SummaryTest
     }
 
     [Fact]
+    public void SingleAnchorSummaryTest()
+    {
+        var schedule = new DummyReadOnlySchedule()
+        {
+            IsLooped = true,
+            Days = new List<DummyDay>()
+            {
+                new DummyDay() {Anchors = new List<IAnchor>() {new DummyAnchor()}},
+            },
+            TrackPlan = new TrackPlan(),
+        };
+
+        var summary = schedule.GetSummary();
+
+        // nothing crashed = success
+    }
+
+    [Fact]
     public void SummaryDayDistancesTest()
     {
         var schedule = createDummySchedule();

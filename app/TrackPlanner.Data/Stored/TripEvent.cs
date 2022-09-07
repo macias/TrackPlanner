@@ -17,8 +17,12 @@ namespace TrackPlanner.Data.Stored
         public bool SkipBeforeHome { get; set; }
         public bool SkipAfterHome { get; set; }
         // only one can be set, if both are not set, the system assume the event is one time only (per day)
+        // within the same category, interval-based events have lower priority
         public TimeSpan? Interval { get; set; }
-        public TimeSpan? ClockTime { get; set; } 
+        // double meaning of zero and null -- both mean start as soon as possible, but null should not start the day
+        public TimeSpan? ClockTime { get; set; }
+
+
     }
 }
 

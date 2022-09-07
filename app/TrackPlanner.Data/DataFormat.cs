@@ -5,6 +5,10 @@ namespace TrackPlanner.Data
 {
     public static class DataFormat
     {
+        public static string FormatEvent(int count, TimeSpan duration)
+        {
+            return $"{Format(duration)}{(count==1?"":$" ({count})")}";
+        }
         public static string Format(TimeSpan time)
         {
             return time.ToString(@"hh\:mm");

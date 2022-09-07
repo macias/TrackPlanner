@@ -15,11 +15,11 @@ namespace TrackPlanner.Data
         public TimeSpan RollingTime { get; set; }
         public int? IncomingLegIndex { get; set; }
         public bool IsLooped { get; set; }
-        public int[] EventsCounter { get; set; }
+        public int[] EventCounters { get; set; }
         public string Label { get; set; }
 
         public IEnumerable<(string label, string iconClass, TimeSpan duration)> GetAtomicEvents(SummaryJourney summary) =>
-            Enumerable.Range(0,EventsCounter.Length).SelectMany(it => Enumerable.Range(0,this.EventsCounter[ it])
+            Enumerable.Range(0,EventCounters.Length).SelectMany(it => Enumerable.Range(0,this.EventCounters[ it])
                     .Select(_ => (  summary.PlannerPreferences.TripEvents[it].Label,IconClass: summary.PlannerPreferences.TripEvents[it].ClassIcon, 
                         summary.PlannerPreferences.TripEvents[it].Duration)))
             .OrderBy(it => it.Item1);
@@ -27,7 +27,7 @@ namespace TrackPlanner.Data
         public SummaryCheckpoint(int eventsCount)
         {
             Label = "";
-            this.EventsCounter = new int[eventsCount];
+            this.EventCounters = new int[eventsCount];
         }
     }
 }
