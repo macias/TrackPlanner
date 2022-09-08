@@ -93,7 +93,16 @@ namespace TrackPlanner.Runner
                     {
                         var input = new TrackWriterInput();
                         foreach (var hist in hist_objects)
-                            input.AddPoint(hist.Location.Convert(), hist.Name,hist.Url, hist.Ruins ? PointIcon.CircleIcon : PointIcon.StarIcon);
+                        {
+                            var description = new List<string>();
+                            if (hist.historicObject.Ruins)
+                                description.Add("Ruins");
+                            if (hist.historicObject.Url!=null)
+                                description.Add(hist.historicObject.Url);
+                            input.AddPoint(hist.location.Convert(), hist.historicObject.Name, String.Join(Environment.NewLine,description),
+                                hist.historicObject.Ruins ? PointIcon.CircleIcon : PointIcon.StarIcon);
+                        }
+
                         var kml = input.BuildDecoratedKml();
                         kml.Save(stream);
                     }

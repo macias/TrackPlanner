@@ -6,14 +6,14 @@ namespace TrackPlanner.Mapping
 {
     public readonly struct HistoricObject
     {
-        public GeoPoint Location { get; }
+        public long NodeId { get; }
         public string Name { get; }
-        public string Url { get; }
+        public string? Url { get; }
         public bool Ruins { get; }
 
-        public HistoricObject(GeoPoint location, string name, string url, bool ruins)
+        public HistoricObject(long nodeId, string name, string? url, bool ruins)
         {
-            Location = location;
+            NodeId = nodeId;
             Name = name;
             Url = url;
             Ruins = ruins;

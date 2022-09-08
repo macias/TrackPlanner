@@ -36,7 +36,7 @@ namespace TrackPlanner.Mapping
             this.unusedHistoric = new HashSet<string>();
         }
 
-        public List<HistoricObject> ReadHistoricObjects(string filePath)
+        public List<(HistoricObject historicObject,GeoPoint location)> ReadHistoricObjects(string filePath)
         {
             var nodes = new CompactDictionary<long, GeoPoint>();
             // way id -> first node id
@@ -82,25 +82,27 @@ namespace TrackPlanner.Mapping
                             // https://wiki.openstreetmap.org/wiki/Key:heritage
                             bool is_heritage = element.Tags.TryGetValue("heritage", out string heritage_value);
                             bool is_church_attraction = element.Tags.TryGetValue("tourism", out string? tourism_value) && tourism_value.Contains("attraction")
-                                && element.Tags.TryGetValue("building",out string? building_value) && building_value.Contains("church");
+                                                                                                                       && element.Tags.TryGetValue("building", out string? building_value) && building_value.Contains("church");
                             bool ruins = is_castle && ((element.Tags.TryGetValue("ruins", out string ruins_val) && ruins_val == "yes") || hist_value.Contains("ruins"));
                             element.Tags.TryGetValue("site_type", out string? site_type_value);
                             string description = "";
                             if (element.Tags.TryGetValue("castle_type", out string type_val))
                             {
                                 if (type_val == "manor" || type_val == "palace")
-                                    description= $" ({type_val})";
+                                    description = $" ({type_val})";
                             }
-                            string name = element.Tags.TryGetValue("name", out var name_val) 
-                                ? name_val : $"{hist_value} {site_type_value}{description} {element.GetType().Name[0]}{element.Id}";
+
+                            string name = element.Tags.TryGetValue("name", out var name_val)
+                                ? name_val
+                                : $"{hist_value} {site_type_value}{description} {element.GetType().Name[0]}{element.Id}";
                             element.Tags.TryGetValue("url", out string? url_value);
 
                             if (is_castle || is_church_attraction || is_heritage)
                                 is_target = true;
-                            
+
                             if (element is Way way)
                             {
-                                ways.Add(way.Id!.Value,way.Nodes.First());
+                                ways.Add(way.Id!.Value, way.Nodes.First());
 
                                 if (is_target)
                                 {
@@ -119,21 +121,21 @@ namespace TrackPlanner.Mapping
 
                                 if (is_target)
                                 {
-                                    historic_objects.Add((new HistoricObject(default, name,url_value, ruins), node_id,null));
+                                    historic_objects.Add((new HistoricObject(default, name, url_value, ruins), node_id, null));
                                 }
                             }
                             else if (element is Relation relation)
                             {
                                 if (is_target)
-                                { 
+                                {
                                     var way_id = relation.Members.Where(it => it.Type == OsmGeoType.Way).Select(it => it.Id).FirstOrNone();
                                     if (way_id.HasValue)
-                                        historic_objects.Add((new HistoricObject(default, name,url_value, ruins), null, way_id.Value));
+                                        historic_objects.Add((new HistoricObject(default, name, url_value, ruins), null, way_id.Value));
                                     else
                                     {
                                         var node_id = relation.Members.Where(it => it.Type == OsmGeoType.Node).Select(it => it.Id).FirstOrNone();
                                         if (node_id.HasValue)
-                                            historic_objects.Add((new HistoricObject(default, name,url_value, ruins), node_id.Value, null));
+                                            historic_objects.Add((new HistoricObject(default, name, url_value, ruins), node_id.Value, null));
                                         else
                                             this.logger.Warning($"Relation {relation.Id} does not have any way or node.");
                                     }
@@ -144,7 +146,11 @@ namespace TrackPlanner.Mapping
                 }
             }
 
-            return historic_objects.Select(it => new HistoricObject(it.nodeId.HasValue? nodes[it.nodeId.Value] : nodes[ways[it.wayId!.Value]], it.hist.Name,it.hist.Url, it.hist.Ruins)).ToList();
+            return historic_objects.Select(it =>
+            {
+                var effective_node_id = it.nodeId ?? ways[it.wayId!.Value];
+                    return (new HistoricObject(effective_node_id,  it.hist.Name, it.hist.Url, it.hist.Ruins),nodes[effective_node_id]);
+                }).ToList();
         }
     }
 }
