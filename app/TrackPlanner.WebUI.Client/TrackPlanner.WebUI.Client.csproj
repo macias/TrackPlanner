@@ -24,7 +24,6 @@
   <ItemGroup>
     <ProjectReference Include="..\..\..\BlazorLeaflet\BlazorLeaflet\BlazorLeaflet\BlazorLeaflet.csproj" />
     <ProjectReference Include="..\TrackPlanner.Data\TrackPlanner.Data.csproj" />
-    <ProjectReference Include="..\TrackPlanner.RestSymbols\TrackPlanner.RestSymbols.csproj" />
     <ProjectReference Include="..\TrackPlanner.Settings\TrackPlanner.Settings.csproj" />
   </ItemGroup>
 

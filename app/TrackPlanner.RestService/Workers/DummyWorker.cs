@@ -1,8 +1,6 @@
 using System;
 using System.Diagnostics.CodeAnalysis;
-using Microsoft.AspNetCore.Mvc;
 using TrackPlanner.Data;
-using TrackPlanner.RestSymbols;
 using TrackPlanner.Shared;
 using TrackPlanner.Mapping;
 

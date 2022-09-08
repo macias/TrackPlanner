@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace TrackPlanner.RestSymbols
+namespace TrackPlanner.Data.RestSymbols
 {
     public static class Methods
     {

@@ -1,15 +1,9 @@
-using Newtonsoft.Json;
 using TrackPlanner.Data;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Net.Http;
-using System.Net.Http.Json;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using TrackPlanner.Data.Serialization;
-using TrackPlanner.RestSymbols;
+using TrackPlanner.Data.RestSymbols;
 using TrackPlanner.Shared;
 
 namespace TrackPlanner.WebUI.Client

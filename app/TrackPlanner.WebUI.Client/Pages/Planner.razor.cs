@@ -20,8 +20,8 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.JSInterop;
 using TrackPlanner.Data;
+using TrackPlanner.Data.RestSymbols;
 using TrackPlanner.Data.Stored;
-using TrackPlanner.RestSymbols;
 using TrackPlanner.Settings;
 using TrackPlanner.WebUI.Client.Data;
 using TrackPlanner.WebUI.Client.Shared;
@@ -363,7 +363,7 @@ namespace TrackPlanner.WebUI.Client.Pages
             string? failure;
             ScheduleJourney ? schedule;
             long start = Stopwatch.GetTimestamp();
-            using (Modal.ShowGuardDialog("Loading..."))
+            using (Modal.ShowGuardDialog($"Loading {schedule_path} ..."))
             {
 
                 Console.WriteLine("Sending load rquest");
@@ -432,7 +432,7 @@ namespace TrackPlanner.WebUI.Client.Pages
             var schedule = createJourneySchedule(onlyPinned:false);
 
             string? failure ;
-            using (Modal.ShowGuardDialog("Saving..."))
+            using (Modal.ShowGuardDialog($"Saving {schedule_path} ..."))
             {
                 (failure, _) = await Rest.PostAsync<ValueTuple>(Url.Combine(Program.Configuration.PlannerServer, Routes.Planner, Methods.Post_SaveSchedule),
                     new SaveRequest() {Schedule = schedule, Path = schedule_path}, CancellationToken.None);

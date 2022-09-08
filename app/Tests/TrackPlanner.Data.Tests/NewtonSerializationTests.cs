@@ -50,7 +50,7 @@ namespace TrackPlanner.Data.Tests
 
             var json_string = JsonConvert.SerializeObject(input, options);
 
-            var output = JsonConvert.DeserializeObject<UserPlannerPreferences>(json_string, options);
+            var output = JsonConvert.DeserializeObject<UserRouterPreferences>(json_string, options);
 
             output.Should().BeEquivalentTo(input, setApproximateAngleOptions);
         }
