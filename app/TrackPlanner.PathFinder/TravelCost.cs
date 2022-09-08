@@ -12,6 +12,11 @@ namespace TrackPlanner.PathFinder
     [StructLayout(LayoutKind.Auto)]
     public readonly struct TravelCost : IEquatable<TravelCost>, IComparable<TravelCost>
     {
+        public static TravelCost Create(TimeSpan time, double costFactor) 
+        {
+            return new TravelCost(time.TotalSeconds * costFactor);
+        }
+
         public static TravelCost Zero => default;
         public static TravelCost MaxValue => new TravelCost(double.MaxValue);
 
@@ -21,10 +26,6 @@ namespace TrackPlanner.PathFinder
         private TravelCost(double cost)
         {
             this.cost = cost;
-        }
-
-        public TravelCost(TimeSpan time, double costFactor) : this(time.TotalSeconds * costFactor)
-        {
         }
 
         public static TravelCost operator +(TravelCost left, TravelCost right)

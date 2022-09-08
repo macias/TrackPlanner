@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using TrackPlanner.Shared;
 using TrackPlanner.Mapping;
@@ -84,7 +83,7 @@ namespace TrackPlanner.PathFinder
 
         public override bool Equals(object? obj)
         {
-            return obj is Placement node && Equals(node);
+            return obj is Placement place && Equals(place);
         }
 
         public bool Equals(Placement other)

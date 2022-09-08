@@ -140,7 +140,8 @@ public static bool IsSignificantMotorRoad(this IWorldMap map, long roadId) => ma
         {
             return currentRoadId == nextRoadId
                 || (map.IsCycleWay(currentRoadId) && map.IsCycleWay(nextRoadId))
-                || (map.Roads[currentRoadId].HasName && map.Roads[currentRoadId].NameIdentifier == map.Roads[nextRoadId].NameIdentifier);
+                || (map.Roads[currentRoadId].HasName && map.Roads[nextRoadId].HasName 
+                                                     && map.Roads[currentRoadId].NameIdentifier == map.Roads[nextRoadId].NameIdentifier);
         }
 
         internal static bool IsRoadLooped(this IWorldMap map, long roadId)

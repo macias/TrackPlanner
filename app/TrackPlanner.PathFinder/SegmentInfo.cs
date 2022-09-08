@@ -1,9 +1,7 @@
 ﻿using TrackPlanner.Data.Stored;
-using TrackPlanner.Data.Stored;
 using MathUnit;
 using System;
 using TrackPlanner.Data;
-using TrackPlanner.Settings;
 
 namespace TrackPlanner.PathFinder
 {

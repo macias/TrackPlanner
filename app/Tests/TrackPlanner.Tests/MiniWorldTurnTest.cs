@@ -317,22 +317,40 @@ namespace TrackPlanner.Tests
                 GeoZPoint.FromDegreesMeters(                52.93953, 18.73554, 0)
             );
 
-            Assert.Equal(2, turns.Count);
-
+            //SaveData(plan,turns,map_filename);
+            
+            // turner depends on routing so to avoid constant changes due to router
+            // we added conditional checks
+            
             int index = 0;
+            int second_turn_track_index;
+            // if the route starts with road part then we have two turns
+            if (plan.Any(it => it.IsNode && it.NodeId == 3610427916))
+            {
+                Assert.Equal(2, turns.Count);
 
-            Assert.Equal(3610427916, turns[index].EntityId);
-            Assert.True(turns[index].Forward);
-            Assert.False(turns[index].Backward);
-            Assert.Equal(5, turns[index].TrackIndex);
+                second_turn_track_index = 10;
+                    
+                Assert.Equal(3610427916, turns[index].EntityId);
+                Assert.True(turns[index].Forward);
+                Assert.False(turns[index].Backward);
+                Assert.Equal(5, turns[index].TrackIndex);
 
-            ++index;
+                ++index;
+            }
+            else // if it starts from parallel cycleway we will have only one turn
+            {
+                Assert.Equal(1, turns.Count);
+
+                second_turn_track_index = 8;
+            }
+
+            // this turn is common in both cases
             
             Assert.Equal(6384120377, turns[index].EntityId);
             Assert.True(turns[index].Forward);
             Assert.True(turns[index].Backward);
-            Assert.Equal(10, turns[index].TrackIndex);
-
+            Assert.Equal(second_turn_track_index, turns[index].TrackIndex);
         }
 
 

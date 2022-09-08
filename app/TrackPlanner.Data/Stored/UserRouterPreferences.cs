@@ -21,6 +21,7 @@ namespace TrackPlanner.Data.Stored
         public Length CompactingDistanceDeviation { get; set; }
         public bool UseStableRoads { get; set; }
         public TimeSpan CheckpointIntervalLimit { get; set; }
+        public TimeSpan RoadSwitching { get; set; }
 
         public UserRouterPreferences()
         {
@@ -29,6 +30,7 @@ namespace TrackPlanner.Data.Stored
 
             CompactingAngleDeviation = Angle.FromDegrees(12);
             CompactingDistanceDeviation = Length.FromMeters(15);
+            RoadSwitching = TimeSpan.FromSeconds(18); // a little something, but still we prefer continuous ride
         }
 
         // it makes not sense riding at lower speeds than carrying bike

@@ -231,6 +231,8 @@ namespace TrackPlanner.PathFinder
                 // remove user points
                 if (!path[0].Place.IsUserPoint)
                     throw new Exception($"Path does not start with user point {path[0].Place}.");
+                if (path[0].Place.Point!=buckets[pt_index-1].UserPoint)
+                    throw new Exception($"Path start out of sync with bucket {path[0].Place.Point} != {buckets[pt_index-1].UserPoint}.");
                 path.RemoveAt(0);
                 path[0] = StepRun.RecreateAsInitial(path[0], path[1]);
                 if (!path[0].Place.IsCross)
@@ -240,7 +242,9 @@ namespace TrackPlanner.PathFinder
 
                 if (!path[^1].Place.IsUserPoint)
                     throw new Exception($"Path does not end with user point {path[^1].Place}.");
-                path.RemoveAt(path.Count - 1);
+                if (path[^1].Place.Point!=buckets[pt_index].UserPoint)
+                    throw new Exception($"Path end out of sync with bucket {path[^1].Place.Point} != {buckets[pt_index].UserPoint}.");
+                path.RemoveLast();
                 if (!path[^1].Place.IsCross)
                     throw new Exception($"Path end does not follow with cross point {path[^1].Place}.");
                 if (!path[^2].Place.IsNode)
@@ -471,7 +475,7 @@ namespace TrackPlanner.PathFinder
                     this.logger.Verbose($"Routed through {backtrack.Count} places");
                 }
 
-                if (!heap.TryPop(out Placement current_place, out var current_weight, out var current_info))
+                if (!heap.TryPop(out Placement current_place, out var current_weight, out BacktrackInfo current_info))
                 {
                     if (joint == null)
                     {
@@ -537,7 +541,8 @@ namespace TrackPlanner.PathFinder
                 {
                     // we add user point flag to be sure we have such sequence -- user point, cross point, nodes...., cross point, user point
                     List<StepRun> route_steps = recreatePath(collector, backtrack, Placement.UserPoint(start), current_place);
-
+                    if (!is_forward_side)
+                        route_steps = reversePathDirection(route_steps);
                     resultPath = new CostPath(route_steps, runCost: current_weight.CurrentTravelCost);
 
                     logger.Info($"BOOM, direct hit with weight {current_weight} in {modeLabel}");
@@ -557,7 +562,7 @@ namespace TrackPlanner.PathFinder
 
                 int adjacent_count = 0;
 
-                foreach ((var adj_place, long incoming_road_map_index) in getAdjacent(current_place, start, end))
+                foreach ((var adj_place, long connecting_road_map_index) in getAdjacent(current_place, start, end))
                 {
                     ++adjacent_count;
 
@@ -565,7 +570,7 @@ namespace TrackPlanner.PathFinder
                     {
                         if (current_place.IsNode && DEBUG_hotNodes.TryGetValue(current_place.NodeId, out string? comment))
                         {
-                            logger.Info($"Adjacent to hot node {current_place.NodeId}/{comment} is already used by outgoing road {incoming_road_map_index}@{adj_place.NodeId}");
+                            logger.Info($"Adjacent to hot node {current_place.NodeId}/{comment} is already used by outgoing road {connecting_road_map_index}@{adj_place.NodeId}");
                         }
 
                         continue;
@@ -610,7 +615,7 @@ namespace TrackPlanner.PathFinder
                             remaining_direct_distance = calc.GetDistance(adj_place.Point, end.UserPoint);
                     }
 
-                    var segment_info = this.logic.GetSegmentInfo(start, end, incoming_road_map_index, current_place, adj_place);
+                    var segment_info = this.logic.GetSegmentInfo(start, end,current_info.IncomingRoadId, connecting_road_map_index, current_place, adj_place);
 
                     Length new_run_dist = current_info.RunningRouteDistance + segment_info.SegmentLength;
                     Length new_forbidden_dist = current_weight.CurrentForbiddenDistance + segment_info.ForbiddenLength;
@@ -629,7 +634,7 @@ namespace TrackPlanner.PathFinder
                     else
                     {
                         var outgoing_info = new BacktrackInfo(current_place,
-                                incoming_road_map_index,
+                                connecting_road_map_index,
                                 new RoadCondition(segment_info.SpeedMode, segment_info.RiskInfo, segment_info.IsForbidden, isSnap: segment_info.IsSnap),
                                 new_run_dist,
                                 current_info.RunningTime + segment_info.Time);
@@ -643,7 +648,7 @@ namespace TrackPlanner.PathFinder
                         {
                             if (current_place.IsNode && DEBUG_hotNodes.TryGetValue(current_place.NodeId, out string? comment))
                             {
-                                logger.Info($"Adjacent to hot node {current_place.NodeId}/{comment} is by outgoing road {incoming_road_map_index}@{adj_place.NodeId}, {(segment_info.IsForbidden ? "forbidden" : "")}, weight {outgoing_weight}, updated {updated}");
+                                logger.Info($"Adjacent to hot node {current_place.NodeId}/{comment} is by outgoing road {connecting_road_map_index}@{adj_place.NodeId}, {(segment_info.IsForbidden ? "forbidden" : "")}, weight {outgoing_weight}, updated {updated}");
                             }
                         }
                     }

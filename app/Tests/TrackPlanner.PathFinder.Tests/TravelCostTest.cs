@@ -8,8 +8,8 @@ public class TravelCostTest
     [Fact]
     public void ComparisonTest()
     {
-        var a = new TravelCost(TimeSpan.FromMinutes(2), 2);
-        var b = new TravelCost(TimeSpan.FromMinutes(3), 1);
+        var a = TravelCost.Create(TimeSpan.FromMinutes(2), 2);
+        var b = TravelCost.Create(TimeSpan.FromMinutes(3), 1);
         Assert.True(a > b);
         Assert.True(a >= b);
         Assert.True(b < a);

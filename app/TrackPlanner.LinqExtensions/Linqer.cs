@@ -24,6 +24,22 @@ namespace TrackPlanner.LinqExtensions
             return Enumerable.Concat(colletion,elems);    
         }
 
+        public static Option<T> SingleOrNone<T>(this IEnumerable<T> enumerable)
+        {
+            using (var iter = enumerable.GetEnumerator())
+            {
+                if (!iter.MoveNext()) // no elements
+                    return Option<T>.None;
+
+                var result = iter.Current;
+                
+                if (iter.MoveNext()) // multiple elements
+                    return Option<T>.None;
+
+                return new Option<T>(result);
+            }
+        }
+
         public static int GetCapacity<TKey, TValue>(this Dictionary<TKey, TValue> dictionary)
             where TKey : notnull
         {

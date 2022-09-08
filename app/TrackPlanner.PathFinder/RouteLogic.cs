@@ -64,16 +64,19 @@ namespace TrackPlanner.PathFinder
             throw new InvalidOperationException("Not possible");
         }
 
-        internal SegmentInfo GetSegmentInfo(RoadBucket start, RoadBucket end, long incomingRoadMapIndex, Placement currentPlace, Placement targetPlace)
+        internal SegmentInfo GetSegmentInfo(RoadBucket start, RoadBucket end,
+            long? incomingRoadMapIndex, 
+            long connectingRoadMapIndex, 
+            Placement currentPlace, Placement targetPlace)
         {
             var target_point = targetPlace.Point;
 
             Length segment_length = calc.GetDistance(currentPlace.Point, target_point);
 
-            var incoming_road = this.map.Roads[incomingRoadMapIndex];
+            var connecting_road = this.map.Roads[connectingRoadMapIndex];
 
-            bool is_forbidden = incoming_road.Kind <= WayKind.HighwayLink || !incoming_road.HasAccess;
-            SpeedMode incoming_speed_mode = incoming_road.GetRoadSpeedMode();
+            bool is_forbidden = connecting_road.Kind <= WayKind.HighwayLink || !connecting_road.HasAccess;
+            SpeedMode connecting_speed_mode = connecting_road.GetRoadSpeedMode();
 
             double cost_factor = 1.0;
             Risk risk_info = Risk.None;
@@ -82,7 +85,7 @@ namespace TrackPlanner.PathFinder
                 bool is_suppressed(Placement pl) => (pl.IsSnapped && !pl.IsFinal)
                                                     || (pl.IsNode && suppressedTraffic.Contains(pl.NodeId));
 
-                if (incoming_road.IsDangerous)
+                if (connecting_road.IsDangerous)
                 {
                     risk_info |= Risk.Dangerous;
 
@@ -102,7 +105,7 @@ namespace TrackPlanner.PathFinder
                         cost_factor = 1.0 + this.userConfig.AddedMotorDangerousTrafficFactor;
                     }
                 }
-                else if (incoming_road.IsUncomfortable)
+                else if (connecting_road.IsUncomfortable)
                 {
                     risk_info |= Risk.Uncomfortable;
 
@@ -117,8 +120,8 @@ namespace TrackPlanner.PathFinder
                     }
                 }
                 else if (currentPlace.IsNode && targetPlace.IsNode
-                                                      && this.map.IsBikeFootRoadDangerousNearby(/*roadId: incomingRoadMapIndex, */nodeId: currentPlace.NodeId)
-                                                      && this.map.IsBikeFootRoadDangerousNearby(/*roadId: incomingRoadMapIndex, */nodeId: targetPlace.NodeId))
+                                             && this.map.IsBikeFootRoadDangerousNearby( /*roadId: incomingRoadMapIndex, */nodeId: currentPlace.NodeId)
+                                             && this.map.IsBikeFootRoadDangerousNearby( /*roadId: incomingRoadMapIndex, */nodeId: targetPlace.NodeId))
                 {
                     risk_info |= Risk.HighTrafficBikeLane;
                     cost_factor = 1.0 + this.userConfig.AddedBikeFootHighTrafficFactor;
@@ -141,29 +144,38 @@ namespace TrackPlanner.PathFinder
             }
             else
             {
-                curr_adj_speed = this.userConfig.Speeds[incoming_speed_mode];
+                curr_adj_speed = this.userConfig.Speeds[connecting_speed_mode];
             }
 
             TimeSpan added_run_time = segment_length / curr_adj_speed;
-            TravelCost added_run_cost = new TravelCost(added_run_time, cost_factor);
+            TravelCost added_run_cost = TravelCost.Create(added_run_time, cost_factor);
             // crossing or joining high-traffic road
-            if (this.userConfig.JoiningHighTraffic != TimeSpan.Zero && !incoming_road.IsMassiveTraffic && tryGetIcomingRoadIds(targetPlace, start, end, out IEnumerable<long>? road_ids))
+            if (this.userConfig.JoiningHighTraffic != TimeSpan.Zero
+                // todo: this is odd, we should check the road we came, and the connecting road (as future one)
+                && !connecting_road.IsMassiveTraffic
+                && tryGetIcomingRoadIds(targetPlace, start, end, out IEnumerable<long>? road_ids)
+                && road_ids.Any(it => this.map.Roads[it].IsMassiveTraffic)) // we are hitting high-traffic road
             {
-                if (road_ids.Any(it => this.map.Roads[it].IsMassiveTraffic)) // we are hitting high-traffic road
-                {
-                    TimeSpan join_traffic = this.userConfig.JoiningHighTraffic;
-                    added_run_time += join_traffic;
-                    added_run_cost += new TravelCost(join_traffic, 1.0); // we add it in separate step, because cost factor of crossing is constant
-                }
+                TimeSpan join_traffic = this.userConfig.JoiningHighTraffic;
+                added_run_time += join_traffic;
+                added_run_cost += TravelCost.Create(join_traffic, 1.0); // we add it in separate step, because cost factor of crossing is constant
             }
 
-            return (SegmentInfo.Create(segment_length, isForbidden: is_forbidden, isStable: incoming_road.Kind.IsStable(), isSnap: is_snap) with
+            if (incomingRoadMapIndex != null && !this.map.IsRoadContinuation(incomingRoadMapIndex.Value, connectingRoadMapIndex))
+            {
+                TimeSpan road_switching = this.userConfig.RoadSwitching;
+                added_run_time += road_switching;
+                added_run_cost += TravelCost.Create(road_switching, 1.0); 
+            }
+
+
+            return (SegmentInfo.Create(segment_length, isForbidden: is_forbidden, isStable: connecting_road.Kind.IsStable(), isSnap: is_snap) with
                 {
                     RiskInfo = risk_info,
                     Cost = added_run_cost,
                     Time = added_run_time,
                 })
-                .WithSpeedMode(incoming_speed_mode)
+                .WithSpeedMode(connecting_speed_mode)
                 ;
         }
 
