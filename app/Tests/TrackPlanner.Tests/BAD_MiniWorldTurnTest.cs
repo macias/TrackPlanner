@@ -8,23 +8,6 @@ namespace TrackPlanner.Tests
     public class BAD_MiniWorldTurnTest : MiniWorld
     {
         [Fact]
-        public void A_FIX_BAD_PLANNING_BiskupiceSwitchingCyclewaySidesTest()
-        {
-            // road should be used
-            
-            var map_filename = "legacy/biskupice_switching_cycleway_sides.kml";
-            var (plan,turns) = ComputeTurns(map_filename,
-                GeoZPoint.FromDegreesMeters(    53.14337, 18.50604, 0),
-                GeoZPoint.FromDegreesMeters(    53.14226, 18.50179, 0)
-            );
-
-            //saveData(plan,turns,map_filename);
-            
-            Assert.Equal(0, turns.Count);
-        }
-
-
-        [Fact]
         public void A_FIX_BUG_TorunSouthRangeTest()
         {
             var map_filename = "legacy/torun_south_range.kml";

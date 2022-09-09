@@ -73,7 +73,7 @@ namespace TrackPlanner.PathFinder
 
             Length segment_length = calc.GetDistance(currentPlace.Point, target_point);
 
-            var connecting_road = this.map.Roads[connectingRoadMapIndex];
+            RoadInfo connecting_road = this.map.Roads[connectingRoadMapIndex];
 
             bool is_forbidden = connecting_road.Kind <= WayKind.HighwayLink || !connecting_road.HasAccess;
             SpeedMode connecting_speed_mode = connecting_road.GetRoadSpeedMode();
@@ -81,6 +81,9 @@ namespace TrackPlanner.PathFinder
             double cost_factor = 1.0;
             Risk risk_info = Risk.None;
 
+            if (connecting_road.Kind == WayKind.Cycleway)
+                cost_factor += this.userConfig.AddedCyclewayCostFactor;
+            
             {
                 bool is_suppressed(Placement pl) => (pl.IsSnapped && !pl.IsFinal)
                                                     || (pl.IsNode && suppressedTraffic.Contains(pl.NodeId));
@@ -102,7 +105,7 @@ namespace TrackPlanner.PathFinder
                     }
                     else
                     {
-                        cost_factor = 1.0 + this.userConfig.AddedMotorDangerousTrafficFactor;
+                        cost_factor += this.userConfig.AddedMotorDangerousTrafficFactor;
                     }
                 }
                 else if (connecting_road.IsUncomfortable)
@@ -116,7 +119,7 @@ namespace TrackPlanner.PathFinder
                     }
                     else
                     {
-                        cost_factor = 1.0 + this.userConfig.AddedMotorUncomfortableTrafficFactor;
+                        cost_factor += this.userConfig.AddedMotorUncomfortableTrafficFactor;
                     }
                 }
                 else if (currentPlace.IsNode && targetPlace.IsNode
@@ -124,7 +127,7 @@ namespace TrackPlanner.PathFinder
                                              && this.map.IsBikeFootRoadDangerousNearby( /*roadId: incomingRoadMapIndex, */nodeId: targetPlace.NodeId))
                 {
                     risk_info |= Risk.HighTrafficBikeLane;
-                    cost_factor = 1.0 + this.userConfig.AddedBikeFootHighTrafficFactor;
+                    cost_factor += this.userConfig.AddedBikeFootHighTrafficFactor;
                     //logger.Info($"Higher cost {cost_factor} for way {incoming_road_id}");
                 }
             }

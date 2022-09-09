@@ -9,6 +9,20 @@ namespace TrackPlanner.Tests
     public class MiniWorldTurnTest : MiniWorld
     {
         [Fact]
+        public void BiskupiceSwitchingCyclewaySidesTest()
+        {
+            // road should be used
+            
+            var map_filename = "legacy/biskupice_switching_cycleway_sides.kml";
+            var (plan,turns) = ComputeTurns(map_filename,
+                GeoZPoint.FromDegreesMeters(    53.14337, 18.50604, 0),
+                GeoZPoint.FromDegreesMeters(    53.14226, 18.50179, 0)
+            );
+
+            Assert.Equal(0, turns.Count);
+        }
+
+        [Fact]
         public void GrabowiecFlatRunTest()
         {
             // road should be used
