@@ -107,7 +107,9 @@ namespace TrackPlanner.Mapping
             {
                 double start = Stopwatch.GetTimestamp();
                 //var temp_map = OsmMapMemory.ReadMappedArray(logger, extracts);
-                var temp_map = WorldMapMemory.ReadRawArray(logger, extracts);
+                var temp_map = WorldMapMemory.ReadRawArray(logger, extracts, out var invalid_files);
+                if (invalid_files.Any())
+                    throw new NotSupportedException();
                 map = temp_map;
                 logger.Info($"Loaded MEM in {(Stopwatch.GetTimestamp() - start) / Stopwatch.Frequency} s");
                 grid = temp_map.CreateRoadGrid(this.memSettings.GridCellSize, debugDirectory!);

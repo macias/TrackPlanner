@@ -711,7 +711,8 @@ namespace TrackPlanner.Turner.Implementation
             return false;
         }
 
-        private (TurnNotification forward, TurnNotification backward) isTurnNeeded(IReadOnlyList<TrackNode> track, IReadOnlySet<int> turnIndices, int nodeIndex,
+        private (TurnNotification forward, TurnNotification backward) isTurnNeeded(IReadOnlyList<TrackNode> track, IReadOnlySet<int> turnIndices, 
+            int nodeIndex,
             //in RoadIndex incomingTurn, in RoadIndex incoming, 
             //in RoadIndex outgoingTurn, in RoadIndex outgoing,
             bool isIncomingDirectionAllowed,
@@ -728,6 +729,16 @@ namespace TrackPlanner.Turner.Implementation
             if (!map.IsDirectionAllowed(altTurn, altSibling))
             {
                 logger.Verbose($"One direction, rejecting");
+                return (TurnNotification.None, TurnNotification.None);
+            }
+
+            // if we are on cycle way and we continue to ride on cycleway, then we don't need any turn notification
+            if (incomingSegmentInfo.Kind == WayKind.Cycleway
+                && outgoingSegmentInfo.Kind == WayKind.Cycleway
+                // surface continuation is important visual cue
+                && incomingSegmentInfo.Surface == outgoingSegmentInfo.Surface
+                && altInfo.Kind != WayKind.Cycleway)
+            {
                 return (TurnNotification.None, TurnNotification.None);
             }
 

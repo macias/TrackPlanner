@@ -23,8 +23,6 @@ namespace TrackPlanner.Tests
         private const string baseDirectory = "../../../../../..";
         protected const int Precision = 15;
 
-        protected const bool CheckReversal = true;
-
         private static readonly Navigator navigator = new Navigator(baseDirectory);
 
         protected static void SaveData(IEnumerable<Placement> plan, string mapFilename)
@@ -138,8 +136,8 @@ namespace TrackPlanner.Tests
 
                 var turner_preferences = new UserTurnerPreferences();
                 var regular = turner.ComputeTurnPoints(plan_nodes, turner_preferences);
-                if (CheckReversal)
-                {
+                
+                { // checking reversal as well
                     IReadOnlyList<TurnInfo> reversed = turner.ComputeTurnPoints(plan_nodes.Reverse().ToList(), turner_preferences)
                         .AsEnumerable()
                         .Reverse()

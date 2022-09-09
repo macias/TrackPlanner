@@ -71,8 +71,8 @@ namespace TrackPlanner.Mapping
                             // cell crosspoint falls and register segment there
                             var corners = new HashSet<GeoZPoint>();
 
-                            for (int lati=Math.Min( curr_cell_idx.latitudeGrid, next_cell_idx.latitudeGrid);lati<=Math.Max( curr_cell_idx.latitudeGrid, next_cell_idx.latitudeGrid);++lati)
-                            for (int loni = Math.Min(curr_cell_idx.longitudeGrid, next_cell_idx.longitudeGrid); lati <= Math.Max(curr_cell_idx.longitudeGrid, next_cell_idx.longitudeGrid); ++loni)
+                            for (int lati=Math.Min( curr_cell_idx.LatitudeGridIndex, next_cell_idx.LatitudeGridIndex);lati<=Math.Max( curr_cell_idx.LatitudeGridIndex, next_cell_idx.LatitudeGridIndex);++lati)
+                            for (int loni = Math.Min(curr_cell_idx.LongitudeGridIndex, next_cell_idx.LongitudeGridIndex); lati <= Math.Max(curr_cell_idx.LongitudeGridIndex, next_cell_idx.LongitudeGridIndex); ++loni)
                             {
                                 foreach ((Angle lat, Angle lon) in getCellCorners(lati, loni))
                                 {
@@ -111,7 +111,7 @@ namespace TrackPlanner.Mapping
 
         private static bool isAdjacentOrSame(CellCoord indexA, CellCoord indexB)
         {
-            return Math.Abs(indexA.latitudeGrid - indexB.latitudeGrid) + Math.Abs(indexA.longitudeGrid- indexB.longitudeGrid) <= 1;
+            return Math.Abs(indexA.LatitudeGridIndex - indexB.LatitudeGridIndex) + Math.Abs(indexA.LongitudeGridIndex- indexB.LongitudeGridIndex) <= 1;
         }
 
         private IEnumerable< (Angle lat, Angle lon)> getCellCorners(int latIndex, int lonIndex)
@@ -129,8 +129,8 @@ namespace TrackPlanner.Mapping
         {
             return new CellCoord()
             {
-                latitudeGrid = (int) (latitude.Degrees * this.CellSize),
-                longitudeGrid = (int) (longitude.Degrees * this.CellSize)
+                LatitudeGridIndex = (int) (latitude.Degrees * this.CellSize),
+                LongitudeGridIndex = (int) (longitude.Degrees * this.CellSize)
             };
         }
 

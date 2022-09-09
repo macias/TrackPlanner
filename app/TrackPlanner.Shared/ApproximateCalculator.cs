@@ -95,7 +95,8 @@ namespace TrackPlanner.Shared
               return GeoCalculator.GetDestination(start.Convert(), bearing, distance).Convert();
           }*/
 
-        public void GetAngularDistances(GeoZPoint point, Length distance, out Angle latitudeDistance, out Angle longitudeDistance)
+        public void GetAngularDistances(GeoZPoint point, Length distance, 
+            out Angle latitudeDistance, out Angle longitudeDistance)
         {
             latitudeDistance = Angle.FullCircle * (distance / GeoCalculator.EarthCircumference);
             // with increasing latitude (Y) the radius of the earth cicle is smaller, thus we have to compute it

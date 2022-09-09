@@ -203,7 +203,7 @@ namespace TrackPlanner.Mapping
             for (int lat_idx = min_lat_grid; lat_idx <= max_lat_grid; ++lat_idx)
                 for (int lon_idx = min_lon_grid; lon_idx <= max_lon_grid; ++lon_idx)
                 {
-                    if (cells.TryGetValue(new CellCoord(){ latitudeGrid = lat_idx, longitudeGrid = lon_idx}, out RoadGridCell? cell))
+                    if (cells.TryGetValue(new CellCoord(){ LatitudeGridIndex = lat_idx, LongitudeGridIndex = lon_idx}, out RoadGridCell? cell))
                     {
                         foreach (RoadSnapInfo snap in cell.GetSnaps(this.map,Calc,point, limit, predicate))
                             yield return snap;

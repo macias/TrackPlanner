@@ -6,7 +6,8 @@ namespace TrackPlanner.Mapping
     {
         private readonly DiskDictionary<CellCoord, RoadGridCell> cells;
 
-        public RoadGridDisk(ILogger logger, DiskDictionary<CellCoord, RoadGridCell> cells, IWorldMap map, IGeoCalculator calc,
+        public RoadGridDisk(ILogger logger, DiskDictionary<CellCoord, RoadGridCell> cells, 
+            IWorldMap map, IGeoCalculator calc,
             int gridCellSize, string? debugDirectory, bool legacyGetNodeAllRoads) : base(logger, cells, map, calc,
             gridCellSize, debugDirectory, legacyGetNodeAllRoads)
         {

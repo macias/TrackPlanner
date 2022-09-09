@@ -1,19 +1,4 @@
-using MathUnit;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading;
-using TrackPlanner.Data;
-using TrackPlanner.Settings;
-using SharpKml.Base;
 using TrackPlanner.Shared;
-using TrackPlanner.Turner;
-using TrackPlanner.DataExchange;
-using TrackPlanner.Mapping;
-using TrackPlanner.Mapping.Data;
-using TrackPlanner.PathFinder;
-using TrackPlanner.Tests.Implementation;
 using Xunit;
 
 namespace TrackPlanner.Tests
@@ -22,12 +7,6 @@ namespace TrackPlanner.Tests
     // had to add turn points, in other words track was given "in advance" 
     public class BAD_MiniWorldTurnTest : MiniWorld
     {
-        [Fact]
-        public void InternalFlagTest()
-        {
-            Assert.True(CheckReversal);
-        }
-
         [Fact]
         public void A_FIX_BAD_PLANNING_BiskupiceSwitchingCyclewaySidesTest()
         {
@@ -44,21 +23,6 @@ namespace TrackPlanner.Tests
             Assert.Equal(0, turns.Count);
         }
 
-        [Fact]
-        public void A_FIX_BAD_PLANNING_GrabowiecFlatRunTest()
-        {
-            // road should be used
-            
-            var map_filename = "legacy/grabowiec_flat_run.kml";
-            var (plan,turns) = ComputeTurns(map_filename,
-                GeoZPoint.FromDegreesMeters(    52.99471, 18.7021, 0),
-                GeoZPoint.FromDegreesMeters(    52.95359, 18.72525, 0)
-            );
-
-            //saveData(plan,turns,map_filename);
-            
-            Assert.Equal(0, turns.Count);
-        }
 
         [Fact]
         public void A_FIX_BUG_TorunSouthRangeTest()

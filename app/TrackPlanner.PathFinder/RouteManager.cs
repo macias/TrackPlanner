@@ -18,7 +18,8 @@ namespace TrackPlanner.PathFinder
 {
     public sealed class RouteManager
     {
-        public static IDisposable Create  (ILogger? logger, Navigator navigator,  string mapSubdirectory, SystemConfiguration systemConfiguration, 
+        public static IDisposable Create  (ILogger? logger, Navigator navigator,  
+            string mapSubdirectory, SystemConfiguration systemConfiguration, 
             out RouteManager manager)
         {
             manager = new RouteManager(logger, navigator, worldMap:null, mapSubdirectory, systemConfiguration, out IDisposable disp);

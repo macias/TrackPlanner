@@ -176,6 +176,7 @@ namespace TrackPlanner.Mapping
 
             using (var writer = new BinaryWriter(stream, Encoding.UTF8, leaveOpen: true))
             {
+                //writer.Write(fileFormatVersion);
                 writer.Write(timestamp);
                 writer.Write(grid.CellSize);
 
@@ -254,7 +255,8 @@ namespace TrackPlanner.Mapping
             }
         }
 
-        private static WorldMapMemory ReadDictionary_OBSOLETE(ILogger logger, IEnumerable<string> fileNames)
+        private static WorldMapMemory ReadDictionary_OBSOLETE(ILogger logger, IEnumerable<string> fileNames,
+            out List<string> invalidFiles)
         {
             long? timestamp = null;
             var total_nodes_count = 0;
@@ -263,10 +265,19 @@ namespace TrackPlanner.Mapping
             //Console.WriteLine("PRESS KEY BEFORE STREAMS");
             //Console.ReadLine();
 
+            invalidFiles = new List<string>();
+            
             foreach (var fn in fileNames)
             {
                 using (var reader = new BinaryReader(new FileStream(fn, FileMode.Open, FileAccess.Read), Encoding.UTF8, leaveOpen: false))
                 {
+                    /*var curr_version = reader.ReadInt64();
+                    if ( curr_version != fileFormatVersion)
+                    {
+                        invalidFiles.Add(fn);
+                        logger.Warning($"File {fn} uses format {curr_version}, supported {fileFormatVersion}");
+                        continue;
+                    }*/
                     var ts = reader.ReadInt64();
                     if (!timestamp.HasValue)
                         timestamp = ts;
@@ -372,7 +383,8 @@ namespace TrackPlanner.Mapping
             return WorldMapMemory.CreateOnlyRoads(logger, nodes, roads, nodes_to_roads);
         }
 
-        internal static WorldMapMemory ReadMappedArray(ILogger logger, IEnumerable<string> fileNames)
+        internal static WorldMapMemory ReadMappedArray(ILogger logger, IEnumerable<string> fileNames,
+            out List<string> invalidFiles)
         {
             // Loaded MEM in 131.860504244 s
 
@@ -386,11 +398,18 @@ namespace TrackPlanner.Mapping
 
             //Console.WriteLine("PRESS KEY BEFORE STREAMS");
             //Console.ReadLine();
-
+            invalidFiles = new List<string>();
             foreach (var fn in fileNames)
             {
                 using (var reader = new BinaryReader(new FileStream(fn, FileMode.Open, FileAccess.Read), Encoding.UTF8, leaveOpen: false))
                 {
+                    /*var curr_version = reader.ReadInt64();
+                    if (curr_version != fileFormatVersion)
+                    {
+                        invalidFiles.Add(fn);
+                        logger.Warning($"File {fn} uses format {curr_version}, supported {fileFormatVersion}");
+                        continue;
+                    }*/
                     var ts = reader.ReadInt64();
                     if (!timestamp.HasValue)
                         timestamp = ts;
@@ -541,8 +560,10 @@ namespace TrackPlanner.Mapping
             return map;
         }
 
+        // private const long fileFormatVersion = 111;
         
-                internal static WorldMapMemory ReadRawArray(ILogger logger, IEnumerable<string> fileNames)
+                internal static WorldMapMemory ReadRawArray(ILogger logger, IEnumerable<string> fileNames,
+                    out List<string> invalidFiles)
         {
             // Loaded MEM in 131.860504244 s
 
@@ -557,10 +578,20 @@ namespace TrackPlanner.Mapping
             //Console.WriteLine("PRESS KEY BEFORE STREAMS");
             //Console.ReadLine();
 
+            invalidFiles = new List<string>();
+            
             foreach (var fn in fileNames)
             {
                 using (var reader = new BinaryReader(new FileStream(fn, FileMode.Open, FileAccess.Read), Encoding.UTF8, leaveOpen: false))
                 {
+                    /*var curr_version = reader.ReadInt64();
+                    if (curr_version != fileFormatVersion)
+                    {
+                        invalidFiles.Add(fn);
+                        logger.Warning($"File {fn} uses format {curr_version}, supported {fileFormatVersion}");
+                        continue;
+                    }*/
+
                     var ts = reader.ReadInt64();
                     if (!timestamp.HasValue)
                         timestamp = ts;

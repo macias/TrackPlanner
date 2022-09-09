@@ -1,19 +1,5 @@
-using MathUnit;
-using System;
-using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Threading;
-using TrackPlanner.Data;
-using TrackPlanner.Settings;
-using SharpKml.Base;
 using TrackPlanner.Shared;
-using TrackPlanner.Turner;
-using TrackPlanner.DataExchange;
-using TrackPlanner.Mapping;
-using TrackPlanner.Mapping.Data;
-using TrackPlanner.PathFinder;
-using TrackPlanner.Tests.Implementation;
 using Xunit;
 
 namespace TrackPlanner.Tests
@@ -23,9 +9,17 @@ namespace TrackPlanner.Tests
     public class MiniWorldTurnTest : MiniWorld
     {
         [Fact]
-        public void InternalFlagTest()
+        public void GrabowiecFlatRunTest()
         {
-            Assert.True(CheckReversal);
+            // road should be used
+            
+            var map_filename = "legacy/grabowiec_flat_run.kml";
+            var (plan,turns) = ComputeTurns(map_filename,
+                GeoZPoint.FromDegreesMeters(    52.99471, 18.7021, 0),
+                GeoZPoint.FromDegreesMeters(    52.95359, 18.72525, 0)
+            );
+
+            Assert.Equal(0, turns.Count);
         }
 
         [Fact]
