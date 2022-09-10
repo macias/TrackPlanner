@@ -13,6 +13,8 @@ using TrackPlanner.Shared;
 using TrackPlanner.DataExchange;
 using TrackPlanner.LinqExtensions;
 using TrackPlanner.Mapping.Data;
+using TrackPlanner.Mapping.Disk;
+using TrackPlanner.Storage;
 
 
 #nullable enable
@@ -119,7 +121,7 @@ namespace TrackPlanner.Mapping
             else if (this.memSettings.MapMode == MapMode.HybridDisk)
             {
                 double start = Stopwatch.GetTimestamp();
-                var disp = WorldMapDisk.Read(logger, extracts, this.memSettings, out map, out DiskDictionary<CellCoord, RoadGridCell> cells);
+                var disp = WorldMapDisk.Read(logger, extracts, this.memSettings, out map, out DiskDictionary<CellIndex, RoadGridCell> cells);
                 logger.Info($"Loaded HYBRID in {(Stopwatch.GetTimestamp() - start) / Stopwatch.Frequency} s");
 
                 grid = new RoadGridDisk(logger, cells, map, new ApproximateCalculator(), this.memSettings.GridCellSize, debugDirectory, legacyGetNodeAllRoads: false);

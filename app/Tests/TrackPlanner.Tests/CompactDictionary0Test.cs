@@ -6,6 +6,7 @@ using Xunit;
 using TrackPlanner.LinqExtensions;
 using TrackPlanner.Mapping;
 using TrackPlanner.Mapping.Data;
+using TrackPlanner.Storage.Data;
 
 namespace TrackPlanner.Tests
 {

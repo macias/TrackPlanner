@@ -1,11 +1,11 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
-using TrackPlanner.Mapping.Data;
+using TrackPlanner.Storage.Data;
 
-namespace TrackPlanner.Mapping
+namespace TrackPlanner.Storage
 {
-    public sealed class ReaderOffsets<TKey> : IEnumerable<KeyValuePair<TKey, long>>
+    // this is basically a dictionary with disk offsets for a reader with reader as well 
+    public sealed class ReaderOffsets<TKey> 
     where TKey:notnull
     {
         private readonly BinaryReader reader;
@@ -13,6 +13,8 @@ namespace TrackPlanner.Mapping
 
         public long this[TKey key] => this.offsets[key];
 
+        public IEnumerable<KeyValuePair<TKey, long>> Offsets => this.offsets;
+            
         public ReaderOffsets(BinaryReader reader, int capacity)
         {
             this.reader = reader;
@@ -30,7 +32,7 @@ namespace TrackPlanner.Mapping
             this.offsets.Add(key, this.reader.ReadInt64());
         }
 
-        public IEnumerator<KeyValuePair<TKey, long>> GetEnumerator()
+      /*  public IEnumerator<KeyValuePair<TKey, long>> GetEnumerator()
         {
             return this.offsets.GetEnumerator();
         }
@@ -38,6 +40,6 @@ namespace TrackPlanner.Mapping
         IEnumerator IEnumerable.GetEnumerator()
         {
             return this.GetEnumerator();
-        }
+        }*/
     }
 }

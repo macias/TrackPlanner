@@ -11,6 +11,8 @@ using OsmSharp.IO.PBF;
 using TrackPlanner.Shared;
 using TrackPlanner.LinqExtensions;
 using TrackPlanner.Mapping.Data;
+using TrackPlanner.Storage;
+using TrackPlanner.Storage.Data;
 
 namespace TrackPlanner.Mapping
 {
@@ -477,7 +479,7 @@ namespace TrackPlanner.Mapping
                             offsets.AddReaderOffset(node_id);
                         }
 
-                        foreach (var (id, offset) in offsets.OrderBy(it => it.Value)) // sort in order to get sequential read from disk
+                        foreach (var (id, offset) in offsets.Offsets.OrderBy(it => it.Value)) // sort in order to get sequential read from disk
                         {
                             reader.BaseStream.Seek(offset, SeekOrigin.Begin);
 
@@ -656,7 +658,7 @@ namespace TrackPlanner.Mapping
                             offsets.AddReaderOffset(node_id);
                         }
 
-                        foreach (var (id, offset) in offsets.OrderBy(it => it.Value)) // sort in order to get sequential read from disk
+                        foreach (var (id, offset) in offsets.Offsets.OrderBy(it => it.Value)) // sort in order to get sequential read from disk
                         {
                             reader.BaseStream.Seek(offset, SeekOrigin.Begin);
 

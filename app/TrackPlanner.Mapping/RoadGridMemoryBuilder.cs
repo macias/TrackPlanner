@@ -28,11 +28,11 @@ namespace TrackPlanner.Mapping
             this.debugDirectory = debugDirectory;
         }
         
-        public HashMap<CellCoord, RoadGridCell> BuildCells()
+        public HashMap<CellIndex, RoadGridCell> BuildCells()
         {
-            var cells = new HashMap<CellCoord, RoadGridCell>();
+            var cells = new HashMap<CellIndex, RoadGridCell>();
 
-            RoadGridCell select_cell(in GeoZPoint current, out CellCoord cellIndex)
+            RoadGridCell select_cell(in GeoZPoint current, out CellIndex cellIndex)
             {
                 cellIndex = getCellIndex(current.Latitude, current.Longitude);
 
@@ -109,7 +109,7 @@ namespace TrackPlanner.Mapping
             return cells;
         }
 
-        private static bool isAdjacentOrSame(CellCoord indexA, CellCoord indexB)
+        private static bool isAdjacentOrSame(CellIndex indexA, CellIndex indexB)
         {
             return Math.Abs(indexA.LatitudeGridIndex - indexB.LatitudeGridIndex) + Math.Abs(indexA.LongitudeGridIndex- indexB.LongitudeGridIndex) <= 1;
         }
@@ -125,9 +125,9 @@ namespace TrackPlanner.Mapping
             yield return (Angle.FromDegrees(latIndex * 1.0 / this.CellSize), Angle.FromDegrees((lonIndex+lon_dir) * 1.0 / this.CellSize));
         }
 
-        private CellCoord getCellIndex(Angle latitude, Angle longitude)
+        private CellIndex getCellIndex(Angle latitude, Angle longitude)
         {
-            return new CellCoord()
+            return new CellIndex()
             {
                 LatitudeGridIndex = (int) (latitude.Degrees * this.CellSize),
                 LongitudeGridIndex = (int) (longitude.Degrees * this.CellSize)

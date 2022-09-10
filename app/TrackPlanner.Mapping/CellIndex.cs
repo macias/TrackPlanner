@@ -5,12 +5,12 @@ using System.Runtime.CompilerServices;
 
 namespace TrackPlanner.Mapping
 {
-    public readonly record struct CellCoord
+    public readonly record struct CellIndex
     {
         public int LatitudeGridIndex { get; init; }
         public int LongitudeGridIndex { get; init; }
 
-        public CellCoord(int latitudeGridIndex, int longitudeGridIndex)
+        public CellIndex(int latitudeGridIndex, int longitudeGridIndex)
         {
             this.LatitudeGridIndex = latitudeGridIndex;
             this.LongitudeGridIndex = longitudeGridIndex;
@@ -21,12 +21,12 @@ namespace TrackPlanner.Mapping
             writer.Write(LatitudeGridIndex);
             writer.Write(LongitudeGridIndex);
         }
-        public static CellCoord Read(BinaryReader reader)
+        public static CellIndex Read(BinaryReader reader)
         {
             var latitudeGrid = reader.ReadInt32();
             var longitudeGrid = reader.ReadInt32();
 
-            return new CellCoord() {LatitudeGridIndex = latitudeGrid, LongitudeGridIndex = longitudeGrid};
+            return new CellIndex() {LatitudeGridIndex = latitudeGrid, LongitudeGridIndex = longitudeGrid};
         }
 
         public void Deconstruct(out int latitudeGrid, out int longitudeGrid)

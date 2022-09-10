@@ -26,6 +26,7 @@
     <ProjectReference Include="..\TrackPlanner.Shared\TrackPlanner.Shared.csproj" />
     <ProjectReference Include="..\TrackPlanner.DataExchange\TrackPlanner.DataExchange.csproj" />
     <ProjectReference Include="..\TrackPlanner.LinqExtensions\TrackPlanner.LinqExtensions.csproj" />
+    <ProjectReference Include="..\TrackPlanner.Storage\TrackPlanner.Storage.csproj" />
   </ItemGroup>
 
 </Project>

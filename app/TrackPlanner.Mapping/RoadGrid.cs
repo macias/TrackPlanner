@@ -1,14 +1,12 @@
 ﻿using MathUnit;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Xml;
 using TrackPlanner.Data;
 using TrackPlanner.Shared;
 using TrackPlanner.LinqExtensions;
-using TrackPlanner.Mapping;
 using TrackPlanner.Mapping.Data;
+using TrackPlanner.Storage.Data;
 
 namespace TrackPlanner.Mapping
 {
@@ -21,11 +19,11 @@ namespace TrackPlanner.Mapping
         private readonly ILogger logger;
         private readonly string? debugDirectory;
         private readonly bool legacyGetNodeAllRoads;
-        private readonly IReadOnlyBasicMap<CellCoord, RoadGridCell> cells;
+        private readonly IReadOnlyBasicMap<CellIndex, RoadGridCell> cells;
 
         public abstract string GetStats();
         
-        protected RoadGrid(ILogger logger, IReadOnlyBasicMap<CellCoord, RoadGridCell> cells, IWorldMap map, IGeoCalculator calc,
+        protected RoadGrid(ILogger logger, IReadOnlyBasicMap<CellIndex, RoadGridCell> cells, IWorldMap map, IGeoCalculator calc,
             int gridCellSize, string? debugDirectory, bool legacyGetNodeAllRoads)
         {
             this.CellSize = gridCellSize;
@@ -37,13 +35,16 @@ namespace TrackPlanner.Mapping
             this.legacyGetNodeAllRoads = legacyGetNodeAllRoads;
         }
 
-        private (int lati, int loni) getCellIndex(Angle latitude, Angle longitude)
+        private CellIndex getCellIndex(Angle latitude, Angle longitude)
         {
-            return ((int)(latitude.Degrees * CellSize),
-                    (int)(longitude.Degrees * CellSize));
+            return new CellIndex()
+            {
+                LatitudeGridIndex = (int) (latitude.Degrees * CellSize),
+                LongitudeGridIndex = (int) (longitude.Degrees * CellSize)
+            };
         }
 
-    
+
 
         public List<RoadBucket> GetRoadBuckets(IReadOnlyList<RequestPoint> userTrack, Length proximityLimit,Length upperProximityLimit, 
             bool requireAllHits, bool singleMiddleSnaps)
@@ -203,7 +204,8 @@ namespace TrackPlanner.Mapping
             for (int lat_idx = min_lat_grid; lat_idx <= max_lat_grid; ++lat_idx)
                 for (int lon_idx = min_lon_grid; lon_idx <= max_lon_grid; ++lon_idx)
                 {
-                    if (cells.TryGetValue(new CellCoord(){ LatitudeGridIndex = lat_idx, LongitudeGridIndex = lon_idx}, out RoadGridCell? cell))
+                    if (cells.TryGetValue(new CellIndex(){ LatitudeGridIndex = lat_idx, LongitudeGridIndex = lon_idx}, 
+                            out RoadGridCell? cell))
                     {
                         foreach (RoadSnapInfo snap in cell.GetSnaps(this.map,Calc,point, limit, predicate))
                             yield return snap;

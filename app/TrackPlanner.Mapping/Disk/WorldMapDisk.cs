@@ -1,18 +1,17 @@
 ﻿using MathUnit;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
-using OsmSharp;
-using OsmSharp.IO.PBF;
 using TrackPlanner.Shared;
 using TrackPlanner.LinqExtensions;
 using TrackPlanner.Mapping.Data;
+using TrackPlanner.Storage;
+using TrackPlanner.Storage.Data;
 
-namespace TrackPlanner.Mapping
+namespace TrackPlanner.Mapping.Disk
 {
     public sealed class WorldMapDisk : IWorldMap
     {
@@ -149,7 +148,7 @@ namespace TrackPlanner.Mapping
         }
         
         internal static IDisposable Read(ILogger logger, IReadOnlyList<string> fileNames,MemorySettings memSettings,
-            out IWorldMap map,out DiskDictionary<CellCoord, RoadGridCell> cells)
+            out IWorldMap map,out DiskDictionary<CellIndex, RoadGridCell> cells)
         {
             // Loaded HYBRID in 98.074381506 s
             
@@ -185,7 +184,7 @@ namespace TrackPlanner.Mapping
 
             var node_sources = new List<ReaderOffsets<long>>(capacity: fileNames.Count);
             var road_sources = new List<ReaderOffsets<long>>(capacity: fileNames.Count);
-            var cell_sources = new List<ReaderOffsets<CellCoord>>(capacity: fileNames.Count);
+            var cell_sources = new List<ReaderOffsets<CellIndex>>(capacity: fileNames.Count);
 
             // 3190 MB here
             Console.WriteLine("PRESS KEY FOR REAL READ");
@@ -235,7 +234,7 @@ namespace TrackPlanner.Mapping
                     node_offsets.AddReaderOffset(node_id);
                 }
 
-                foreach (var (id, offset) in node_offsets.OrderBy(it => it.Value)) // sort in order to get sequential read from disk
+                foreach (var (id, offset) in node_offsets.Offsets.OrderBy(it => it.Value)) // sort in order to get sequential read from disk
                 {
                     reader.BaseStream.Seek(offset, SeekOrigin.Begin);
 
@@ -256,10 +255,10 @@ namespace TrackPlanner.Mapping
 
                 reader.BaseStream.Seek(grid_offset, SeekOrigin.Begin);
 
-                var cell_offsets = new ReaderOffsets<CellCoord>(reader, cells_count);
+                var cell_offsets = new ReaderOffsets<CellIndex>(reader, cells_count);
                 for (int i = 0; i < cells_count; ++i)
                 {
-                    var cell_coord = CellCoord.Read(reader);
+                    var cell_coord = CellIndex.Read(reader);
                     cell_offsets.AddReaderOffset(cell_coord);
                 }
 
@@ -267,10 +266,10 @@ namespace TrackPlanner.Mapping
                 {
                     BinaryReader[] readers_arr = new[] { reader };
 
-                    foreach (var (coords, cell_offset) in cell_offsets)
+                    foreach (var (coords, cell_offset) in cell_offsets.Offsets)
                     {
                         reader.BaseStream.Seek(cell_offset, SeekOrigin.Begin);
-                        var cell = RoadGridCell.Load(readers_arr);
+                        var cell = RoadGridCellDisk.Load(readers_arr);
                         var road_ids = cell.Segments.Select(it => it.RoadMapIndex).Distinct().ToArray();
                         foreach (var rd_id in road_ids)
                         {
@@ -310,7 +309,7 @@ namespace TrackPlanner.Mapping
 
             var nodes = new DiskDictionary<long, GeoZPoint>(node_sources, 1, loadNode, memSettings.CacheNodesLimit);
             var roads = new DiskDictionary<long, RoadInfo>(road_sources, 0, loadRoad, memSettings.CacheRoadsLimit);
-            cells = new DiskDictionary<CellCoord, RoadGridCell>(cell_sources, 0, RoadGridCell.Load, memSettings.CacheCellsLimit);
+            cells = new DiskDictionary<CellIndex, RoadGridCell>(cell_sources, 0, RoadGridCellDisk.Load, memSettings.CacheCellsLimit);
 
             // 4323 MB --> +1133 MB (total) 
             Console.WriteLine("PRESS KEY BEFORE MAP");
