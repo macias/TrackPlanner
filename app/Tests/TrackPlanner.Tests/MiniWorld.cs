@@ -10,8 +10,10 @@ using SharpKml.Base;
 using TrackPlanner.Shared;
 using TrackPlanner.Turner;
 using TrackPlanner.DataExchange;
+using TrackPlanner.LinqExtensions;
 using TrackPlanner.Mapping;
 using TrackPlanner.Mapping.Data;
+using TrackPlanner.Mapping.Disk;
 using TrackPlanner.PathFinder;
 using TrackPlanner.Tests.Implementation;
 using Xunit;
@@ -24,6 +26,8 @@ namespace TrackPlanner.Tests
         protected const int Precision = 15;
 
         private static readonly Navigator navigator = new Navigator(baseDirectory);
+
+        public static IEnumerable<object[]> TestParams => Enum.GetValues<MapMode>().Select(it => new object[]{it});
 
         protected static void SaveData(IEnumerable<Placement> plan, string mapFilename)
         {
@@ -88,19 +92,37 @@ namespace TrackPlanner.Tests
             return world_map;
         }
 
-        private IDisposable computePlaces(string filename, out RouteManager manager, out IReadOnlyList<Placement> placements, 
+        private IDisposable computePlaces(MapMode mapMode, string filename, out RouteManager manager, out IReadOnlyList<Placement> placements,
             params GeoZPoint[] userPoints)
         {
             if (userPoints.Length < 2)
                 throw new ArgumentOutOfRangeException();
 
+            var sys_config = new SystemConfiguration() {CompactPreservesRoads = true, 
+                MemoryParams = new MemorySettings() { MapMode = mapMode}};
             var logger = new NoLogger();
-            var mini_map = loadMiniMap(logger, filename);
+            var result = CompositeDisposable.None;
+
+            IWorldMap mini_map;
+            {
+                var mem_map = loadMiniMap(logger, filename);
+                mini_map = mem_map;
+                if (mapMode== MapMode.HybridDisk)
+                {
+                    result = CompositeDisposable.Stack(result, createDiskMap(logger, mem_map, filename,
+                        sys_config.MemoryParams, out var disk_map));
+                    mini_map = disk_map;
+                }
+                else if (mapMode != MapMode.MemoryOnly)
+                    throw new NotImplementedException($"{mapMode}");
+            }
+
             var user_configuration = UserRouterPreferencesHelper.CreateBikeOriented().SetCustomSpeeds();
 
-            var result = RouteManager.Create(logger, new Navigator(baseDirectory), mini_map,
-                new SystemConfiguration() {CompactPreservesRoads = true}, out manager);
-
+            result = CompositeDisposable.Stack(result, RouteManager.Create(logger, new Navigator(baseDirectory),
+                 mini_map,
+                sys_config, out manager));
+            
             RequestPoint[] req_points = userPoints.Select(it => new RequestPoint(it.Convert(), false)).ToArray();
             for (int i = 1; i < req_points.Length - 1; ++i)
             {
@@ -118,19 +140,31 @@ namespace TrackPlanner.Tests
             return result;
         }
 
-        protected IReadOnlyList<Placement> ComputePlaces(string filename, params GeoZPoint[] userPoints)
+        private IDisposable createDiskMap(ILogger logger, WorldMapMemory memMap, string fileName,
+            MemorySettings memorySettings,  out WorldMapDisk diskMap)
         {
-            using (computePlaces(filename, out _, out var placements, userPoints))
+            Stream stream = new MemoryStream();
+            var result = new CompositeDisposable(stream);
+            memMap.Write(timestamp:0,stream,memMap.CreateRoadGrid(memorySettings.GridCellSize,navigator.GetDebug()));
+            stream.Position = 0;
+            result = result.Stack(WorldMapDisk.Read(logger, new[] {(stream, fileName)}.ToArray(), memorySettings, 
+                out diskMap));
+            return result;
+        }
+
+        protected IReadOnlyList<Placement> ComputePlaces(MapMode mapMode,string filename, params GeoZPoint[] userPoints)
+        {
+            using (computePlaces(mapMode, filename, out _, out var placements, userPoints))
             {
                 return placements;
             }
         }
 
-        protected (IReadOnlyList<Placement> plan, IReadOnlyList<TurnInfo> turns) ComputeTurns(string filename, params GeoZPoint[] userPoints)
+        protected (IReadOnlyList<Placement> plan, IReadOnlyList<TurnInfo> turns) ComputeTurns(MapMode mapMode,string filename, params GeoZPoint[] userPoints)
         {
             var logger = new NoLogger();
 
-            using (computePlaces(filename, out var manager, out var plan_nodes, userPoints))
+            using (computePlaces(mapMode, filename, out var manager, out var plan_nodes, userPoints))
             {
                 var turner = new NodeTrackTurner(logger, manager.Map, manager.DebugDirectory!);
 

@@ -1,4 +1,5 @@
 using System.Linq;
+using TrackPlanner.Mapping;
 using TrackPlanner.Shared;
 using Xunit;
 
@@ -6,8 +7,9 @@ namespace TrackPlanner.Tests
 {
     public class BAD_MiniWorldPlanTest : MiniWorld
     {
-        [Fact]
-        public void CierpiceCrossingRoadTest()
+        [Theory]
+        [MemberData(nameof(TestParams))]
+        public void CierpiceCrossingRoadTest(MapMode mapMode)
         {
             // there is an error in OSM data, it does not have common node on one lane at the road intersection
             // we should fix the map on the fly
@@ -17,7 +19,7 @@ namespace TrackPlanner.Tests
             
             var map_filename = "cierpice-crossing_road.kml";
 
-            var plan = ComputePlaces(map_filename,
+            var plan = ComputePlaces(mapMode,map_filename,
                 GeoZPoint.FromDegreesMeters(52.983727, 18.485634, 0),
                 GeoZPoint.FromDegreesMeters(52.987045, 18.49471, 0)
             );

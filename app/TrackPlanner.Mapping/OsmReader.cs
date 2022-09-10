@@ -42,7 +42,8 @@ namespace TrackPlanner.Mapping
         private readonly Length highTrafficProximity;
         private readonly string? debugDirectory;
 
-        public OsmReader(ILogger logger, IGeoCalculator calc, MemorySettings memSettings, Length highTrafficProximity, string? debugDirectory)
+        public OsmReader(ILogger logger, IGeoCalculator calc, MemorySettings memSettings, 
+            Length highTrafficProximity, string? debugDirectory)
         {
             this.logger = logger;
             this.calc = calc;
@@ -121,10 +122,11 @@ namespace TrackPlanner.Mapping
             else if (this.memSettings.MapMode == MapMode.HybridDisk)
             {
                 double start = Stopwatch.GetTimestamp();
-                var disp = WorldMapDisk.Read(logger, extracts, this.memSettings, out map, out DiskDictionary<CellIndex, RoadGridCell> cells);
+                var disp = WorldMapDisk.Read(logger, extracts, this.memSettings, out var temp_map);
+                map = temp_map;
                 logger.Info($"Loaded HYBRID in {(Stopwatch.GetTimestamp() - start) / Stopwatch.Frequency} s");
 
-                grid = new RoadGridDisk(logger, cells, map, new ApproximateCalculator(), this.memSettings.GridCellSize, debugDirectory, legacyGetNodeAllRoads: false);
+                grid = map.CreateRoadGrid(this.memSettings.GridCellSize, debugDirectory);
 
                 return disp;
             }

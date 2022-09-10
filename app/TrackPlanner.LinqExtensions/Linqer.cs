@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Runtime.InteropServices;
 
 namespace TrackPlanner.LinqExtensions
 {
@@ -17,7 +15,10 @@ namespace TrackPlanner.LinqExtensions
             else
                 return a;
         }
-        public static IReadOnlyList<T> ReadOnlyList<T>(this List<T> list) => list;
+        public static IReadOnlyList<T> ReadOnlyList<T>(this IReadOnlyList<T> list) => list;
+       
+        // covariance helper 
+        public static T Me<T>(this T t) => t;
 
         public static IEnumerable<T> Concat<T>(this IEnumerable<T> colletion, params T[] elems)
         {

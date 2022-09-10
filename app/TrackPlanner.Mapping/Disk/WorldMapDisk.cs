@@ -58,7 +58,9 @@ namespace TrackPlanner.Mapping.Disk
 
 
         private readonly IReadOnlySet<long> bikeFootDangerousNearbyNodes;
+        private readonly DiskDictionary<CellIndex, RoadGridCell> cells;
         private readonly DiskDictionary<long, RoadInfo> roads;
+        private readonly ILogger logger;
         private readonly DiskDictionary<long,GeoZPoint> nodes;
 
         public IReadOnlyEnumerableDictionary<long, GeoZPoint> Nodes => this.nodes;
@@ -84,8 +86,10 @@ namespace TrackPlanner.Mapping.Disk
             DiskDictionary<long, GeoZPoint> nodes,
         DiskDictionary<long, RoadInfo> roads,
             NodeRoadsDiskDictionary backReferences,
-            HashSet<long> dangerousNearbyNodes)
+            HashSet<long> dangerousNearbyNodes,
+            DiskDictionary<CellIndex, RoadGridCell> cells)
         {
+            this.logger = logger;
             this.nodes = nodes;
             Southmost = southmost;
             Northmost = northmost;
@@ -96,6 +100,7 @@ namespace TrackPlanner.Mapping.Disk
 
             this.nodeRoadReferences = backReferences;
             this.bikeFootDangerousNearbyNodes = dangerousNearbyNodes;
+            this.cells = cells;
         }
 
 
@@ -146,9 +151,19 @@ namespace TrackPlanner.Mapping.Disk
             //return this.bikeFootDangerousNearbyNodes.TryGetValue(roadId, out var indices) && indices.Contains(nodeId);
             return this.bikeFootDangerousNearbyNodes.Contains(nodeId);
         }
-        
-        internal static IDisposable Read(ILogger logger, IReadOnlyList<string> fileNames,MemorySettings memSettings,
-            out IWorldMap map,out DiskDictionary<CellIndex, RoadGridCell> cells)
+
+        internal static IDisposable Read(ILogger logger, IReadOnlyList<string> fileNames, MemorySettings memSettings,
+            out WorldMapDisk map)
+        {
+            var files = fileNames.Select(fn => (new FileStream(fn, FileMode.Open, FileAccess.Read).Me<Stream>(), fn)).ToArray();
+            var result = CompositeDisposable.Create(files.Select(it => it.Item1));
+            result.Stack(Read(logger, files.ToArray(), memSettings, out map));
+            return result;
+        }
+
+        internal static IDisposable Read(ILogger logger, IReadOnlyList<(Stream stream,string name)> files,
+            MemorySettings memSettings,
+            out WorldMapDisk map)
         {
             // Loaded HYBRID in 98.074381506 s
             
@@ -164,27 +179,29 @@ namespace TrackPlanner.Mapping.Disk
                // Console.WriteLine("PRESS KEY BEFORE INIT STREAMS");
                 //Console.ReadLine();
 
-                foreach (var fn in fileNames)
+                foreach (var fn in files)
                 {
-                    using (var reader = new BinaryReader(new FileStream(fn, FileMode.Open, FileAccess.Read), Encoding.UTF8, leaveOpen: false))
+                    fn.stream.Position = 0;
+                    
+                    using (var reader = new BinaryReader(fn.stream, Encoding.UTF8, leaveOpen: true))
                     {
                         var ts = reader.ReadInt64();
                         if (!timestamp.HasValue)
                             timestamp = ts;
                         else if (timestamp != ts)
-                            throw new ArgumentException($"Maps are not sync, road names use different identifiers {fn}.");
+                            throw new ArgumentException($"Maps are not sync, road names use different identifiers {fn.name}.");
 
                         var cell_size = reader.ReadInt32();
                         if (cell_size != memSettings.GridCellSize)
-                            throw new ArgumentException($"Cell grid size mismatch in {fn}, expected {memSettings.GridCellSize}, actual {cell_size}");
+                            throw new ArgumentException($"Cell grid size mismatch in {fn.name}, expected {memSettings.GridCellSize}, actual {cell_size}");
                     }
                 }
             }
 
 
-            var node_sources = new List<ReaderOffsets<long>>(capacity: fileNames.Count);
-            var road_sources = new List<ReaderOffsets<long>>(capacity: fileNames.Count);
-            var cell_sources = new List<ReaderOffsets<CellIndex>>(capacity: fileNames.Count);
+            var node_sources = new List<ReaderOffsets<long>>(capacity: files.Count);
+            var road_sources = new List<ReaderOffsets<long>>(capacity: files.Count);
+            var cell_sources = new List<ReaderOffsets<CellIndex>>(capacity: files.Count);
 
             // 3190 MB here
             //Console.WriteLine("PRESS KEY FOR REAL READ");
@@ -197,11 +214,13 @@ namespace TrackPlanner.Mapping.Disk
             
             var dangerous_nearby_nodes = new HashSet<long>();
             
-            foreach (var fn in fileNames)
+            foreach (var fn in files)
             {
-                logger.Verbose($"Loading raw map from {fn}");
+                fn.stream.Position = 0;
+                logger.Verbose($"Loading raw map from {fn.name}");
 
-                var reader = new BinaryReader(new FileStream(fn, FileMode.Open, FileAccess.Read), Encoding.UTF8, leaveOpen: false);
+                var reader = new BinaryReader(fn.stream, Encoding.UTF8, 
+                    leaveOpen: true);
 
                 reader.ReadInt64(); // timestamp
                 reader.ReadInt32(); // cell size
@@ -311,30 +330,38 @@ namespace TrackPlanner.Mapping.Disk
 
             var nodes = new DiskDictionary<long, GeoZPoint>(node_sources, 1, loadNode, memSettings.CacheNodesLimit);
             var roads = new DiskDictionary<long, RoadInfo>(road_sources, 0, loadRoad, memSettings.CacheRoadsLimit);
-            cells = new DiskDictionary<CellIndex, RoadGridCell>(cell_sources, 0, RoadGridCellDisk.Load, memSettings.CacheCellsLimit);
+            DiskDictionary<CellIndex, RoadGridCell> cells = new DiskDictionary<CellIndex, RoadGridCell>(cell_sources, 0, RoadGridCellDisk.Load, memSettings.CacheCellsLimit);
 
             // 4323 MB --> +1133 MB (total) 
         //    Console.WriteLine("PRESS KEY BEFORE MAP");
           //  Console.ReadLine();
 
-            var disk_map = new WorldMapDisk(logger,
+            map = new WorldMapDisk(logger,
                 northmost:total_north_most!.Value,
                 eastmost :total_east_most!.Value,
                 southmost :total_south_most!.Value,
                 westmost :total_west_most!.Value,
                 nodes, roads, nodes_to_roads,
-                dangerous_nearby_nodes);
+                dangerous_nearby_nodes,
+                cells);
 
             // 4323 MB --> +1133 MB (total) 
             //Console.WriteLine("PRESS KEY BEFORE ALL DONE");
             //Console.ReadLine();
 
-            map = disk_map;
-            return new CompositeDisposable(node_sources.Select(it => 
+            return CompositeDisposable.Create(node_sources.Select(it => 
             {
                 var (r, _) = it;
                 return r;
             }));
+        }
+
+        public RoadGrid CreateRoadGrid(int gridCellSize,string? debugDirectory)
+        {
+            var calc = new ApproximateCalculator();
+
+            return new RoadGridDisk(logger, cells, this, new ApproximateCalculator(), 
+                gridCellSize, debugDirectory, legacyGetNodeAllRoads: false);
         }
 
 

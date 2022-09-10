@@ -26,10 +26,12 @@ namespace TrackPlanner.PathFinder
             return disp;
         }
 
-        public static IDisposable Create  (ILogger? logger, Navigator navigator,  WorldMapMemory? worldMap, SystemConfiguration systemConfiguration, 
+        public static IDisposable Create  (ILogger? logger, Navigator navigator,  
+            IWorldMap worldMap, SystemConfiguration systemConfiguration, 
             out RouteManager manager)
         {
-            manager = new RouteManager(logger, navigator, worldMap, mapSubdirectory:null, systemConfiguration, out IDisposable disp);
+            manager = new RouteManager(logger, navigator, worldMap, mapSubdirectory:null, 
+                systemConfiguration, out IDisposable disp);
             return disp;
         }
 
@@ -43,7 +45,7 @@ namespace TrackPlanner.PathFinder
         public string? DebugDirectory { get; }
 
         private RouteManager(ILogger? logger,Navigator navigator, 
-            WorldMapMemory? worldMap,
+            IWorldMap? worldMap,
             string? mapSubdirectory,
             SystemConfiguration systemConfiguration,
             out IDisposable disposable)
@@ -65,7 +67,6 @@ namespace TrackPlanner.PathFinder
             {
                 this.Map = worldMap;
                 this.grid = worldMap.CreateRoadGrid(this.SysConfig.MemoryParams.GridCellSize, DebugDirectory);
-                //worldMap.AttachDangerInNonMotorNodes(this.grid,this.SysConfig.HighTrafficProximity);
                 disposable = CompositeDisposable.None;
             }
             else
@@ -83,8 +84,8 @@ namespace TrackPlanner.PathFinder
 
                     disposable = osm_reader.ReadOsmMap(map_paths.Single(), onlyRoads: true, out var out_map, out this.grid);
                     this.Map = out_map;
-                    disposable = CompositeDisposable.Combine(() => { logger.Info($"STATS {nameof(this.Map)} {this.Map.GetStats()}; {nameof(this.grid)} {this.grid.GetStats()}"); },
-                        disposable);
+                    disposable = CompositeDisposable.Stack(disposable,
+                        () => { logger.Info($"STATS {nameof(this.Map)} {this.Map.GetStats()}; {nameof(this.grid)} {this.grid.GetStats()}"); });
                     Console.WriteLine($"Loading map in {(Stopwatch.GetTimestamp() - start) / Stopwatch.Frequency} s");
                 }
             }

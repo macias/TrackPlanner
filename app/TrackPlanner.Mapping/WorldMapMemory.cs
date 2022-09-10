@@ -1,13 +1,10 @@
 ﻿using MathUnit;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
-using OsmSharp;
-using OsmSharp.IO.PBF;
 using TrackPlanner.Shared;
 using TrackPlanner.LinqExtensions;
 using TrackPlanner.Mapping.Data;
@@ -742,7 +739,12 @@ namespace TrackPlanner.Mapping
             return map;
         }
 
-        public RoadGrid CreateRoadGrid(int gridCellSize,string? debugDirectory)
+                RoadGrid IWorldMap.CreateRoadGrid(int gridCellSize, string? debugDirectory)
+                {
+                    return this.CreateRoadGrid(gridCellSize, debugDirectory);
+                }
+                
+        public RoadGridMemory CreateRoadGrid(int gridCellSize,string? debugDirectory)
         {
             var calc = new ApproximateCalculator();
             return new RoadGridMemory(logger,

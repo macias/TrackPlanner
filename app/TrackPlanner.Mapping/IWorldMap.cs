@@ -26,6 +26,7 @@ namespace TrackPlanner.Mapping
         IEnumerable<RoadIndexLong> GetRoads(long nodeId);
         bool IsBikeFootRoadDangerousNearby(long nodeId);
         int LEGACY_RoadSegmentsDistanceCount(long roadId, int sourceIndex, int destIndex);
+        RoadGrid CreateRoadGrid(int gridCellSize, string? debugDirectory);
 
         string GetStats();
     }

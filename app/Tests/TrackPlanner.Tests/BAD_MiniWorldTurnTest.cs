@@ -1,3 +1,4 @@
+using TrackPlanner.Mapping;
 using TrackPlanner.Shared;
 using Xunit;
 
@@ -7,11 +8,12 @@ namespace TrackPlanner.Tests
     // had to add turn points, in other words track was given "in advance" 
     public class BAD_MiniWorldTurnTest : MiniWorld
     {
-        [Fact]
-        public void A_FIX_BUG_TorunSouthRangeTest()
+        [Theory]
+        [MemberData(nameof(TestParams))]
+        public void A_FIX_BUG_TorunSouthRangeTest(MapMode mapMode)
         {
             var map_filename = "legacy/torun_south_range.kml";
-            var (plan,turns) = ComputeTurns(map_filename,
+            var (plan,turns) = ComputeTurns(mapMode,map_filename,
                 GeoZPoint.FromDegreesMeters(                52.96484, 18.53726, 0),
                 GeoZPoint.FromDegreesMeters(                52.9352, 18.51589, 0),
                 GeoZPoint.FromDegreesMeters(                52.87777, 18.63722, 0)
@@ -28,12 +30,14 @@ namespace TrackPlanner.Tests
             Assert.Equal(45, turns[0].TrackIndex);
         }
 
-        [Fact]
-        public void A_FIX_RETHINK_KaszczorekRoundaboutCyclewayShortcutTest()
+                [Theory]
+        [MemberData(nameof(TestParams))]
+
+        public void A_FIX_RETHINK_KaszczorekRoundaboutCyclewayShortcutTest(MapMode mapMode)
         {
             // rethink if the planner does the right job going through roundabout instead of skipping it
             var map_filename = "legacy/kaszczorek_roundabout_cycleway_shortcut.kml";
-            var (plan,turns) = ComputeTurns(map_filename,
+            var (plan,turns) = ComputeTurns(mapMode,map_filename,
                 GeoZPoint.FromDegreesMeters(                53.01299, 18.68607, 0),
                 GeoZPoint.FromDegreesMeters(                53.01034, 18.69025, 0)
             );
@@ -58,11 +62,13 @@ namespace TrackPlanner.Tests
             Assert.Equal(14, turns[index].TrackIndex);
         }
 
-        [Fact]
-        public void A_FIX_INVESTIGATE_KaszczorekBridgeMinorPassTest()
+                [Theory]
+        [MemberData(nameof(TestParams))]
+
+        public void A_FIX_INVESTIGATE_KaszczorekBridgeMinorPassTest(MapMode mapMode)
         {
             var map_filename = "legacy/kaszczorek_bridge_minor_pass.kml";
-            var (plan,turns) = ComputeTurns(map_filename,
+            var (plan,turns) = ComputeTurns(mapMode,map_filename,
                 GeoZPoint.FromDegreesMeters(                53.0023, 18.69977, 0),
                 GeoZPoint.FromDegreesMeters(                53.00024, 18.7026, 0)
             );
@@ -98,11 +104,13 @@ namespace TrackPlanner.Tests
             Assert.Equal(13, turns[index].TrackIndex);
         }
 
-        [Fact]
-        public void A_FIX_USE_ROAD_BiskupiceSwitchToCyclewayTest()
+                [Theory]
+        [MemberData(nameof(TestParams))]
+
+        public void A_FIX_USE_ROAD_BiskupiceSwitchToCyclewayTest(MapMode mapMode)
         {
             var map_filename = "legacy/biskupice_switch_to_cycleway.kml";
-            var (plan,turns) = ComputeTurns(map_filename,
+            var (plan,turns) = ComputeTurns(mapMode,map_filename,
                 GeoZPoint.FromDegreesMeters(                53.13679, 18.51126, 0),
                 GeoZPoint.FromDegreesMeters(                53.14268, 18.50394, 0)
             );
@@ -117,11 +125,13 @@ namespace TrackPlanner.Tests
             Assert.Equal(4, turns[0].TrackIndex);
         }
 
-        [Fact]
-        public void A_FIX_BAD_PLANNING_BiskupiceTurnOnCyclewayTest()
+                [Theory]
+        [MemberData(nameof(TestParams))]
+
+        public void A_FIX_BAD_PLANNING_BiskupiceTurnOnCyclewayTest(MapMode mapMode)
         {
             var map_filename = "legacy/biskupice_turn_on_cycleway.kml";
-            var (plan,turns) = ComputeTurns(map_filename,
+            var (plan,turns) = ComputeTurns(mapMode,map_filename,
                 GeoZPoint.FromDegreesMeters(                53.13756, 18.51066, 0),
                 GeoZPoint.FromDegreesMeters(                53.14437, 18.50728, 0)
             );
@@ -137,11 +147,13 @@ namespace TrackPlanner.Tests
             Assert.Equal(3, turns[0].TrackIndex);
         }
 
-        [Fact]
-        public void A_FIX_PLANNING_PROBLEM_DorposzSzlachecki_YJunctionTest()
+                [Theory]
+        [MemberData(nameof(TestParams))]
+
+        public void A_FIX_PLANNING_PROBLEM_DorposzSzlachecki_YJunctionTest(MapMode mapMode)
         {
             var map_filename = "legacy/dorposz_szlachecki_y_junction.kml";
-            var (plan,turns) = ComputeTurns(map_filename,
+            var (plan,turns) = ComputeTurns(mapMode,map_filename,
                 GeoZPoint.FromDegreesMeters(                53.14437, 18.50728, 0),
                 GeoZPoint.FromDegreesMeters(                53.29396, 18.42947, 0)
             );
@@ -157,13 +169,15 @@ namespace TrackPlanner.Tests
             Assert.Equal(6, turns[0].TrackIndex);
         }
 
-        [Fact]
-        public void A_FIX_RETHINK_PLANNING_TorunSkarpaIgnoringCyclewayTest()
+                [Theory]
+        [MemberData(nameof(TestParams))]
+
+        public void A_FIX_RETHINK_PLANNING_TorunSkarpaIgnoringCyclewayTest(MapMode mapMode)
         {
             // at current stage of planner, the cycleway is only partialy ignored
             
             var map_filename = "legacy/torun_skarpa_ignoring_cycleway.kml";
-            var (plan,turns) = ComputeTurns(map_filename,
+            var (plan,turns) = ComputeTurns(mapMode,map_filename,
                 GeoZPoint.FromDegreesMeters(                53.02259, 18.66845, 0),
                 GeoZPoint.FromDegreesMeters(                53.01858, 18.67595, 0)
             );
@@ -180,8 +194,10 @@ namespace TrackPlanner.Tests
             Assert.True(turns[0].Backward);
             Assert.Equal(4, turns[0].TrackIndex);
         }
-        [Fact]
-        public void A_FIX_BUG_RadzynChelminskiCrossedLoopTest()
+                [Theory]
+        [MemberData(nameof(TestParams))]
+
+        public void A_FIX_BUG_RadzynChelminskiCrossedLoopTest(MapMode mapMode)
         {
             // the track looks like this
             // ><>
@@ -189,7 +205,7 @@ namespace TrackPlanner.Tests
             // >
             // because it detects there is "shorter" path
             var map_filename = "legacy/radzyn_chelminski_crossed_loop.kml";
-            var (plan,turns) = ComputeTurns(map_filename,
+            var (plan,turns) = ComputeTurns(mapMode,map_filename,
                 GeoZPoint.FromDegreesMeters(                53.3689, 18.97037, 0),
                 GeoZPoint.FromDegreesMeters(                53.35659, 18.99001, 0),
                 GeoZPoint.FromDegreesMeters(                53.37222, 18.99997, 0),
@@ -215,11 +231,13 @@ namespace TrackPlanner.Tests
             Assert.Equal(98, turns[1].TrackIndex);
         }
 
-        [Fact]
-        public void A_FIX_ChelmnoRoundaboutLTurnTest()
+                [Theory]
+        [MemberData(nameof(TestParams))]
+
+        public void A_FIX_ChelmnoRoundaboutLTurnTest(MapMode mapMode)
         {
             var map_filename = "legacy/chelmno-roundabout_Lturn.kml";
-            var (plan,turns) = ComputeTurns(map_filename,
+            var (plan,turns) = ComputeTurns(mapMode,map_filename,
                 GeoZPoint.FromDegreesMeters(                53.32023, 18.42174, 0),
                 GeoZPoint.FromDegreesMeters(                53.32692, 18.4115, 0)
             );
