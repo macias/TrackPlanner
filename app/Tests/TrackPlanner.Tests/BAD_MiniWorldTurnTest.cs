@@ -136,7 +136,7 @@ namespace TrackPlanner.Tests
                 GeoZPoint.FromDegreesMeters(                53.14437, 18.50728, 0)
             );
 
-            //saveData(plan, turns, map_filename);
+            SaveData(plan, turns, map_filename);
             
             Assert.Equal(1, turns.Count);
 

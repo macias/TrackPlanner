@@ -81,8 +81,8 @@ namespace TrackPlanner.PathFinder
             double cost_factor = 1.0;
             Risk risk_info = Risk.None;
 
-            if (connecting_road.Kind == WayKind.Cycleway)
-                cost_factor += this.userConfig.AddedCyclewayCostFactor;
+            if (connecting_road.Kind != WayKind.Cycleway)
+                cost_factor += this.userConfig.AddedNonCyclewayCostFactor;
             
             {
                 bool is_suppressed(Placement pl) => (pl.IsSnapped && !pl.IsFinal)

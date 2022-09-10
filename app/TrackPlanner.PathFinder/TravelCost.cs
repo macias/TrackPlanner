@@ -25,6 +25,9 @@ namespace TrackPlanner.PathFinder
 
         private TravelCost(double cost)
         {
+            if (cost < 0)
+                throw new ArgumentOutOfRangeException($"{nameof(cost)} = {cost}");
+            
             this.cost = cost;
         }
 

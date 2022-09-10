@@ -11,7 +11,7 @@ namespace TrackPlanner.Data.Stored
         public double AddedMotorUncomfortableTrafficFactor { get; set; }
 
         public double AddedBikeFootHighTrafficFactor { get; set; }
-        public double AddedCyclewayCostFactor { get; set; }
+        public double AddedNonCyclewayCostFactor { get; set; }
 
         // if the user places out middle point (not start/end) on some highway assume before and after user is comfy with it
         public Length TrafficSuppression { get; set; }
@@ -28,7 +28,7 @@ namespace TrackPlanner.Data.Stored
         {
             this.Speeds = new Dictionary<SpeedMode, Speed>();
             CheckpointIntervalLimit = TimeSpan.FromMinutes(100);
-            AddedCyclewayCostFactor = -0.05;
+            AddedNonCyclewayCostFactor = 0.05;
 
             CompactingAngleDeviation = Angle.FromDegrees(12);
             CompactingDistanceDeviation = Length.FromMeters(15);
