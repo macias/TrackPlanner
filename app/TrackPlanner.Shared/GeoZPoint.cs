@@ -106,9 +106,7 @@ namespace TrackPlanner.Shared
         {
             return !(a==b);
         }
-
-        public static int DiskSizeOf => sizeof(System.Single) + sizeof(System.Single) + sizeof(System.Int16);
-
+        
         public static void WriteFloatAngle(BinaryWriter writer, Angle angle)
         {
             writer.Write((float)angle.Degrees);

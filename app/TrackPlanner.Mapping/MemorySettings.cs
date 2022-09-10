@@ -13,7 +13,7 @@ namespace TrackPlanner.Mapping
 
         public MemorySettings()
         {
-            this.MapMode = MapMode.MemoryOnly;
+            this.MapMode = MapMode.HybridDisk;
 
             GridCellSize = 100;
 

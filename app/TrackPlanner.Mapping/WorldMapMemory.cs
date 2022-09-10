@@ -11,6 +11,7 @@ using OsmSharp.IO.PBF;
 using TrackPlanner.Shared;
 using TrackPlanner.LinqExtensions;
 using TrackPlanner.Mapping.Data;
+using TrackPlanner.Mapping.Disk;
 using TrackPlanner.Storage;
 using TrackPlanner.Storage.Data;
 
@@ -192,10 +193,11 @@ namespace TrackPlanner.Mapping
                 writer.Write(grid.Count);
 
                 var roads_offset = writer.BaseStream.Position;
-                writer.Write(0L);
+                writer.Write(-1L);
                 var cells_offset = writer.BaseStream.Position;
-                writer.Write(0L);
+                writer.Write(-1L);
 
+                // ---- writing nodes -----------------------------
                 {
                     // we create array to make sure we have the same order while iterating in two loops (C# framework does not guarantee this) 
                     var map_indices = Nodes.Keys.OrderBy(x =>x).ToArray();
@@ -210,9 +212,11 @@ namespace TrackPlanner.Mapping
 
                     foreach (var map_idx in map_indices)
                     {
-                        offsets.AddOffset(map_idx);
+                       var debug_pos = offsets.AddOffset(map_idx);
                         writer.Write(this.bikeFootDangerousNearbyNodes!.Contains(map_idx));
                         Nodes[map_idx].Write(writer);
+                        if (writer.BaseStream.Position - debug_pos != NodeRoadsDiskDictionary.NodeDataDiskSize)
+                            throw new NotSupportedException("Incorrect size of the node data.");
                         this.nodeRoadReferences.Write(writer, map_idx);
                     }
 
@@ -225,6 +229,7 @@ namespace TrackPlanner.Mapping
                     writer.Write(curr_pos);
                     writer.BaseStream.Seek(curr_pos, SeekOrigin.Begin);
                 }
+                // ---- writing roads -----------------------------------
                 {
                     var map_indices = Roads.Keys.OrderBy(x => x).ToArray();
 
@@ -252,6 +257,8 @@ namespace TrackPlanner.Mapping
                     writer.BaseStream.Seek(curr_pos, SeekOrigin.Begin);
                 }
 
+                // ---- writing grid ---------------------------
+                
                 grid.Write(writer);
 
             }

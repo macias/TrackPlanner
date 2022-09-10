@@ -5,10 +5,14 @@ using System.Linq;
 using TrackPlanner.Mapping.Data;
 using TrackPlanner.Storage;
 
-namespace TrackPlanner.Mapping
+namespace TrackPlanner.Mapping.Disk
 {
     public sealed class NodeRoadsDiskDictionary : INodeRoadsDictionary
     {
+        public static int NodeDataDiskSize => sizeof(System.Single) + sizeof(System.Single) // lat + lon 
+                                                                    + sizeof(System.Int16) // altitude
+                                                                    +sizeof(bool); // dangerous flag
+        
         private readonly DiskDictionary<long, List<RoadIndexLong>> diskDictionary;
 
         public IEnumerable<RoadIndexLong> this[long nodeId] => this.diskDictionary[nodeId];
@@ -30,9 +34,9 @@ namespace TrackPlanner.Mapping
 
             for (int r = 0; r < readers.Count; ++r)
             {
-                int c = readers[r].ReadInt32();
-                counts[r] = c;
-                total_count += c;
+                int curr_count = readers[r].ReadByte();
+                counts[r] = curr_count;
+                total_count += curr_count;
             }
 
             var result = new HashSet<RoadIndexLong>(capacity: total_count);

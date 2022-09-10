@@ -161,8 +161,8 @@ namespace TrackPlanner.Mapping.Disk
                 long? timestamp = null;
 
                 // 3190 MB here
-                Console.WriteLine("PRESS KEY BEFORE INIT STREAMS");
-                Console.ReadLine();
+               // Console.WriteLine("PRESS KEY BEFORE INIT STREAMS");
+                //Console.ReadLine();
 
                 foreach (var fn in fileNames)
                 {
@@ -187,8 +187,8 @@ namespace TrackPlanner.Mapping.Disk
             var cell_sources = new List<ReaderOffsets<CellIndex>>(capacity: fileNames.Count);
 
             // 3190 MB here
-            Console.WriteLine("PRESS KEY FOR REAL READ");
-            Console.ReadLine();
+            //Console.WriteLine("PRESS KEY FOR REAL READ");
+            //Console.ReadLine();
 
             Angle? total_north_most = null;
             Angle? total_east_most = null;
@@ -293,27 +293,29 @@ namespace TrackPlanner.Mapping.Disk
             // 27_309_382 nodes (exp: 28_137_923), 4_109_763 roads (exp: 4_185_103), 33_486_629 road points
 
             // 4323 MB --> +1133 MB (total) 
-            Console.WriteLine("PRESS KEY FOR BACK REFS");
-            Console.ReadLine();
+         //   Console.WriteLine("PRESS KEY FOR BACK REFS");
+           // Console.ReadLine();
             
             var start = Stopwatch.GetTimestamp();
             
-            var nodes_to_roads = new NodeRoadsDiskDictionary (new DiskDictionary<long,List<RoadIndexLong>>(node_sources, GeoZPoint.DiskSizeOf, 
-                NodeRoadsDiskDictionary.Load,memSettings.CacheNodeToRoadsLimit));
+            var nodes_to_roads = new NodeRoadsDiskDictionary (
+                new DiskDictionary<long,List<RoadIndexLong>>(node_sources, NodeRoadsDiskDictionary.NodeDataDiskSize, 
+                NodeRoadsDiskDictionary.Load,
+                memSettings.CacheNodeToRoadsLimit));
 
             logger.Verbose($"Nodes to roads references created in {(Stopwatch.GetTimestamp() - start - 0.0) / Stopwatch.Frequency}s");
             
             // 4323 MB --> +1133 MB (total) 
-            Console.WriteLine("PRESS KEY BEFORE SETUP");
-            Console.ReadLine();
+//            Console.WriteLine("PRESS KEY BEFORE SETUP");
+  //          Console.ReadLine();
 
             var nodes = new DiskDictionary<long, GeoZPoint>(node_sources, 1, loadNode, memSettings.CacheNodesLimit);
             var roads = new DiskDictionary<long, RoadInfo>(road_sources, 0, loadRoad, memSettings.CacheRoadsLimit);
             cells = new DiskDictionary<CellIndex, RoadGridCell>(cell_sources, 0, RoadGridCellDisk.Load, memSettings.CacheCellsLimit);
 
             // 4323 MB --> +1133 MB (total) 
-            Console.WriteLine("PRESS KEY BEFORE MAP");
-            Console.ReadLine();
+        //    Console.WriteLine("PRESS KEY BEFORE MAP");
+          //  Console.ReadLine();
 
             var disk_map = new WorldMapDisk(logger,
                 northmost:total_north_most!.Value,
@@ -324,8 +326,8 @@ namespace TrackPlanner.Mapping.Disk
                 dangerous_nearby_nodes);
 
             // 4323 MB --> +1133 MB (total) 
-            Console.WriteLine("PRESS KEY BEFORE ALL DONE");
-            Console.ReadLine();
+            //Console.WriteLine("PRESS KEY BEFORE ALL DONE");
+            //Console.ReadLine();
 
             map = disk_map;
             return new CompositeDisposable(node_sources.Select(it => 

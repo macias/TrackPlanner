@@ -32,9 +32,11 @@ namespace TrackPlanner.Mapping
             writer.Write(-1L);
         }
 
-        public void AddOffset(TKey key)
+        public long AddOffset(TKey key)
         {
-            offsets[key] = (this.offsets[key].placeholder, writer.BaseStream.Position);
+            var pos = this.writer.BaseStream.Position;
+            offsets[key] = (this.offsets[key].placeholder, pos);
+            return pos;
         }
 
         public void WriteBackOffsets()
