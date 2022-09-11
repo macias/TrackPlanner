@@ -197,51 +197,20 @@ namespace TrackPlanner.Tests
                 [Theory]
         [MemberData(nameof(TestParams))]
 
-        public void A_FIX_BUG_RadzynChelminskiCrossedLoopTest(MapMode mapMode)
+        public void FIX_ChelmnoRoundaboutLTurnTest(MapMode mapMode)
         {
-            // the track looks like this
-            // ><>
-            // the purpose of this test is to check if program correctly handle the entire track and it won't shorten it to
-            // >
-            // because it detects there is "shorter" path
-            var map_filename = "legacy/radzyn_chelminski_crossed_loop.kml";
-            var (plan,turns) = ComputeTurns(mapMode,map_filename,
-                GeoZPoint.FromDegreesMeters(                53.3689, 18.97037, 0),
-                GeoZPoint.FromDegreesMeters(                53.35659, 18.99001, 0),
-                GeoZPoint.FromDegreesMeters(                53.37222, 18.99997, 0),
-                GeoZPoint.FromDegreesMeters(                53.35734, 18.96729, 0)
-            );
-
-            //saveData(plan,turns,map_filename);
-
-            Assert.Equal(2, turns.Count);
-
-            Assert.Equal(53.356598300000002, turns[0].Point.Latitude.Degrees, Precision);
-            Assert.Equal(18.990016900000001, turns[0].Point.Longitude.Degrees, Precision);
-            Assert.True(turns[0].Forward);
-            Assert.True(turns[0].Backward);
-            Assert.Equal(66, turns[0].TrackIndex);
-
-            Assert.Equal(53.3722201, turns[1].Point.Latitude.Degrees, Precision);
-            Assert.Equal(18.999974600000005, turns[1].Point.Longitude.Degrees, Precision);
-            // todo: not ideal here, but the angle at the the Y-junction point so sharp (it is twised junction), that triggers need for notification
-            // maybe if we could measure the point father apart from turn-point?
-            Assert.True(turns[1].Forward);
-            Assert.True(turns[1].Backward);
-            Assert.Equal(98, turns[1].TrackIndex);
-        }
-
-                [Theory]
-        [MemberData(nameof(TestParams))]
-
-        public void A_FIX_ChelmnoRoundaboutLTurnTest(MapMode mapMode)
-        {
+            // todo: we need to flatten entry+exit roads as well
+            // O>----
+            // O roundabout
+            // > split to entry+exit road
+            // - regular road
             var map_filename = "legacy/chelmno-roundabout_Lturn.kml";
             var (plan,turns) = ComputeTurns(mapMode,map_filename,
                 GeoZPoint.FromDegreesMeters(                53.32023, 18.42174, 0),
                 GeoZPoint.FromDegreesMeters(                53.32692, 18.4115, 0)
             );
-            //saveData(plan, turns, map_filename);
+            
+            SaveData(plan, turns, map_filename);
 
             Assert.Equal(2, turns.Count);
 

@@ -12,9 +12,14 @@ namespace TrackPlanner.PathFinder
     [StructLayout(LayoutKind.Auto)]
     public readonly struct TravelCost : IEquatable<TravelCost>, IComparable<TravelCost>
     {
-        public static TravelCost Create(TimeSpan time, double costFactor) 
+        public static TravelCost Create(TimeSpan time, double costScale) 
         {
-            return new TravelCost(time.TotalSeconds * costFactor);
+            if (time < TimeSpan.Zero)
+                throw new ArgumentOutOfRangeException($"{nameof(time)} = {time}");
+            if (costScale < 0)
+                throw new ArgumentOutOfRangeException($"{nameof(costScale)} = {costScale}");
+
+            return new TravelCost(time.TotalSeconds * costScale);
         }
 
         public static TravelCost Zero => default;
@@ -25,9 +30,6 @@ namespace TrackPlanner.PathFinder
 
         private TravelCost(double cost)
         {
-            if (cost < 0)
-                throw new ArgumentOutOfRangeException($"{nameof(cost)} = {cost}");
-            
             this.cost = cost;
         }
 

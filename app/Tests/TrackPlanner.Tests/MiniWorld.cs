@@ -130,7 +130,8 @@ namespace TrackPlanner.Tests
             }
 
             List<LegRun>? plan;
-            if (!manager.TryFindRawRoute(user_configuration, req_points, CancellationToken.None, out plan,out var problem))
+            if (!manager.TryFindFlattenRoute(user_configuration, req_points, 
+                    CancellationToken.None, out plan,out var problem))
                 throw new Exception("Route not found");
             if (problem != null)
                 throw new Exception(problem);

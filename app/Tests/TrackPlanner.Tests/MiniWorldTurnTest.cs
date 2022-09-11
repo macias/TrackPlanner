@@ -236,6 +236,46 @@ namespace TrackPlanner.Tests
             Assert.Equal(4, turns[1].TrackIndex);
         }
 
+        [Theory]
+        [MemberData(nameof(TestParams))]
+        public void RadzynChelminskiCrossedLoopTest(MapMode mapMode)
+        {
+            // the track looks like this
+            // ><>
+            // the purpose of this test is to check if program correctly handle the entire track and it won't shorten it to
+            // >
+            // because it detects there is "shorter" path
+            var map_filename = "legacy/radzyn_chelminski_crossed_loop.kml";
+            var (plan,turns) = ComputeTurns(mapMode,map_filename,
+                GeoZPoint.FromDegreesMeters(                53.3689, 18.97037, 0),
+                GeoZPoint.FromDegreesMeters(                53.35659, 18.99001, 0),
+                GeoZPoint.FromDegreesMeters(                53.37222, 18.99997, 0),
+                GeoZPoint.FromDegreesMeters(                53.35734, 18.96729, 0)
+            );
+
+            SaveData(plan,turns,map_filename);
+
+            Assert.Equal(2, turns.Count);
+
+            int index = 0;
+            
+            Assert.Equal(2118304203, turns[index].EntityId);
+            Assert.True(turns[index].Forward);
+            Assert.True(turns[index].Backward);
+            Assert.Equal(66, turns[index].TrackIndex);
+
+            ++index;
+            
+            Assert.Equal(1846783922, turns[index].EntityId);
+            // not ideal here, but the angle at the the Y-junction point so sharp (it is twised junction),
+            // that triggers need for notification
+            // maybe if we could measure the point father apart from turn-point?
+            Assert.True(turns[index].Forward);
+            Assert.True(turns[index].Backward);
+            Assert.Equal(98, turns[index].TrackIndex);
+        }
+
+
 
                 [Theory]
         [MemberData(nameof(TestParams))]

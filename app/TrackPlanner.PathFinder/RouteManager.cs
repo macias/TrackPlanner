@@ -101,31 +101,40 @@ namespace TrackPlanner.PathFinder
 
         }
 
-        public bool TryFindRawRoute(UserRouterPreferences userConfig, IReadOnlyList<RequestPoint> userPoints, 
+        public bool TryFindFlattenRoute(UserRouterPreferences userConfig, IReadOnlyList<RequestPoint> userPoints, 
             CancellationToken token, [MaybeNullWhen(false)] out List<LegRun> route,out string? problem)
         {
             // the last point of given leg is repeated as the first point of the following leg
-            return RouteFinder.TryFindPath(logger, this.navigator, this.Map, grid, this.SysConfig, userConfig, 
+            var result = RouteFinder.TryFindPath(this.logger, this.navigator, this.Map, this.grid, this.SysConfig, userConfig, 
                 userPoints, token, out route,out problem);
+            if (result)
+            {
+                var compactor = new RouteCompactor(this.logger, this.Map, userConfig, this.SysConfig.CompactPreservesRoads);
+
+                compactor.FlattenRoundabouts(route!);
+            }
+
+            return result;
         }
 
-        public bool TryFindCompactRoute(UserRouterPreferences userConfig, IReadOnlyList<RequestPoint> userPoints, 
+        public bool TryFindCompactRoute(UserRouterPreferences userConfig, 
+            IReadOnlyList<RequestPoint> userPoints, 
             CancellationToken token, [MaybeNullWhen(false)] out TrackPlan track)
         {
-            if (!TryFindRawRoute(userConfig, userPoints, token, out var legs, out var problem))
+            if (!TryFindFlattenRoute(userConfig, userPoints, token, out var legs, out var problem))
             {
                 track = default;
                 return false;
             }
 
-            track = CompactRawRoute(userConfig, legs);
+            track = CompactFlattenRoute(userConfig, legs);
             if (problem != null)
                 track.ProblemMessage = problem;
 
             return true;
         }
 
-        public TrackPlan CompactRawRoute(UserRouterPreferences userConfig, List<LegRun> legs)
+        public TrackPlan CompactFlattenRoute(UserRouterPreferences userConfig, List<LegRun> legs)
         {
             var compactor = new RouteCompactor(this.logger, this.Map, userConfig, this.SysConfig.CompactPreservesRoads);
 
@@ -142,6 +151,7 @@ namespace TrackPlanner.PathFinder
             }
 
             var compactor = new RouteCompactor(logger, this.Map, userConfig, this.SysConfig.CompactPreservesRoads);
+            compactor.FlattenRoundabouts(legs);
             track = compactor.Compact(legs);
             return true;
         }
@@ -159,6 +169,7 @@ namespace TrackPlanner.PathFinder
             }
 
             var compactor = new RouteCompactor(logger, this.Map, userConfig, this.SysConfig.CompactPreservesRoads);
+            compactor.FlattenRoundabouts(legs);
             track = compactor.Compact(legs);
             return true;
         }

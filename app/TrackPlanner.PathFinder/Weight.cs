@@ -50,7 +50,8 @@ namespace TrackPlanner.PathFinder
 
         public TravelCost GetTotalTimeCost(double runningScale, double estimatedScale,Speed estimatedSpeed)
         {
-            return this.CurrentTravelCost * runningScale + TravelCost.Create(ScaledRemainingDistance/estimatedSpeed,costFactor: 1.0) * estimatedScale;
+            return this.CurrentTravelCost * runningScale 
+                   + TravelCost.Create(ScaledRemainingDistance/estimatedSpeed,costScale: 1.0) * estimatedScale;
         }
 
         public override string ToString()

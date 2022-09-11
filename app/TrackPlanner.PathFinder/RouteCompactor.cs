@@ -26,10 +26,14 @@ namespace TrackPlanner.PathFinder
             this.calc = new ApproximateCalculator();
         }
         
-        public TrackPlan Compact(List<LegRun> legs)
+        public void FlattenRoundabouts(List<LegRun> legs)
         {
             foreach (var leg in legs)
                 flattenRoundabouts(leg.Steps);
+        }
+        
+        public TrackPlan Compact(List<LegRun> legs)
+        {
             var plan = splitLegs(legs);
             
             if (this.userPrefs.CompactingDistanceDeviation== Length.Zero || this.userPrefs.CompactingAngleDeviation== Angle.Zero)
