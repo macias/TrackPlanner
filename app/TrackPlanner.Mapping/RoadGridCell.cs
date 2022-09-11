@@ -13,24 +13,33 @@ namespace TrackPlanner.Mapping
     public sealed class RoadGridCell
     {
         // segment from given road index to (implicit) next road index
-        private readonly List<RoadIndexLong> roadSegments; // when working, we don't need hashset, so let's keep it list for lower memory
+        private readonly List<RoadIndexLong> roadRoadSegments; // when working, we don't need hashset, so let's keep it list for lower memory
 
-        public int Count => this.roadSegments.Count;
-        public IEnumerable<RoadIndexLong> Segments => this.roadSegments;
+        public int Count => this.roadRoadSegments.Count;
+        public IEnumerable<RoadIndexLong> RoadSegments => this.roadRoadSegments;
 
         public RoadGridCell(List<RoadIndexLong>? segmets = null)
         {
-            this.roadSegments = segmets ?? new List<RoadIndexLong>();
+            this.roadRoadSegments = segmets ?? new List<RoadIndexLong>();
         }
 
         internal void Add(RoadIndexLong roadIdx)
         {
-            roadSegments.Add(roadIdx);
+            this.roadRoadSegments.Add(roadIdx);
         }
 
+        public IEnumerable<long> GetNodes(IWorldMap map)
+        {
+            foreach (var idx in this.roadRoadSegments)
+            {
+                yield return map.GetNode(idx);
+                yield return map.GetNode(idx.Next());
+            }
+        }
+        
         public IEnumerable<RoadSnapInfo> GetSnaps(IWorldMap map, IGeoCalculator calc,GeoZPoint point, Length snapLimit,Func<RoadInfo,bool>? predicate)
         {
-            foreach (var idx in roadSegments)
+            foreach (var idx in this.roadRoadSegments)
             {
                 if (predicate != null && !predicate(map.Roads[idx.RoadMapIndex]))
                     continue;

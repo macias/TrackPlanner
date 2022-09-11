@@ -153,18 +153,21 @@ namespace TrackPlanner.Mapping.Disk
         }
 
         internal static IDisposable Read(ILogger logger, IReadOnlyList<string> fileNames, MemorySettings memSettings,
-            out WorldMapDisk map)
+            out WorldMapDisk map,out List<string> invalidFiles)
         {
             var files = fileNames.Select(fn => (new FileStream(fn, FileMode.Open, FileAccess.Read).Me<Stream>(), fn)).ToArray();
             var result = CompositeDisposable.Create(files.Select(it => it.Item1));
-            result.Stack(Read(logger, files.ToArray(), memSettings, out map));
+            result.Stack(Read(logger, files.ToArray(), memSettings, out map,out invalidFiles));
             return result;
         }
 
         internal static IDisposable Read(ILogger logger, IReadOnlyList<(Stream stream,string name)> files,
             MemorySettings memSettings,
-            out WorldMapDisk map)
+            out WorldMapDisk map,
+            out List<string> invalidFiles)
         {
+            invalidFiles = new List<string>();
+            
             // Loaded HYBRID in 98.074381506 s
             
             
@@ -185,6 +188,14 @@ namespace TrackPlanner.Mapping.Disk
                     
                     using (var reader = new BinaryReader(fn.stream, Encoding.UTF8, leaveOpen: true))
                     {
+                        var curr_version = reader.ReadInt32();
+                        if (curr_version != StorageInfo.DataFormatVersion)
+                        {
+                            invalidFiles.Add(fn.name);
+                            logger.Warning($"File {fn} uses format {curr_version}, supported {StorageInfo.DataFormatVersion}");
+                            continue;
+                        }
+
                         var ts = reader.ReadInt64();
                         if (!timestamp.HasValue)
                             timestamp = ts;
@@ -222,6 +233,11 @@ namespace TrackPlanner.Mapping.Disk
                 var reader = new BinaryReader(fn.stream, Encoding.UTF8, 
                     leaveOpen: true);
 
+                var curr_version = reader.ReadInt32();
+                if (curr_version != StorageInfo.DataFormatVersion)
+                {
+                    continue;
+                }
                 reader.ReadInt64(); // timestamp
                 reader.ReadInt32(); // cell size
 
@@ -242,8 +258,8 @@ namespace TrackPlanner.Mapping.Disk
                 var roads_count = reader.ReadInt32();
                 var cells_count = reader.ReadInt32();
 
-                var roads_offset = reader.ReadInt64();
                 var grid_offset = reader.ReadInt64();
+                var roads_offset = reader.ReadInt64();
 
                 var node_offsets = new ReaderOffsets<long>(reader, nodes_count);
 
@@ -288,8 +304,8 @@ namespace TrackPlanner.Mapping.Disk
                     foreach (var (coords, cell_offset) in cell_offsets.Offsets)
                     {
                         reader.BaseStream.Seek(cell_offset, SeekOrigin.Begin);
-                        var cell = RoadGridCellDisk.Load(readers_arr);
-                        var road_ids = cell.Segments.Select(it => it.RoadMapIndex).Distinct().ToArray();
+                        var cell = RoadGridCellExtension.Load(readers_arr);
+                        var road_ids = cell.RoadSegments.Select(it => it.RoadMapIndex).Distinct().ToArray();
                         foreach (var rd_id in road_ids)
                         {
                             reader.BaseStream.Seek(road_offsets[rd_id], SeekOrigin.Begin);
@@ -330,12 +346,15 @@ namespace TrackPlanner.Mapping.Disk
 
             var nodes = new DiskDictionary<long, GeoZPoint>(node_sources, 1, loadNode, memSettings.CacheNodesLimit);
             var roads = new DiskDictionary<long, RoadInfo>(road_sources, 0, loadRoad, memSettings.CacheRoadsLimit);
-            DiskDictionary<CellIndex, RoadGridCell> cells = new DiskDictionary<CellIndex, RoadGridCell>(cell_sources, 0, RoadGridCellDisk.Load, memSettings.CacheCellsLimit);
+            DiskDictionary<CellIndex, RoadGridCell> cells = new DiskDictionary<CellIndex, RoadGridCell>(cell_sources, 0, RoadGridCellExtension.Load, memSettings.CacheCellsLimit);
 
             // 4323 MB --> +1133 MB (total) 
         //    Console.WriteLine("PRESS KEY BEFORE MAP");
           //  Console.ReadLine();
 
+          if (invalidFiles.Count == files.Count)
+              throw new NotImplementedException("No map data.");
+          
             map = new WorldMapDisk(logger,
                 northmost:total_north_most!.Value,
                 eastmost :total_east_most!.Value,

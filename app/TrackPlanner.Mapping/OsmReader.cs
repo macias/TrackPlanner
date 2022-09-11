@@ -122,7 +122,9 @@ namespace TrackPlanner.Mapping
             else if (this.memSettings.MapMode == MapMode.HybridDisk)
             {
                 double start = Stopwatch.GetTimestamp();
-                var disp = WorldMapDisk.Read(logger, extracts, this.memSettings, out var temp_map);
+                var disp = WorldMapDisk.Read(logger, extracts, this.memSettings, out var temp_map,out var invalid_files);
+                if (invalid_files.Any())
+                    throw new NotSupportedException();
                 map = temp_map;
                 logger.Info($"Loaded HYBRID in {(Stopwatch.GetTimestamp() - start) / Stopwatch.Frequency} s");
 

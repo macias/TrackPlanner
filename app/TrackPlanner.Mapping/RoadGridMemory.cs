@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using TrackPlanner.Shared;
 using TrackPlanner.Mapping.Data;
@@ -18,7 +19,7 @@ namespace TrackPlanner.Mapping
             this.cells = cells;
         }
 
-        internal void Write(BinaryWriter writer)
+        internal void Write(BinaryWriter writer,IWorldMap map, IReadOnlyDictionary<long, long> nodeOffsets)
         {
             var offsets = new WriterOffsets<CellIndex>(writer);
 
@@ -33,7 +34,7 @@ namespace TrackPlanner.Mapping
             foreach (var coords in coords_array)
             {
                 offsets.AddOffset(coords);
-                this.cells[coords].Write(writer);
+                this.cells[coords].Write(writer,map,nodeOffsets);
             }
 
             offsets.WriteBackOffsets();

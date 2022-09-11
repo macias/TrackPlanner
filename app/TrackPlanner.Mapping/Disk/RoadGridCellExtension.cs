@@ -5,18 +5,29 @@ using TrackPlanner.Mapping.Data;
 
 namespace TrackPlanner.Mapping.Disk
 {
-    public static class RoadGridCellDisk
+    public static class RoadGridCellExtension
     {
-     
-        public static void Write(this RoadGridCell cell, BinaryWriter writer)
+        public static void Write(this RoadGridCell cell, BinaryWriter writer,IWorldMap map,
+            IReadOnlyDictionary<long, long> nodeOffsets)
         {
-            writer.Write(cell.Count);
-            foreach (var elem in cell.Segments)
-                elem.Write(writer);
+            using (new OffsetKeeper(writer))
+            {
+                writer.Write(cell.Count);
+                foreach (var elem in cell.RoadSegments)
+                    elem.Write(writer);
+            }
+
+            foreach (var node_id in cell.GetNodes(map).Distinct())
+            {
+                writer.Write(node_id);
+                writer.Write(nodeOffsets[node_id]);
+            }
         }
         
         public static RoadGridCell Read(BinaryReader reader)
         {
+            reader.ReadInt64(); // nodes offset
+            
             var count = reader.ReadInt32();
             var segments = new HashSet<RoadIndexLong>(capacity: count);
             for (int i = 0; i < count; ++i)
@@ -31,6 +42,7 @@ namespace TrackPlanner.Mapping.Disk
             int total_count = 0;
             for (int r=0;r<readers.Count;++r)
             {
+                readers[r].ReadInt64(); // nodes offset
                 var c = readers[r].ReadInt32();
                 counts[r] = c;
                 total_count += c;

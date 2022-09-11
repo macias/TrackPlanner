@@ -149,7 +149,9 @@ namespace TrackPlanner.Tests
             memMap.Write(timestamp:0,stream,memMap.CreateRoadGrid(memorySettings.GridCellSize,navigator.GetDebug()));
             stream.Position = 0;
             result = result.Stack(WorldMapDisk.Read(logger, new[] {(stream, fileName)}.ToArray(), memorySettings, 
-                out diskMap));
+                out diskMap,out var invalid_files));
+            if (invalid_files.Any())
+                throw new NotSupportedException();
             return result;
         }
 

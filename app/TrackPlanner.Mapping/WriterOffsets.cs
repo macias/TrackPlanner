@@ -1,16 +1,6 @@
-﻿using MathUnit;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Diagnostics;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using OsmSharp;
-using OsmSharp.IO.PBF;
-using TrackPlanner.Shared;
-using TrackPlanner.LinqExtensions;
-using TrackPlanner.Mapping.Data;
 
 namespace TrackPlanner.Mapping
 {
@@ -50,6 +40,11 @@ namespace TrackPlanner.Mapping
             }
 
             writer.BaseStream.Seek(current_position, SeekOrigin.Begin);
+        }
+
+        public Dictionary<TKey, long> GetOffsets()
+        {
+            return this.offsets.ToDictionary(it => it.Key, it => it.Value.offset);
         }
     }
 }
