@@ -36,16 +36,9 @@ namespace TrackPlanner.Turner.Implementation
         public bool CyclewaySwitch { get; set; }
         public bool BackwardCyclewayUncertain { get; set; }
         public bool ForwardCyclewayUncertain { get; set; }
-        //public RoadIndex ForwardSegment { get; set; }
-        //public RoadIndex BackwardSegment { get; set; }
         public DirectionalArray<RoadIndexLong> Segment { get; }
 
         private static IReadOnlyList<T> cast<T>(List<T> list) => list;
-
-        /*public TrackNode(OsmMap map, IReadOnlyDictionary<long, int> dict) : this(map, dict.ToDictionary(it => it.Key, it => cast(new[] { it.Value })))
-        {
-
-        }*/
 
         private TrackNode(IWorldMap map, IReadOnlyDictionary<long, IReadOnlyList<ushort>> dict)
         {

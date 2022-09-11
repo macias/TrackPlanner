@@ -1,10 +1,9 @@
 ﻿using System;
-using TrackPlanner.Mapping;
 using TrackPlanner.Mapping.Data;
 
-namespace TrackPlanner.Turner
+namespace TrackPlanner.Turner.Implementation
 {
-    public readonly struct RoadRank
+    internal readonly struct RoadRank
     {
         enum Perception
         {

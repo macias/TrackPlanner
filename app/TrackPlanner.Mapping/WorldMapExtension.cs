@@ -17,6 +17,22 @@ namespace TrackPlanner.Mapping
     {
         public static string KmlDangerousTag => "dangerous";
         
+        public static GeoZPoint GetRoundaboutCenter(this IWorldMap map, IGeoCalculator calc, long roundaboutId)
+        {
+            GeoZPoint min =  GeoZPoint.Create(Angle.PI, Angle.Zero, null);
+            GeoZPoint max =  GeoZPoint.Create(-Angle.PI, Angle.Zero, null);
+            foreach (long node in map.Roads[roundaboutId].Nodes)
+            {
+                GeoZPoint pt = map.Nodes[node];
+                if (min.Latitude >= pt.Latitude)
+                    min = pt;
+                if (max.Latitude <= pt.Latitude)
+                    max = pt;
+            }
+
+            return calc.GetMidPoint(min, max);
+        }
+        
         public static void SaveAsKml(this IWorldMap map, UserVisualPreferences visualPrefs, string path)
         {
             var speed_lines = TrackWriter.GetKmlSpeedLines(visualPrefs);

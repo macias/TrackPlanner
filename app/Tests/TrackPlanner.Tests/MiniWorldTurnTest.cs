@@ -1,4 +1,5 @@
 using System.Linq;
+using TrackPlanner.Data;
 using TrackPlanner.Mapping;
 using TrackPlanner.Shared;
 using Xunit;
@@ -9,7 +10,38 @@ namespace TrackPlanner.Tests
     // had to add turn points, in other words track was given "in advance" 
     public class MiniWorldTurnTest : MiniWorld
     {
-                [Theory]
+        [Theory]
+        [MemberData(nameof(TestParams))]
+        public void ChelmnoRoundaboutLTurnTest(MapMode mapMode)
+        {
+            // todo: we need to flatten entry+exit roads as well
+            // O>----
+            // O roundabout
+            // > split to entry+exit road
+            // - regular road
+            var map_filename = "legacy/chelmno-roundabout_Lturn.kml";
+            var (plan,turns) = ComputeTurns(mapMode,map_filename,
+                GeoZPoint.FromDegreesMeters(                53.32023, 18.42174, 0),
+                GeoZPoint.FromDegreesMeters(                53.32692, 18.4115, 0)
+            );
+            
+            //SaveData(plan, turns, map_filename);
+
+            Assert.Equal(1, turns.Count);
+
+            int index = 0;
+            
+            Assert.Equal( TurnInfo.EntityReference.Roundabout, turns[index].Entity);
+            Assert.Equal(235135545, turns[index].EntityId);
+            Assert.Equal(0, turns[index].RoundaboutGroup);
+            Assert.True(turns[index].Forward);
+            Assert.True(turns[index].Backward);
+            Assert.Equal(7, turns[index].TrackIndex);
+        }
+
+
+        
+        [Theory]
         [MemberData(nameof(TestParams))]
         public void BiskupiceSwitchingCyclewaySidesTest(MapMode mapMode)
         {
@@ -253,7 +285,7 @@ namespace TrackPlanner.Tests
                 GeoZPoint.FromDegreesMeters(                53.35734, 18.96729, 0)
             );
 
-            SaveData(plan,turns,map_filename);
+            //SaveData(plan,turns,map_filename);
 
             Assert.Equal(2, turns.Count);
 

@@ -16,13 +16,11 @@ namespace TrackPlanner.RestService.Workers
     {
         private readonly ILogger logger;
         private readonly RouteManager manager;
-        private readonly NodeTrackTurner turner;
 
         internal RealWorker(ILogger? logger, RouteManager? manager)
         {
             this.logger = logger ?? throw  new ArgumentNullException(nameof(logger));
             this.manager = manager ?? throw new ArgumentNullException(nameof(manager));
-            this.turner = new NodeTrackTurner(logger, manager.Map, manager.DebugDirectory!);
             logger.Info($"Starting {this}");
         }
 
@@ -38,6 +36,10 @@ namespace TrackPlanner.RestService.Workers
                 return false;
             }
 
+            var turner = new NodeTurnWorker(logger, manager.Map, 
+                new SystemTurnerConfig(){  DebugDirectory = manager.DebugDirectory!},
+                request.TurnerPreferences);
+
             var daily_turns = new List<List<TurnInfo>>();
             
             {
@@ -48,8 +50,8 @@ namespace TrackPlanner.RestService.Workers
                         // the anchor is already added at the end when creating request
                         addLoopedAnchor: false);
 
-                    daily_turns.Add(this.turner.ComputeTurnPoints(legs.Skip(leg_offset).Take(leg_count).SelectMany(leg => leg.Steps.Select(it => it.Place)),
-                        request.TurnerPreferences));
+                    daily_turns.Add(turner.ComputeTurnPoints(legs.Skip(leg_offset).Take(leg_count)
+                        .SelectMany(leg => leg.Steps.Select(it => it.Place)), ref problem));
 
                     leg_offset += leg_count;
                 }

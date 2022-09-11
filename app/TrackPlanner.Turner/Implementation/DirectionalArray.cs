@@ -1,10 +1,8 @@
 ﻿using System;
 
-namespace TrackPlanner.Turner
-
+namespace TrackPlanner.Turner.Implementation
 {
-
-    public sealed class DirectionalArray<T>
+    internal sealed class DirectionalArray<T>
     {
         public T this[int direction]
         {

@@ -145,32 +145,15 @@ namespace TrackPlanner.PathFinder
                     entry_idx = 0;
                 
                 // entry_idx is first point of roundabout and step_idx is the last
-                
-                
-                Angle lat = Angle.Zero;
-                Angle lon = Angle.Zero;
-                Length? alt = null;
-                var nodes = roundabout_road.Nodes;
-                foreach (var pt in nodes.Select(id => map.Nodes[id]).Skip(1)) // skip first one, because it is looped
-                {
-                    lat += pt.Latitude;
-                    lon += pt.Longitude;
-                    if (pt.Altitude.HasValue)
-                        alt = (alt ?? Length.Zero) + pt.Altitude.Value;
-                }
-
-                var road_nodes_count = nodes.Count-1;
-                lat /= road_nodes_count;
-                lon /= road_nodes_count;
-                if (alt.HasValue)
-                alt = alt.Value/ road_nodes_count;
 
                 distance /= 2;
                 time /= 2;
                 pathSteps[step_idx] = new StepRun(pathSteps[step_idx].Place, incoming_road_map_index, condition, distance, time);
                     // remove entire roundabout trip, keep entrance and exit
                 pathSteps.RemoveRange(entry_idx+1,step_idx-entry_idx-1);
-                pathSteps.Insert(entry_idx+1,new StepRun(Placement.Aggregate(GeoZPoint.Create(lat,lon,alt),incoming_road_map_index) , incoming_road_map_index, condition, 
+                pathSteps.Insert(entry_idx+1,new StepRun(
+                    Placement.Aggregate(this.map.GetRoundaboutCenter(this.calc,incoming_road_map_index),incoming_road_map_index) , 
+                    incoming_road_map_index, condition, 
                     distance,time));
              //   Console.WriteLine($"Roundabout with new step at {entry_idx+1} and replacement at {step_idx}");
                 step_idx=entry_idx-1;

@@ -167,13 +167,16 @@ namespace TrackPlanner.Tests
 
             using (computePlaces(mapMode, filename, out var manager, out var plan_nodes, userPoints))
             {
-                var turner = new NodeTrackTurner(logger, manager.Map, manager.DebugDirectory!);
-
                 var turner_preferences = new UserTurnerPreferences();
-                var regular = turner.ComputeTurnPoints(plan_nodes, turner_preferences);
-                
+
+                var turner = new NodeTurnWorker(logger, manager.Map,
+                    new SystemTurnerConfig(){ DebugDirectory = manager.DebugDirectory!},
+                    turner_preferences);
+
+                List<TurnInfo> regular = computeTurnPoints(turner, plan_nodes);
+
                 { // checking reversal as well
-                    IReadOnlyList<TurnInfo> reversed = turner.ComputeTurnPoints(plan_nodes.Reverse().ToList(), turner_preferences)
+                    IReadOnlyList<TurnInfo> reversed = computeTurnPoints(turner,plan_nodes.Reverse().ToList() )
                         .AsEnumerable()
                         .Reverse()
                         // reversing internal data
@@ -194,6 +197,15 @@ namespace TrackPlanner.Tests
                     return (plan_nodes, regular);
                 }
             }
+        }
+
+        private static List<TurnInfo> computeTurnPoints(NodeTurnWorker turner, IReadOnlyList<Placement> plan)
+        {
+            string? problem = null;
+            List<TurnInfo> turns = turner.ComputeTurnPoints(plan, ref problem);
+            if (problem != null)
+                throw new Exception(problem);
+            return turns;
         }
     }
 }

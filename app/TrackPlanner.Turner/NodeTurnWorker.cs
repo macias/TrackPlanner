@@ -13,10 +13,10 @@ using TrackPlanner.Shared;
 using TrackPlanner.Data;
 using TrackPlanner.Mapping.Data;
 
-namespace TrackPlanner.Turner.Implementation
+namespace TrackPlanner.Turner
 
 {
-    internal sealed class NodeTurnWorker
+    public sealed class NodeTurnWorker
     {
         private readonly ILogger logger;
         private readonly SystemTurnerConfig sysConfig;
@@ -43,7 +43,7 @@ namespace TrackPlanner.Turner.Implementation
 
         private static readonly IReadOnlySet<int> emptyIntSet = new HashSet<int>();
 
-        public List<TurnInfo> ComputeTurnPoints(IEnumerable<Placement> trackPlaces)
+        public List<TurnInfo> ComputeTurnPoints(IEnumerable<Placement> trackPlaces,ref string? problem)
         {
             List<TrackNode> track = trackPlaces
                 .Where(it => it.IsNode)
@@ -186,7 +186,7 @@ namespace TrackPlanner.Turner.Implementation
 
             // add pairs enter-exit turns (if needed) for passed roundabouts
 
-            computeRoundaboutTurnNotifications(track, turns);
+            computeRoundaboutTurnNotifications(track, turns,ref problem);
 
             if (this.sysConfig.DebugDirectory != null)
             {
@@ -197,7 +197,8 @@ namespace TrackPlanner.Turner.Implementation
             return turns;
         }
 
-        private void computeRoundaboutTurnNotifications(List<TrackNode> track, List<TurnInfo> turns)
+        private void computeRoundaboutTurnNotifications(List<TrackNode> track, List<TurnInfo> turns,
+            ref string? problem)
         {
             int group = 0;
 
@@ -207,13 +208,16 @@ namespace TrackPlanner.Turner.Implementation
                 if (track[node_index - 1].RoundaboutId.HasValue || !track_node.RoundaboutId.HasValue)
                     continue;
 
-                GeoZPoint center = getRoundaboutCenter(track_node.RoundaboutId.Value);
+                GeoZPoint center = this.map.GetRoundaboutCenter(this.calc, track_node.RoundaboutId.Value);
                 IReadOnlySet<long> exit_nodes = getRoundaboutExitNodes(track_node.RoundaboutId.Value);
 
-                var track_exits = track.Select(it => it.NodeId).ZipIndex().Where(it => exit_nodes.Contains(it.item)).ToList();
+                var track_exits = track.Select(it => it.NodeId).ZipIndex()
+                    .Where(it => exit_nodes.Contains(it.item)).ToList();
                 if (track_exits.Count != 2)
                 {
-                    this.logger.Warning($"We cannot compute for track with {track_exits.Count} exits at roundabout #{track_node.RoundaboutId}.");
+                    string message = $"We cannot compute for track with {track_exits.Count} exits at roundabout #{track_node.RoundaboutId}.";
+                    problem ??= message;
+                    this.logger.Warning(message);
                     continue;
                 }
 
@@ -230,8 +234,16 @@ namespace TrackPlanner.Turner.Implementation
                             isAltMinor: false, ref forward, ref backward);
                         if (forced.Enable || forward.Enable || backward.Enable)
                         {
-                            turns.Add(TurnInfo.CreateRoundabout(track_node.RoundaboutId.Value,incoming_pt, incoming_node.index, group));
-                            turns.Add(TurnInfo.CreateRoundabout(track_node.RoundaboutId.Value,outgoing_pt, outgoing_node.index, group));
+                            // todo: once we have better TrackRadar then keep the geometry info like
+                            // the turn would be in the center, but warn user about it earlier -- at the entry
+                            // points
+                            turns.Add(TurnInfo.CreateRoundabout(track_node.RoundaboutId.Value,
+                                center, incoming_node.index, group));
+                            /*turns.Add(TurnInfo.CreateRoundabout(track_node.RoundaboutId.Value,
+                                incoming_pt, incoming_node.index, group));
+                            turns.Add(TurnInfo.CreateRoundabout(track_node.RoundaboutId.Value,
+                                outgoing_pt, outgoing_node.index, group));
+                                */
                             ++group;
                             break;
                         }
@@ -525,21 +537,6 @@ namespace TrackPlanner.Turner.Implementation
             }
         }
 
-        private GeoZPoint getRoundaboutCenter(long roundaboutId)
-        {
-            GeoZPoint min =  GeoZPoint.Create(Angle.PI, Angle.Zero, null);
-            GeoZPoint max =  GeoZPoint.Create(-Angle.PI, Angle.Zero, null);
-            foreach (long node in map.Roads[roundaboutId].Nodes)
-            {
-                GeoZPoint pt = map.Nodes[node];
-                if (min.Latitude >= pt.Latitude)
-                    min = pt;
-                if (max.Latitude <= pt.Latitude)
-                    max = pt;
-            }
-
-            return calc.GetMidPoint(min, max);
-        }
 
         private HashSet<long> getRoundaboutExitNodes(long roundaboutId)
         {
@@ -856,13 +853,12 @@ namespace TrackPlanner.Turner.Implementation
             return dist <= Angle.PI ? dist : dist - Angle.FullCircle;
         }
 
-        public TurnNotification isTurnNeededOnCurvedTrack(int turnPointIndex, in GeoZPoint turnPoint, in GeoZPoint currentPoint,
+        private TurnNotification isTurnNeededOnCurvedTrack(int turnPointIndex, in GeoZPoint turnPoint, in GeoZPoint currentPoint,
             in GeoZPoint nextPoint, in GeoZPoint altSiblingPoint, bool isAltMinor, ref TurnNotification forward, ref TurnNotification backward)
         {
-            Angle track_angle = signedAngleDistance(turnPoint, currentPoint, nextPoint);
-            bool curved_track = track_angle.Abs() <= this.userPreferences.StraigtLineAngleLimit;
-            logger.Verbose($"Angle: {track_angle} below limit {this.userPreferences.StraigtLineAngleLimit}, curved = {curved_track}");
-            if (curved_track)
+            var is_track_curved = isTrackCurved(turnPoint, currentPoint, nextPoint, out var track_angle);
+            logger.Verbose($"Angle: {track_angle} below limit {this.userPreferences.StraigtLineAngleLimit}, curved = {is_track_curved}");
+            if (is_track_curved)
             {
                 if (this.sysConfig.DebugDirectory != null)
                 {
@@ -905,6 +901,11 @@ namespace TrackPlanner.Turner.Implementation
             return  TurnNotification.None;
         }
 
-
+        private bool isTrackCurved(GeoZPoint turnPoint, GeoZPoint currentPoint, GeoZPoint nextPoint, 
+            out Angle trackAngle)
+        {
+            trackAngle = signedAngleDistance(turnPoint, currentPoint, nextPoint);
+            return trackAngle.Abs() <= this.userPreferences.StraigtLineAngleLimit;
+        }
     }
 }

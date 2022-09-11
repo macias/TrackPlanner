@@ -1,8 +1,8 @@
 ﻿using TrackPlanner.Mapping.Data;
 
-namespace TrackPlanner.Turner
+namespace TrackPlanner.Turner.Implementation
 {
-    public static class RoadExtension
+    internal static class RoadExtension
     {
         public static bool IsLikelyPaved(this RoadSurface surface)
         {

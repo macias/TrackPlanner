@@ -1,3 +1,4 @@
+using TrackPlanner.Data;
 using TrackPlanner.Mapping;
 using TrackPlanner.Shared;
 using Xunit;
@@ -136,7 +137,7 @@ namespace TrackPlanner.Tests
                 GeoZPoint.FromDegreesMeters(                53.14437, 18.50728, 0)
             );
 
-            SaveData(plan, turns, map_filename);
+            //SaveData(plan, turns, map_filename);
             
             Assert.Equal(1, turns.Count);
 
@@ -194,37 +195,6 @@ namespace TrackPlanner.Tests
             Assert.True(turns[0].Backward);
             Assert.Equal(4, turns[0].TrackIndex);
         }
-                [Theory]
-        [MemberData(nameof(TestParams))]
-
-        public void FIX_ChelmnoRoundaboutLTurnTest(MapMode mapMode)
-        {
-            // todo: we need to flatten entry+exit roads as well
-            // O>----
-            // O roundabout
-            // > split to entry+exit road
-            // - regular road
-            var map_filename = "legacy/chelmno-roundabout_Lturn.kml";
-            var (plan,turns) = ComputeTurns(mapMode,map_filename,
-                GeoZPoint.FromDegreesMeters(                53.32023, 18.42174, 0),
-                GeoZPoint.FromDegreesMeters(                53.32692, 18.4115, 0)
-            );
-            
-            SaveData(plan, turns, map_filename);
-
-            Assert.Equal(2, turns.Count);
-
-            Assert.Equal(53.328389600000001, turns[0].Point.Latitude.Degrees, Precision);
-            Assert.Equal(18.420067500000002, turns[0].Point.Longitude.Degrees, Precision);
-            Assert.Equal(0, turns[0].RoundaboutGroup);
-            Assert.Equal(7, turns[0].TrackIndex);
-
-            Assert.Equal(53.328644800000006, turns[1].Point.Latitude.Degrees, Precision);
-            Assert.Equal(18.4194174, turns[1].Point.Longitude.Degrees, Precision);
-            Assert.Equal(0, turns[1].RoundaboutGroup);
-            Assert.Equal(22, turns[1].TrackIndex);
-        }
-
         
     }
 }

@@ -17,7 +17,8 @@ namespace TrackPlanner.Data
         }
         public static TurnInfo CreateRoundabout(long roadId, GeoZPoint point, int trackIndex, int? roundaboutGroup)
         {
-            return new TurnInfo(EntityReference.Roundabout, roadId, point, trackIndex, roundaboutGroup, true, true,reason:"roundabout");
+            return new TurnInfo(EntityReference.Roundabout, roadId, point, trackIndex, roundaboutGroup, 
+                true, true,reason:"roundabout");
         }
 
         public GeoZPoint Point { get; }
