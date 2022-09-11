@@ -12,6 +12,28 @@ namespace TrackPlanner.Tests
     {
         [Theory]
         [MemberData(nameof(TestParams))]
+        public void BiskupiceSwitchToCyclewayTest(MapMode mapMode)
+        {
+            var map_filename = "legacy/biskupice_switch_to_cycleway.kml";
+            var (plan,turns) = ComputeTurns(mapMode,map_filename,
+                GeoZPoint.FromDegreesMeters(                53.13679, 18.51126, 0),
+                GeoZPoint.FromDegreesMeters(                53.14268, 18.50394, 0)
+            );
+
+            //SaveData(plan, turns, map_filename);
+            
+            Assert.Equal(1, turns.Count);
+
+            // ok, but we could also plan route using roads only, so then this turn
+            // would not hold
+            Assert.Equal(1437255494, turns[0].EntityId);
+            Assert.True(turns[0].Forward);
+            Assert.True(turns[0].Backward);
+            Assert.Equal(3, turns[0].TrackIndex);
+        }
+
+        [Theory]
+        [MemberData(nameof(TestParams))]
         public void ChelmnoRoundaboutLTurnTest(MapMode mapMode)
         {
             // todo: we need to flatten entry+exit roads as well

@@ -105,27 +105,7 @@ namespace TrackPlanner.Tests
             Assert.Equal(13, turns[index].TrackIndex);
         }
 
-                [Theory]
-        [MemberData(nameof(TestParams))]
-
-        public void A_FIX_USE_ROAD_BiskupiceSwitchToCyclewayTest(MapMode mapMode)
-        {
-            var map_filename = "legacy/biskupice_switch_to_cycleway.kml";
-            var (plan,turns) = ComputeTurns(mapMode,map_filename,
-                GeoZPoint.FromDegreesMeters(                53.13679, 18.51126, 0),
-                GeoZPoint.FromDegreesMeters(                53.14268, 18.50394, 0)
-            );
-
-            //saveData(plan, turns, map_filename);
-            Assert.Equal(1, turns.Count);
-
-            Assert.Equal(53.143534600000002, turns[0].Point.Latitude.Degrees, Precision);
-            Assert.Equal(18.506028300000001, turns[0].Point.Longitude.Degrees, Precision);
-            Assert.True(turns[0].Forward);
-            Assert.True(turns[0].Backward);
-            Assert.Equal(4, turns[0].TrackIndex);
-        }
-
+          
                 [Theory]
         [MemberData(nameof(TestParams))]
 
