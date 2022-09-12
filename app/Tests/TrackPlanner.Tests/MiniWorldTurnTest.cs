@@ -12,6 +12,27 @@ namespace TrackPlanner.Tests
     {
         [Theory]
         [MemberData(nameof(TestParams))]
+        public void TorunSouthRangeTest(MapMode mapMode)
+        {
+            var map_filename = "legacy/torun_south_range.kml";
+            var (plan,turns) = ComputeTurns(mapMode,map_filename,
+                GeoZPoint.FromDegreesMeters(                52.96484, 18.53726, 0),
+                GeoZPoint.FromDegreesMeters(                52.9352, 18.51589, 0),
+                GeoZPoint.FromDegreesMeters(                52.87777, 18.63722, 0)
+            );
+
+            //SaveData(plan,turns,map_filename);
+            
+            Assert.Equal(1, turns.Count);
+
+            Assert.Equal(281249332, turns[0].EntityId);
+            Assert.True(turns[0].Forward);
+            Assert.True(turns[0].Backward);
+            Assert.Equal(46, turns[0].TrackIndex);
+        }
+
+        [Theory]
+        [MemberData(nameof(TestParams))]
         public void BiskupiceSwitchToCyclewayTest(MapMode mapMode)
         {
             var map_filename = "legacy/biskupice_switch_to_cycleway.kml";

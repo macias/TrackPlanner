@@ -9,27 +9,6 @@ namespace TrackPlanner.Tests
     // had to add turn points, in other words track was given "in advance" 
     public class BAD_MiniWorldTurnTest : MiniWorld
     {
-        [Theory]
-        [MemberData(nameof(TestParams))]
-        public void A_FIX_BUG_TorunSouthRangeTest(MapMode mapMode)
-        {
-            var map_filename = "legacy/torun_south_range.kml";
-            var (plan,turns) = ComputeTurns(mapMode,map_filename,
-                GeoZPoint.FromDegreesMeters(                52.96484, 18.53726, 0),
-                GeoZPoint.FromDegreesMeters(                52.9352, 18.51589, 0),
-                GeoZPoint.FromDegreesMeters(                52.87777, 18.63722, 0)
-            );
-
-            //saveData(plan,turns,map_filename);
-            
-            Assert.Equal(1, turns.Count);
-
-            Assert.Equal(52.935208700000004, turns[0].Point.Latitude.Degrees, Precision);
-            Assert.Equal(18.515891200000002, turns[0].Point.Longitude.Degrees, Precision);
-            Assert.True(turns[0].Forward);
-            Assert.True(turns[0].Backward);
-            Assert.Equal(45, turns[0].TrackIndex);
-        }
 
                 [Theory]
         [MemberData(nameof(TestParams))]
@@ -108,8 +87,7 @@ namespace TrackPlanner.Tests
           
                 [Theory]
         [MemberData(nameof(TestParams))]
-
-        public void A_FIX_BAD_PLANNING_BiskupiceTurnOnCyclewayTest(MapMode mapMode)
+                public void A_FIX_BAD_PLANNING_BiskupiceTurnOnCyclewayTest(MapMode mapMode)
         {
             var map_filename = "legacy/biskupice_turn_on_cycleway.kml";
             var (plan,turns) = ComputeTurns(mapMode,map_filename,
