@@ -10,7 +10,6 @@ using TrackPlanner.LinqExtensions;
 using TrackPlanner.Mapping.Data;
 using TrackPlanner.Mapping.Disk;
 using TrackPlanner.Storage;
-using TrackPlanner.Storage.Data;
 
 namespace TrackPlanner.Mapping
 {
@@ -19,10 +18,12 @@ namespace TrackPlanner.Mapping
         public static WorldMapMemory CreateOnlyRoads(ILogger logger,
             IReadOnlyMap<long, GeoZPoint> nodes,
             IReadOnlyMap<long, RoadInfo> roads,
-            INodeRoadsDictionary backReferences)
+            INodeRoadsDictionary backReferences,
+            int gridCellSize,string? debugDirectory)
         {
             return new WorldMapMemory(logger, nodes, roads, backReferences,
-                forests: null, rivers: null, cities: null, waters: null, protectedArea: null, noZone: null, railways: null, onlyRoads: true);
+                forests: null, rivers: null, cities: null, waters: null, protectedArea: null, 
+                noZone: null, railways: null,gridCellSize, debugDirectory, onlyRoads: true);
         }
         private readonly IEnumerable<IEnumerable<long>>? _protected;
         private readonly IEnumerable<CityInfo>? cities;
@@ -38,19 +39,19 @@ namespace TrackPlanner.Mapping
         private readonly IEnumerable<IEnumerable<long>>? waters;
 
         private IReadOnlySet<long>? bikeFootDangerousNearbyNodes;
+        private RoadGridMemory grid;
+        public RoadGrid Grid => this.grid;
 
-        //IReadOnlyEnumerableDictionary<long, GeoZPoint> IWorldMap.Nodes => this.Nodes;
-        //IReadOnlyEnumerableDictionary<long, RoadInfo> IWorldMap.Roads => this.Roads;
-        public IReadOnlyMap<long, GeoZPoint> Nodes { get; }
-        public IReadOnlyMap<long, RoadInfo> Roads { get; }
-        public IEnumerable<IEnumerable<long>> Railways => this.railways ?? throw new InvalidOperationException("Map was loaded only with roads info.");
-        public IEnumerable<IEnumerable<long>> Forests => this.forests ?? throw new InvalidOperationException("Map was loaded only with roads info.");
-        public IEnumerable<(RiverKind kind, IEnumerable<long> indices)> Rivers => this.rivers ?? throw new InvalidOperationException("Map was loaded only with roads info.");
-        public IEnumerable<CityInfo> Cities => this.cities ?? throw new InvalidOperationException("Map was loaded only with roads info.");
-        public IEnumerable<IEnumerable<long>> Waters => this.waters ?? throw new InvalidOperationException("Map was loaded only with roads info.");
-        public IEnumerable<IEnumerable<long>> Protected => this._protected ?? throw new InvalidOperationException("Map was loaded only with roads info.");
+        private IReadOnlyMap<long, GeoZPoint> nodes { get; }
+        private IReadOnlyMap<long, RoadInfo> roads { get; }
+        private IEnumerable<IEnumerable<long>> Railways => this.railways ?? throw new InvalidOperationException("Map was loaded only with roads info.");
+        private IEnumerable<IEnumerable<long>> Forests => this.forests ?? throw new InvalidOperationException("Map was loaded only with roads info.");
+        private IEnumerable<(RiverKind kind, IEnumerable<long> indices)> Rivers => this.rivers ?? throw new InvalidOperationException("Map was loaded only with roads info.");
+        private IEnumerable<CityInfo> Cities => this.cities ?? throw new InvalidOperationException("Map was loaded only with roads info.");
+        private IEnumerable<IEnumerable<long>> Waters => this.waters ?? throw new InvalidOperationException("Map was loaded only with roads info.");
+        private IEnumerable<IEnumerable<long>> Protected => this._protected ?? throw new InvalidOperationException("Map was loaded only with roads info.");
 
-        public IEnumerable<IEnumerable<long>> NoZone => this.noZone ?? throw new InvalidOperationException("Map was loaded only with roads info.");
+        private IEnumerable<IEnumerable<long>> NoZone => this.noZone ?? throw new InvalidOperationException("Map was loaded only with roads info.");
         public Angle Southmost { get; }
         public Angle Northmost { get; }
         public Angle Eastmost { get; }
@@ -67,15 +68,16 @@ namespace TrackPlanner.Mapping
             List<IEnumerable<long>>? protectedArea,
             List<IEnumerable<long>>? noZone,
             List<List<long>>? railways,
+            int gridCellSize,string? debugDirectory,
             bool onlyRoads)
         {
-            this.Nodes = nodes;
+            this.nodes = nodes;
             this.logger = logger;
             this.onlyRoads = onlyRoads;
 
             logger.Verbose($"Creating map with {roads.Count} roads");
 
-            this.Roads = roads;
+            this.roads = roads;
             if (!onlyRoads)
             {
                 this.forests = forests;
@@ -87,7 +89,7 @@ namespace TrackPlanner.Mapping
                 this.railways = railways;
             }
 
-            validate(Roads.SelectMany(it => it.Value.Nodes));
+            validate(this.roads.SelectMany(it => it.Value.Nodes));
             if (!onlyRoads)
             {
                 validate(forests!.SelectMany(it => it));
@@ -99,12 +101,19 @@ namespace TrackPlanner.Mapping
                 validate(noZone!.SelectMany(it => it));
             }
 
-            Southmost = this.Nodes.Min(n => n.Value.Latitude);
-            Northmost = this.Nodes.Max(n => n.Value.Latitude);
-            Eastmost = this.Nodes.Max(n => n.Value.Longitude);
-            Westmost = this.Nodes.Min(n => n.Value.Longitude);
+            Southmost = this.nodes.Min(n => n.Value.Latitude);
+            Northmost = this.nodes.Max(n => n.Value.Latitude);
+            Eastmost = this.nodes.Max(n => n.Value.Longitude);
+            Westmost = this.nodes.Min(n => n.Value.Longitude);
 
             this.nodeRoadReferences = backReferences;
+
+            {
+                var calc = new ApproximateCalculator();
+                this.grid = new RoadGridMemory(logger,
+                    new RoadGridMemoryBuilder(logger, this, calc, gridCellSize, debugDirectory).BuildCells(),
+                    this, calc, gridCellSize, debugDirectory, legacyGetNodeAllRoads: false);
+            }
 
         }
 
@@ -117,12 +126,12 @@ namespace TrackPlanner.Mapping
 
         public GeoZPoint GetPoint(long nodeId)
         {
-            return this.Nodes[nodeId];
+            return this.nodes[nodeId];
         }
 
         public IEnumerable<KeyValuePair<long, GeoZPoint>> GetAllNodes()
         {
-            return Nodes;
+            return nodes;
         }
 
         public int LEGACY_RoadSegmentsDistanceCount(long roadId, int sourceIndex, int destIndex)
@@ -134,15 +143,15 @@ namespace TrackPlanner.Mapping
 
             {
                 // when end is looped  (EXCLUDING start-end)
-                int conn_idx = this.Roads[roadId].Nodes.IndexOf(this.Roads[roadId].Nodes.Last());
-                if (conn_idx != 0 && conn_idx != this.Roads[roadId].Nodes.Count - 1)
+                int conn_idx = this.roads[roadId].Nodes.IndexOf(this.roads[roadId].Nodes.Last());
+                if (conn_idx != 0 && conn_idx != this.roads[roadId].Nodes.Count - 1)
                 {
-                    count = Math.Min(count, this.Roads[roadId].Nodes.Count - 1 - max_idx + Math.Abs(conn_idx - min_idx));
+                    count = Math.Min(count, this.roads[roadId].Nodes.Count - 1 - max_idx + Math.Abs(conn_idx - min_idx));
                 }
             }
             {
                 // when start is looped (including start-end)
-                int conn_idx = this.Roads[roadId].Nodes.Skip(1).IndexOf(this.Roads[roadId].Nodes.First());
+                int conn_idx = this.roads[roadId].Nodes.Skip(1).IndexOf(this.roads[roadId].Nodes.First());
                 if (conn_idx != -1)
                 {
                     ++conn_idx;
@@ -158,7 +167,7 @@ namespace TrackPlanner.Mapping
 
         public string GetStats()
         {
-            return "no stats so far";
+            return this.Grid.GetStats();
         }
 
         public void SetDangerous(IReadOnlySet<long> dangerousNearbyNodes)
@@ -174,22 +183,22 @@ namespace TrackPlanner.Mapping
 
         public RoadInfo GetRoad(long roadMapIndex)
         {
-            return Roads[roadMapIndex];
+            return roads[roadMapIndex];
         }
 
         public IEnumerable<KeyValuePair<long, RoadInfo>> GetAllRoads()
         {
-            return Roads;
+            return roads;
         }
 
         private void validate(IEnumerable<long> nodeReferences)
         {
             foreach (var node_id in nodeReferences)
-                if (!Nodes.ContainsKey(node_id))
+                if (!nodes.ContainsKey(node_id))
                     throw new KeyNotFoundException($"Cannot find reference node {node_id}");
         }
 
-        internal void Write(long timestamp, Stream stream, RoadGridMemory grid)
+        internal void Write(long timestamp, Stream stream)
         {
             if (!onlyRoads)
                 throw new Exception("Can write only roads map");
@@ -198,15 +207,15 @@ namespace TrackPlanner.Mapping
             {
                 writer.Write(StorageInfo.DataFormatVersion);
                 writer.Write(timestamp);
-                writer.Write(grid.CellSize);
+                writer.Write(Grid.CellSize);
 
                 GeoZPoint.WriteFloatAngle(writer, this.Northmost);
                 GeoZPoint.WriteFloatAngle(writer, this.Eastmost);
                 GeoZPoint.WriteFloatAngle(writer, this.Southmost);
                 GeoZPoint.WriteFloatAngle(writer, this.Westmost);
 
-                writer.Write(Nodes.Count);
-                writer.Write(Roads.Count);
+                writer.Write(nodes.Count);
+                writer.Write(roads.Count);
                 writer.Write(grid.Count);
 
                 Dictionary<long, long> node_offsets;
@@ -219,7 +228,7 @@ namespace TrackPlanner.Mapping
                         // ---- writing nodes -----------------------------
                         
                             // we create array to make sure we have the same order while iterating in two loops (C# framework does not guarantee this) 
-                            var map_indices = Nodes.Keys.OrderBy(x => x).ToArray();
+                            var map_indices = nodes.Keys.OrderBy(x => x).ToArray();
 
                             var writer_offsets = new WriterOffsets<long>(writer);
 
@@ -233,7 +242,7 @@ namespace TrackPlanner.Mapping
                             {
                                 var debug_pos = writer_offsets.AddOffset(map_idx);
                                 writer.Write(this.bikeFootDangerousNearbyNodes!.Contains(map_idx));
-                                Nodes[map_idx].Write(writer);
+                                nodes[map_idx].Write(writer);
                                 if (writer.BaseStream.Position - debug_pos != NodeRoadsDiskDictionary.NodeDataDiskSize)
                                     throw new NotSupportedException("Incorrect size of the node data.");
                                 this.nodeRoadReferences.Write(writer, map_idx);
@@ -248,7 +257,7 @@ namespace TrackPlanner.Mapping
                     // ---- writing roads -----------------------------------
                     {
 
-                        var map_indices = Roads.Keys.OrderBy(x => x).ToArray();
+                        var map_indices = roads.Keys.OrderBy(x => x).ToArray();
 
                         var offsets = new WriterOffsets<long>(writer);
 
@@ -261,7 +270,7 @@ namespace TrackPlanner.Mapping
                         foreach (var map_idx in map_indices)
                         {
                             offsets.AddOffset(map_idx);
-                            Roads[map_idx].Write(writer);
+                            roads[map_idx].Write(writer);
                         }
 
                         offsets.WriteBackOffsets();
@@ -276,6 +285,7 @@ namespace TrackPlanner.Mapping
 
 
         internal static WorldMapMemory ReadRawArray(ILogger logger, IEnumerable<string> fileNames,
+            int gridCellSize,string? debugDirectory,
                     out List<string> invalidFiles)
         {
             // Loaded MEM in 131.860504244 s
@@ -445,44 +455,38 @@ namespace TrackPlanner.Mapping
             //Console.WriteLine("PRESS KEY STOP");
             //Console.ReadLine();
 
-            var map = WorldMapMemory.CreateOnlyRoads(logger, nodes, roads, nodes_to_roads);
+            var map = WorldMapMemory.CreateOnlyRoads(logger, nodes, roads, nodes_to_roads, gridCellSize,debugDirectory);
             map.bikeFootDangerousNearbyNodes = dangerous_nearby_nodes;
             
             return map;
         }
 
-                RoadGrid IWorldMap.CreateRoadGrid(int gridCellSize, string? debugDirectory)
+              /* RoadGrid IWorldMap.CreateRoadGrid(int gridCellSize, string? debugDirectory)
                 {
-                    return this.CreateRoadGrid(gridCellSize, debugDirectory);
+                    return this.createRoadGrid(gridCellSize, debugDirectory);
                 }
-                
-        public RoadGridMemory CreateRoadGrid(int gridCellSize,string? debugDirectory)
-        {
-            var calc = new ApproximateCalculator();
-            return new RoadGridMemory(logger,
-                new RoadGridMemoryBuilder(logger, this, calc, gridCellSize, debugDirectory).BuildCells(),
-                this, calc, gridCellSize, debugDirectory, legacyGetNodeAllRoads: false);
-        }
+                */
         
-        public void AttachDangerInNonMotorNodes( RoadGrid grid, Length highTrafficProximity)
+        public void AttachDangerInNonMotorNodes( RoadGridMemory grid, Length highTrafficProximity)
         {
+            this.grid = grid;
             long start = Stopwatch.GetTimestamp();
 
             // cycle/foot-way id -> node id (it is strange mapping, but retrieving indices during route searching is indirect, currently)
             var dangerous_nearby = new Dictionary<long, HashSet<long>>();
             // we no longer use this layout, but lets keep it here for the sake of history (maybe we will get back to this)
 
-            foreach (var road in this.Roads.Values)
+            foreach (var road in this.roads.Values)
             {
                 if (!road.IsDangerous)
                     continue;
 
                 foreach (var node_id in road.Nodes)
                 {
-                    foreach (var snap in grid.GetSnaps(this.Nodes[node_id], highTrafficProximity,
+                    foreach (var snap in grid.GetSnaps(this.nodes[node_id], highTrafficProximity,
                                  info => info.Layer == road.Layer && (info.Kind == WayKind.Cycleway || info.Kind == WayKind.Footway)))
                     {
-                        var snapped_road = this.Roads[snap.RoadIdx.RoadMapIndex];
+                        var snapped_road = this.roads[snap.RoadIdx.RoadMapIndex];
 
                         if (!dangerous_nearby.TryGetValue(snap.RoadIdx.RoadMapIndex, out HashSet<long>? node_indices))
                         {
@@ -499,8 +503,5 @@ namespace TrackPlanner.Mapping
 
             this.SetDangerous(dangerous_nearby.Values.SelectMany(x => x).ToHashSet());
         }
-
-
-
     }
 }

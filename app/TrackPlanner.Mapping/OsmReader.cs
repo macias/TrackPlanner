@@ -52,7 +52,7 @@ namespace TrackPlanner.Mapping
             this.debugDirectory = debugDirectory;
         }
 
-        public IDisposable ReadOsmMap(string mapPathOrDirectory, bool onlyRoads, out IWorldMap map, out RoadGrid grid)
+        public IDisposable ReadOsmMap(string mapPathOrDirectory, bool onlyRoads, out IWorldMap map)
         {
             string[] osm_files;
             if (System.IO.File.Exists(mapPathOrDirectory))
@@ -72,7 +72,6 @@ namespace TrackPlanner.Mapping
                 var temp_grid = new RoadGridMemory(logger,
                     new RoadGridMemoryBuilder(logger, temp_map, new ApproximateCalculator(), this.memSettings.GridCellSize, debugDirectory).BuildCells(),
                     map, new ApproximateCalculator(), this.memSettings.GridCellSize, debugDirectory, legacyGetNodeAllRoads: false);
-                grid = temp_grid;
                 temp_map.AttachDangerInNonMotorNodes(temp_grid,this.highTrafficProximity);
                 return CompositeDisposable.None;
             }
@@ -99,7 +98,7 @@ namespace TrackPlanner.Mapping
                     using (var mem = new MemoryStream())
                     {
 
-                        temp_map.Write(timestamp, mem, temp_grid);
+                        temp_map.Write(timestamp, mem);
                         mem.Position = 0;
                         System.IO.File.WriteAllBytes(xtr_path, mem.ToArray());
                     }
@@ -110,25 +109,25 @@ namespace TrackPlanner.Mapping
             {
                 double start = Stopwatch.GetTimestamp();
                 //var temp_map = OsmMapMemory.ReadMappedArray(logger, extracts);
-                var temp_map = WorldMapMemory.ReadRawArray(logger, extracts, out var invalid_files);
+                var temp_map = WorldMapMemory.ReadRawArray(logger, extracts,
+                    this.memSettings.GridCellSize, debugDirectory!,
+                    out var invalid_files);
                 if (invalid_files.Any())
                     throw new NotSupportedException();
                 map = temp_map;
                 logger.Info($"Loaded MEM in {(Stopwatch.GetTimestamp() - start) / Stopwatch.Frequency} s");
-                grid = temp_map.CreateRoadGrid(this.memSettings.GridCellSize, debugDirectory!);
 
                 return CompositeDisposable.None;
             }
             else if (this.memSettings.MapMode == MapMode.HybridDisk)
             {
                 double start = Stopwatch.GetTimestamp();
-                var disp = WorldMapDisk.Read(logger, extracts, this.memSettings, out var temp_map,out var invalid_files);
+                var disp = WorldMapDisk.Read(logger, extracts, this.memSettings, debugDirectory,
+                    out var temp_map,out var invalid_files);
                 if (invalid_files.Any())
                     throw new NotSupportedException();
                 map = temp_map;
                 logger.Info($"Loaded HYBRID in {(Stopwatch.GetTimestamp() - start) / Stopwatch.Frequency} s");
-
-                grid = map.CreateRoadGrid(this.memSettings.GridCellSize, debugDirectory);
 
                 return disp;
             }
@@ -142,7 +141,8 @@ namespace TrackPlanner.Mapping
 Designated path keys 24279991 : bicycle foot wheelchair, 26116023 : bicycle:forward foot, 28356417 : ski, 50893492 : horse, 110020350 : access, 168001056 : bicycle foot inline_skates, 173308948 : foot ski, 241801214 : golf_cart, 257367436 : bicycle foot motor_vehicle, 367271198 : bicycle foot horse, 385269448 : motorcar, 462740019 : wheelchair, 518835706 : foot horse, 524775730 : bicycle cycleway:left:bicycle cycleway:right:foot foot, 715901073 : agricultural horse, 715904453 : agricultural, 792452093 : agricultural foot goods, 828042090 : bicycle foot footway, 846766431 : bicycle mtb
 Loaded 178_093_027 nodes, 50_177 road names, 4_051_113 roads, 1_503 longest in 508.1771256 s
         */
-        private WorldMapMemory readActualOsmMap(IEnumerable<string> filePaths,Dictionary<string, int> roadNames , bool onlyRoads)
+        private WorldMapMemory readActualOsmMap(IEnumerable<string> filePaths,Dictionary<string, int> roadNames ,
+            bool onlyRoads)
         {
             IMap<long,RoadInfo> roads = MapFactory.CreateFast<long, RoadInfo>(); // road id -> road info
             var forests = new List<IEnumerable<long>>();
@@ -446,7 +446,9 @@ Loaded 178_093_027 nodes, 50_177 road names, 4_051_113 roads, 1_503 longest in 5
                 waters,
                 protected_area,
                 noZone: nozone?.Select(it => it.Nodes.AsEnumerable()).ToList(),
-                railways, onlyRoads);
+                railways,
+               this.memSettings.GridCellSize,debugDirectory,
+                onlyRoads);
         }
         
         

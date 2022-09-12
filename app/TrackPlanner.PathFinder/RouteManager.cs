@@ -37,7 +37,6 @@ namespace TrackPlanner.PathFinder
 
         private readonly ILogger logger;
         public IWorldMap Map { get;  }
-        private readonly RoadGrid grid;
         private readonly Navigator navigator;
         public SystemConfiguration SysConfig { get; }
         public IGeoCalculator Calculator { get; set; }
@@ -66,7 +65,6 @@ namespace TrackPlanner.PathFinder
             if (worldMap != null)
             {
                 this.Map = worldMap;
-                this.grid = worldMap.CreateRoadGrid(this.SysConfig.MemoryParams.GridCellSize, DebugDirectory);
                 disposable = CompositeDisposable.None;
             }
             else
@@ -82,10 +80,10 @@ namespace TrackPlanner.PathFinder
                     else if (map_paths.Length > 1)
                         throw new NotSupportedException($"Currently only single map file is supported.");
 
-                    disposable = osm_reader.ReadOsmMap(map_paths.Single(), onlyRoads: true, out var out_map, out this.grid);
+                    disposable = osm_reader.ReadOsmMap(map_paths.Single(), onlyRoads: true, out var out_map);
                     this.Map = out_map;
                     disposable = CompositeDisposable.Stack(disposable,
-                        () => { logger.Info($"STATS {nameof(this.Map)} {this.Map.GetStats()}; {nameof(this.grid)} {this.grid.GetStats()}"); });
+                        () => { logger.Info($"STATS {nameof(this.Map)} {this.Map.GetStats()}"); });
                     Console.WriteLine($"Loading map in {(Stopwatch.GetTimestamp() - start) / Stopwatch.Frequency} s");
                 }
             }
@@ -105,7 +103,7 @@ namespace TrackPlanner.PathFinder
             CancellationToken token, [MaybeNullWhen(false)] out List<LegRun> route,out string? problem)
         {
             // the last point of given leg is repeated as the first point of the following leg
-            var result = RouteFinder.TryFindPath(this.logger, this.navigator, this.Map, this.grid, this.SysConfig, userConfig, 
+            var result = RouteFinder.TryFindPath(this.logger, this.navigator, this.Map, this.SysConfig, userConfig, 
                 userPoints, token, out route,out problem);
             if (result)
             {
@@ -144,7 +142,7 @@ namespace TrackPlanner.PathFinder
         public bool TryFindRoute(UserRouterPreferences userConfig,IReadOnlyList<NodePoint>  userPlaces,bool allowSmoothing,
             CancellationToken token, [MaybeNullWhen(false)] out TrackPlan track)
         {
-            if (!RouteFinder.TryFindPath(logger,this.navigator, this.Map, grid, this.SysConfig,userConfig, userPlaces,allowSmoothing:allowSmoothing, token, out var legs))
+            if (!RouteFinder.TryFindPath(logger,this.navigator, this.Map, this.SysConfig,userConfig, userPlaces,allowSmoothing:allowSmoothing, token, out var legs))
             {
                 track = default;
                 return false;
@@ -162,7 +160,7 @@ namespace TrackPlanner.PathFinder
             CancellationToken token, [MaybeNullWhen(false)] out TrackPlan track)
         {
             bool DUMMY_ALLOW_SMOOTHING = false;
-            if (!RouteFinder.TryFindPath(logger, this.navigator, this.Map, grid, new Shortcuts(), this.SysConfig,userConfig, mapNodes,constraints,allowSmoothing, token, out var legs))
+            if (!RouteFinder.TryFindPath(logger, this.navigator, this.Map,  new Shortcuts(), this.SysConfig,userConfig, mapNodes,constraints,allowSmoothing, token, out var legs))
             {
                 track = default;
                 return false;

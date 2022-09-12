@@ -60,7 +60,8 @@ namespace TrackPlanner.Mapping
             }
         }
         
-        public static IWorldMap ExtractMiniMap(this IWorldMap sourceMap, ILogger logger, IGeoCalculator calc, Length distance,params GeoZPoint[] focusPoints)
+        public static IWorldMap ExtractMiniMap(this IWorldMap sourceMap, ILogger logger, IGeoCalculator calc, 
+            Length distance,int gridCellSize,string? debugDirectory,params GeoZPoint[] focusPoints)
         {
             var nodes_extract = new HashMap<long, GeoZPoint>();
 
@@ -90,7 +91,9 @@ namespace TrackPlanner.Mapping
                 if (sourceMap.IsBikeFootRoadDangerousNearby(node_id))
                     dangerous.Add(node_id);
 
-            var map_extract = WorldMapMemory.CreateOnlyRoads(logger, nodes_extract, roads_extract, new NodeRoadsAssocDictionary(nodes_extract, roads_extract));
+            var map_extract = WorldMapMemory.CreateOnlyRoads(logger, nodes_extract, roads_extract, 
+                new NodeRoadsAssocDictionary(nodes_extract, roads_extract),
+                gridCellSize, debugDirectory);
             map_extract.SetDangerous(dangerous);
             return map_extract;
         }

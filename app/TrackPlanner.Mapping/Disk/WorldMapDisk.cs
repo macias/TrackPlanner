@@ -58,19 +58,17 @@ namespace TrackPlanner.Mapping.Disk
 
 
         private readonly IReadOnlySet<long> bikeFootDangerousNearbyNodes;
-        private readonly DiskDictionary<CellIndex, RoadGridCell> cells;
         private readonly DiskDictionary<long, RoadInfo> roads;
         private readonly ILogger logger;
         private readonly DiskDictionary<long,GeoZPoint> nodes;
+        public RoadGrid Grid { get; }
 
-        public IReadOnlyEnumerableDictionary<long, GeoZPoint> Nodes => this.nodes;
-        public IReadOnlyEnumerableDictionary<long, RoadInfo> Roads => this.roads;
-        public IEnumerable<IEnumerable<long>> Railways => throw new InvalidOperationException("Map was loaded only with roads info.");
-        public IEnumerable<IEnumerable<long>> Forests => throw new InvalidOperationException("Map was loaded only with roads info.");
-        public IEnumerable<(RiverKind kind, IEnumerable<long> indices)> Rivers => throw new InvalidOperationException("Map was loaded only with roads info.");
-        public IEnumerable<CityInfo> Cities => throw new InvalidOperationException("Map was loaded only with roads info.");
-        public IEnumerable<IEnumerable<long>> Waters => throw new InvalidOperationException("Map was loaded only with roads info.");
-        public IEnumerable<IEnumerable<long>> Protected => throw new InvalidOperationException("Map was loaded only with roads info.");
+        private IEnumerable<IEnumerable<long>> Railways => throw new InvalidOperationException("Map was loaded only with roads info.");
+        private IEnumerable<IEnumerable<long>> Forests => throw new InvalidOperationException("Map was loaded only with roads info.");
+        private IEnumerable<(RiverKind kind, IEnumerable<long> indices)> Rivers => throw new InvalidOperationException("Map was loaded only with roads info.");
+        private IEnumerable<CityInfo> Cities => throw new InvalidOperationException("Map was loaded only with roads info.");
+        private IEnumerable<IEnumerable<long>> Waters => throw new InvalidOperationException("Map was loaded only with roads info.");
+        private IEnumerable<IEnumerable<long>> Protected => throw new InvalidOperationException("Map was loaded only with roads info.");
 
         public IEnumerable<IEnumerable<long>> NoZone => throw new InvalidOperationException("Map was loaded only with roads info.");
         public Angle Southmost { get; }
@@ -87,7 +85,8 @@ namespace TrackPlanner.Mapping.Disk
         DiskDictionary<long, RoadInfo> roads,
             NodeRoadsDiskDictionary backReferences,
             HashSet<long> dangerousNearbyNodes,
-            DiskDictionary<CellIndex, RoadGridCell> cells)
+         DiskDictionary<CellIndex, RoadGridCell> cells,
+            int gridCellSize,string? debugDirectory)
         {
             this.logger = logger;
             this.nodes = nodes;
@@ -100,7 +99,14 @@ namespace TrackPlanner.Mapping.Disk
 
             this.nodeRoadReferences = backReferences;
             this.bikeFootDangerousNearbyNodes = dangerousNearbyNodes;
-            this.cells = cells;
+         
+            {
+                var calc = new ApproximateCalculator();
+
+                this.Grid = new RoadGridDisk(logger, cells, this, new ApproximateCalculator(), 
+                    gridCellSize, debugDirectory, legacyGetNodeAllRoads: false);
+            }
+
         }
 
         public GeoZPoint GetPoint(long nodeId)
@@ -109,18 +115,18 @@ namespace TrackPlanner.Mapping.Disk
         }
         public IEnumerable<KeyValuePair<long, GeoZPoint>> GetAllNodes()
         {
-            return Nodes;
+            return nodes;
         }
 
         
         public RoadInfo GetRoad(long roadMapIndex)
         {
-            return Roads[roadMapIndex];
+            return this.roads[roadMapIndex];
         }
 
         public IEnumerable<KeyValuePair<long, RoadInfo>> GetAllRoads()
         {
-            return Roads;
+            return this.roads;
         }
         
         // note we can get even for the same road multiple indices, example case: roundabouts -- "start" and "end" are at the same point
@@ -138,15 +144,15 @@ namespace TrackPlanner.Mapping.Disk
 
             {
                 // when end is looped  (EXCLUDING start-end)
-                int conn_idx = this.Roads[roadId].Nodes.IndexOf(this.Roads[roadId].Nodes.Last());
-                if (conn_idx != 0 && conn_idx != this.Roads[roadId].Nodes.Count - 1)
+                int conn_idx = this.roads[roadId].Nodes.IndexOf(this.roads[roadId].Nodes.Last());
+                if (conn_idx != 0 && conn_idx != this.roads[roadId].Nodes.Count - 1)
                 {
-                    count = Math.Min(count, this.Roads[roadId].Nodes.Count - 1 - max_idx + Math.Abs(conn_idx - min_idx));
+                    count = Math.Min(count, this.roads[roadId].Nodes.Count - 1 - max_idx + Math.Abs(conn_idx - min_idx));
                 }
             }
             {
                 // when start is looped (including start-end)
-                int conn_idx = this.Roads[roadId].Nodes.Skip(1).IndexOf(this.Roads[roadId].Nodes.First());
+                int conn_idx = this.roads[roadId].Nodes.Skip(1).IndexOf(this.roads[roadId].Nodes.First());
                 if (conn_idx != -1)
                 {
                     ++conn_idx;
@@ -162,7 +168,7 @@ namespace TrackPlanner.Mapping.Disk
 
         public string GetStats()
         {
-            return $"{nameof(nodes)} = {this.nodes.GetStats()}; {nameof(this.roads)} = {this.roads.GetStats()}; {nameof(this.nodeRoadReferences)} = {this.nodeRoadReferences.GetStats()}";
+            return $"{nameof(nodes)} = {this.nodes.GetStats()}; {nameof(this.roads)} = {this.roads.GetStats()}; {nameof(this.nodeRoadReferences)} = {this.nodeRoadReferences.GetStats()}; {nameof(this.Grid)} = {this.Grid.GetStats()}";
         }
 
         public bool IsBikeFootRoadDangerousNearby(long nodeId)
@@ -172,16 +178,18 @@ namespace TrackPlanner.Mapping.Disk
         }
 
         internal static IDisposable Read(ILogger logger, IReadOnlyList<string> fileNames, MemorySettings memSettings,
+                string? debugDirectory,
             out WorldMapDisk map,out List<string> invalidFiles)
         {
             var files = fileNames.Select(fn => (new FileStream(fn, FileMode.Open, FileAccess.Read).Me<Stream>(), fn)).ToArray();
             var result = CompositeDisposable.Create(files.Select(it => it.Item1));
-            result.Stack(Read(logger, files.ToArray(), memSettings, out map,out invalidFiles));
+            result.Stack(Read(logger, files.ToArray(), memSettings,debugDirectory, out map,out invalidFiles));
             return result;
         }
 
         internal static IDisposable Read(ILogger logger, IReadOnlyList<(Stream stream,string name)> files,
             MemorySettings memSettings,
+            string? debugDirectory,
             out WorldMapDisk map,
             out List<string> invalidFiles)
         {
@@ -381,7 +389,8 @@ namespace TrackPlanner.Mapping.Disk
                 westmost :total_west_most!.Value,
                 nodes, roads, nodes_to_roads,
                 dangerous_nearby_nodes,
-                cells);
+                cells,
+                memSettings.GridCellSize, debugDirectory);
 
             // 4323 MB --> +1133 MB (total) 
             //Console.WriteLine("PRESS KEY BEFORE ALL DONE");
@@ -394,13 +403,6 @@ namespace TrackPlanner.Mapping.Disk
             }));
         }
 
-        public RoadGrid CreateRoadGrid(int gridCellSize,string? debugDirectory)
-        {
-            var calc = new ApproximateCalculator();
-
-            return new RoadGridDisk(logger, cells, this, new ApproximateCalculator(), 
-                gridCellSize, debugDirectory, legacyGetNodeAllRoads: false);
-        }
 
 
     }

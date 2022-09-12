@@ -62,7 +62,8 @@ namespace TrackPlanner.Tests
             saveToKml(input,mapFilename);
         }
 
-        private static WorldMapMemory loadMiniMap(ILogger logger, string filename)
+        private static WorldMapMemory loadMiniMap(ILogger logger, string filename,
+            int gridCellSize)
         {
             var kml_track = TrackReader.ReadUnstyled(System.IO.Path.Combine(navigator.GetMiniMaps(), filename));
 
@@ -87,7 +88,8 @@ namespace TrackPlanner.Tests
                 roads.Add(info.Identifier, info);
             }
 
-            var world_map = WorldMapMemory.CreateOnlyRoads(logger, nodes, roads, new NodeRoadsAssocDictionary(nodes, roads));
+            var world_map = WorldMapMemory.CreateOnlyRoads(logger, nodes, roads, 
+                new NodeRoadsAssocDictionary(nodes, roads),gridCellSize,navigator.GetDebug());
             world_map.SetDangerous(dangerous);
             return world_map;
         }
@@ -105,7 +107,7 @@ namespace TrackPlanner.Tests
 
             IWorldMap mini_map;
             {
-                var mem_map = loadMiniMap(logger, filename);
+                var mem_map = loadMiniMap(logger, filename,sys_config.MemoryParams.GridCellSize);
                 mini_map = mem_map;
                 if (mapMode== MapMode.HybridDisk)
                 {
@@ -146,9 +148,10 @@ namespace TrackPlanner.Tests
         {
             Stream stream = new MemoryStream();
             var result = new CompositeDisposable(stream);
-            memMap.Write(timestamp:0,stream,memMap.CreateRoadGrid(memorySettings.GridCellSize,navigator.GetDebug()));
+            memMap.Write(timestamp:0,stream);
             stream.Position = 0;
             result = result.Stack(WorldMapDisk.Read(logger, new[] {(stream, fileName)}.ToArray(), memorySettings, 
+                navigator.GetDebug(),
                 out diskMap,out var invalid_files));
             if (invalid_files.Any())
                 throw new NotSupportedException();

@@ -12,8 +12,8 @@ namespace TrackPlanner.TestRunner
     {
         private static readonly Length extractionRange = Length.FromMeters(500);
         
-        private const string baseDir = "../../../../../..";
-        private static readonly string outputDir = $"{baseDir}/output";
+        private const string baseDirectory = "../../../../../..";
+        private static readonly Navigator navigator = new Navigator(baseDirectory);
 
         static void Main(string[] args)
         {
@@ -47,17 +47,20 @@ namespace TrackPlanner.TestRunner
             env_config.Check();
 */
             var visual_prefs = new UserVisualPreferences();
-            var app_path = System.IO.Path.Combine(baseDir, "app");
-            using (Logger.Create(System.IO.Path.Combine(outputDir, "log.txt"), out ILogger logger))
+            var app_path = System.IO.Path.Combine(baseDirectory, "app");
+            using (Logger.Create(System.IO.Path.Combine(navigator.GetOutput(), "log.txt"), out ILogger logger))
             {
-                using (RouteManager.Create(logger, new Navigator( baseDir),  "kujawsko-pomorskie", 
-                           new SystemConfiguration(){ CompactPreservesRoads = true}, out var manager))
+                var sys_config = new SystemConfiguration(){ CompactPreservesRoads = true};
+                using (RouteManager.Create(logger, new Navigator( baseDirectory),  "kujawsko-pomorskie", 
+                           sys_config, out var manager))
                 {
                     foreach (var filename in planFilenames)
                     {
                         GeoZPoint[] raw_track_plan = TrackReader.LEGACY_Read(System.IO.Path.Combine(app_path, "tracks", filename)).ToArray();
 
-                        var mini_map = manager.Map.ExtractMiniMap(logger, manager.Calculator, extractionRange, raw_track_plan);
+                        var mini_map = manager.Map.ExtractMiniMap(logger, manager.Calculator, extractionRange,
+                          sys_config.MemoryParams.GridCellSize,  navigator.GetDebug(),
+                            raw_track_plan);
                         mini_map.SaveAsKml(visual_prefs, System.IO.Path.Combine(app_path, "mini-maps", filename));
                     }
                 }
@@ -68,15 +71,18 @@ namespace TrackPlanner.TestRunner
         {
             var visual_prefs = new UserVisualPreferences();
 
-            var app_path = System.IO.Path.Combine(baseDir, "app");
+            var app_path = System.IO.Path.Combine(baseDirectory, "app");
 
-            using (Logger.Create(System.IO.Path.Combine(outputDir, "log.txt"), out ILogger logger))
+            using (Logger.Create(System.IO.Path.Combine(navigator.GetOutput(), "log.txt"), out ILogger logger))
             {
-                using (RouteManager.Create(logger, new Navigator( baseDir),  "kujawsko-pomorskie", 
-                           new SystemConfiguration(){ CompactPreservesRoads = true}, out var manager))
+                var sys_config = new SystemConfiguration(){ CompactPreservesRoads = true};
+                using (RouteManager.Create(logger, new Navigator( baseDirectory),  "kujawsko-pomorskie", 
+                           sys_config, out var manager))
                 {
                     {
-                        var mini_map = manager.Map.ExtractMiniMap(logger, manager.Calculator, extractionRange, points);
+                        var mini_map = manager.Map.ExtractMiniMap(logger, manager.Calculator, extractionRange,
+                            sys_config.MemoryParams.GridCellSize,navigator.GetDebug(),
+                            points);
                         mini_map.SaveAsKml(visual_prefs, System.IO.Path.Combine(app_path, "mini-maps", filename));
                     }
                 }

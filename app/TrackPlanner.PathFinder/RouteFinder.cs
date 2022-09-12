@@ -23,14 +23,14 @@ namespace TrackPlanner.PathFinder
 
     public sealed class RouteFinder
     {
-        public static bool TryFindPath(ILogger logger,Navigator navigator, IWorldMap map, RoadGrid grid, SystemConfiguration sysConfig,
+        public static bool TryFindPath(ILogger logger,Navigator navigator, IWorldMap map, SystemConfiguration sysConfig,
             UserRouterPreferences userConfig, IReadOnlyList<RequestPoint> userPoints,
             CancellationToken cancellationToken,
             [MaybeNullWhen(false)] out List<LegRun> pathSteps,out string? problem)
         {
-            var buckets = grid.GetRoadBuckets(userPoints, sysConfig.InitSnapProximityLimit, sysConfig.FinalSnapProximityLimit, 
+            var buckets = map.Grid.GetRoadBuckets(userPoints, sysConfig.InitSnapProximityLimit, sysConfig.FinalSnapProximityLimit, 
                 requireAllHits: true, singleMiddleSnaps: true);
-            var finder = new RouteFinder(logger,navigator, map, grid, new Shortcuts(), sysConfig, userConfig, buckets, 
+            var finder = new RouteFinder(logger,navigator, map,  new Shortcuts(), sysConfig, userConfig, buckets, 
                 new PathConstraints(), cancellationToken);
             var result = finder.tryFindPath(buckets, out pathSteps);
             problem = finder.problemMessage;
@@ -38,7 +38,7 @@ namespace TrackPlanner.PathFinder
         }
 
 
-        public static bool TryFindPath(ILogger logger,Navigator navigator, IWorldMap map, RoadGrid grid, SystemConfiguration sysConfig,
+        public static bool TryFindPath(ILogger logger,Navigator navigator, IWorldMap map, SystemConfiguration sysConfig,
             UserRouterPreferences userConfig, IReadOnlyList<NodePoint> userPoints,
             bool allowSmoothing,
             CancellationToken cancellationToken,
@@ -50,20 +50,20 @@ namespace TrackPlanner.PathFinder
                 var is_final = i == 0 || i == userPoints.Count - 1;
 
                 if (userPoints[i].Point.HasValue)
-                    buckets.Add(grid.GetRoadBucket(i, userPoints[i].Point!.Value, sysConfig.InitSnapProximityLimit, sysConfig.FinalSnapProximityLimit,
+                    buckets.Add(map.Grid.GetRoadBucket(i, userPoints[i].Point!.Value, sysConfig.InitSnapProximityLimit, sysConfig.FinalSnapProximityLimit,
                         requireAllHits: true,
                         singleSnap: !is_final,
                         isFinal: is_final,
                         allowSmoothing:allowSmoothing)!);
                 else
-                    buckets.Add(RoadBucket.CreateBucket(i, userPoints[i].NodeId!.Value, map, grid.Calc, isFinal: is_final,allowSmoothing:allowSmoothing));
+                    buckets.Add(RoadBucket.CreateBucket(i, userPoints[i].NodeId!.Value, map, map.Grid.Calc, isFinal: is_final,allowSmoothing:allowSmoothing));
             }
 
-            var finder = new RouteFinder(logger,navigator, map, grid, new Shortcuts(), sysConfig, userConfig, buckets, new PathConstraints(), cancellationToken);
+            var finder = new RouteFinder(logger,navigator, map, new Shortcuts(), sysConfig, userConfig, buckets, new PathConstraints(), cancellationToken);
             return finder.tryFindPath(buckets, out pathSteps);
         }
 
-        public static bool TryFindPath(ILogger logger,Navigator navigator, IWorldMap map, RoadGrid grid,
+        public static bool TryFindPath(ILogger logger,Navigator navigator, IWorldMap map, 
             Shortcuts shortcuts,
             SystemConfiguration sysConfig,
             UserRouterPreferences userConfig, IReadOnlyList<long> mapNodes,
@@ -72,9 +72,9 @@ namespace TrackPlanner.PathFinder
             CancellationToken cancellationToken,
             [MaybeNullWhen(false)] out List<LegRun> pathSteps)
         {
-            List<RoadBucket> buckets = RoadBucket.GetRoadBuckets(mapNodes, map, grid.Calc,allowSmoothing:allowSmoothing);
+            List<RoadBucket> buckets = RoadBucket.GetRoadBuckets(mapNodes, map, map.Grid.Calc,allowSmoothing:allowSmoothing);
 
-            var finder = new RouteFinder(logger,navigator, map, grid, shortcuts, sysConfig, userConfig, buckets, constraints, cancellationToken);
+            var finder = new RouteFinder(logger,navigator, map,  shortcuts, sysConfig, userConfig, buckets, constraints, cancellationToken);
             return finder.tryFindPath(buckets, out pathSteps);
         }
 
@@ -83,13 +83,12 @@ namespace TrackPlanner.PathFinder
         private readonly ILogger logger;
         private readonly Navigator navigator;
         private readonly IWorldMap map;
-        private IGeoCalculator calc => this.grid.Calc;
+        private IGeoCalculator calc => this.map.Grid.Calc;
         private readonly SystemConfiguration sysConfig;
         private readonly UserRouterPreferences userConfig;
         private readonly IReadOnlySet<long> suppressedHighTraffic;
         private readonly PathConstraints constraints;
         private readonly CancellationToken cancellationToken;
-        private readonly RoadGrid grid;
         private readonly Shortcuts shortcuts;
         private string? problemMessage;
 
@@ -108,7 +107,7 @@ namespace TrackPlanner.PathFinder
         private readonly Speed fastest;
         //private readonly DistancePredictor predictor;
 
-        private RouteFinder(ILogger logger, Navigator navigator, IWorldMap map, RoadGrid grid, Shortcuts shortcuts, SystemConfiguration sysConfig, 
+        private RouteFinder(ILogger logger, Navigator navigator, IWorldMap map, Shortcuts shortcuts, SystemConfiguration sysConfig, 
             UserRouterPreferences userConfig,
             IReadOnlyList<RoadBucket> buckets,
             in PathConstraints constraints, CancellationToken cancellationToken)
@@ -121,7 +120,6 @@ namespace TrackPlanner.PathFinder
             userConfig.Speeds.Values.MinMax(out this.slowest, out this.fastest);
             this.constraints = constraints;
             this.cancellationToken = cancellationToken;
-            this.grid = grid;
             this.shortcuts = shortcuts;
 
             this.DEBUG_lowCostNodes = new HashSet<long>();
@@ -593,10 +591,10 @@ namespace TrackPlanner.PathFinder
                     {
                         if (adj_place.IsNode && this.userConfig.HACK_ExactToTarget)
                         {
-                            var adj_bucket = RoadBucket.GetRoadBuckets(new[] {adj_place.NodeId}, map, grid.Calc, allowSmoothing:false).Single();
+                            var adj_bucket = RoadBucket.GetRoadBuckets(new[] {adj_place.NodeId}, map, this.map.Grid.Calc, allowSmoothing:false).Single();
 
                             var sub_buckets = new List<RoadBucket>() {adj_bucket, end};
-                            var worker = new RouteFinder(logger,this.navigator, map, grid, shortcuts, sysConfig with { DumpProgress = false}, 
+                            var worker = new RouteFinder(logger,this.navigator, map, shortcuts, sysConfig with { DumpProgress = false}, 
                                 new UserRouterPreferences() {HACK_ExactToTarget = false}.SetUniformSpeeds(),
                                 sub_buckets, constraints, cancellationToken);
                             if (worker.tryFindPath(sub_buckets, out List<LegRun>? remaining))

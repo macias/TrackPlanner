@@ -45,7 +45,7 @@ namespace TrackPlanner.Mapping
                 return cell;
             }
 
-            foreach ((long road_map_index, RoadInfo road) in this.mapMemory.Roads)
+            foreach ((long road_map_index, RoadInfo road) in this.mapMemory.GetAllRoads())
             {
                 for (int i = 0; i < road.Nodes.Count - 1; ++i)
                 {
