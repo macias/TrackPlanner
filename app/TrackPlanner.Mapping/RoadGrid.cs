@@ -35,7 +35,7 @@ namespace TrackPlanner.Mapping
 
         public abstract string GetStats();
         
-        private CellIndex getCellIndex(Angle latitude, Angle longitude)
+        public CellIndex GetCellIndex(Angle latitude, Angle longitude)
         {
             return new CellIndex()
             {
@@ -198,8 +198,8 @@ namespace TrackPlanner.Mapping
         {
             Calc.GetAngularDistances(point, limit, out Angle lat_limit, out Angle lon_limit);
 
-            (int min_lat_grid, int min_lon_grid) = getCellIndex(point.Latitude - lat_limit, point.Longitude - lon_limit);
-            (int max_lat_grid, int max_lon_grid) = getCellIndex(point.Latitude + lat_limit, point.Longitude + lon_limit);
+            (int min_lat_grid, int min_lon_grid) = GetCellIndex(point.Latitude - lat_limit, point.Longitude - lon_limit);
+            (int max_lat_grid, int max_lon_grid) = GetCellIndex(point.Latitude + lat_limit, point.Longitude + lon_limit);
 
             for (int lat_idx = min_lat_grid; lat_idx <= max_lat_grid; ++lat_idx)
                 for (int lon_idx = min_lon_grid; lon_idx <= max_lon_grid; ++lon_idx)
@@ -224,7 +224,7 @@ namespace TrackPlanner.Mapping
                 var dist = Calc.GetDistance(point, node_point);
                 foreach (var idx in map.GetRoadsAtNode(node))
                 {
-                    if (map.GetRoad(idx.RoadMapIndex).Kind == WayKind.Crossing)
+                    if (map.GetRoad(idx.RoadMapIndex,this.map.GetCellIndex( node_point)).Kind == WayKind.Crossing)
                         continue;
 
                     if (!snaps.TryGetValue(idx.RoadMapIndex, out var entry))

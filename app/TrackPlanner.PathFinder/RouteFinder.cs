@@ -823,7 +823,7 @@ namespace TrackPlanner.PathFinder
                 {
                     foreach (RoadSnapInfo snap in bucket)
                     {
-                        var road = map.GetRoad(snap.RoadIdx.RoadMapIndex);
+                        var road = map.GetRoad(snap.RoadIdx.RoadMapIndex,this.map.GetCellIndex(snap.TrackCrosspoint));
                         if (road.IsDangerous || road.IsUncomfortable)
                         {
                             suppressed.AddRange(suppressTrafficCost(map.GetNode(snap.RoadIdx), suppressionRange));
@@ -858,7 +858,8 @@ namespace TrackPlanner.PathFinder
                     if (suppressed.Contains(adj_node_id))
                         continue;
 
-                    if (map.GetRoad(adj_idx.RoadMapIndex).IsDangerous || map.GetRoad(adj_idx.RoadMapIndex).IsUncomfortable)
+                    var adj_road_info = this.map.GetRoad(adj_idx.RoadMapIndex);
+                    if (adj_road_info.IsDangerous || adj_road_info.IsUncomfortable)
                     {
                         Length adj_total_dist = curr_dist + calc.GetDistance(current_point, map.GetPoint(adj_node_id));
                         if (adj_total_dist <= suppressionRange)

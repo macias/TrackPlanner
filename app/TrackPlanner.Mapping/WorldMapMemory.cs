@@ -503,5 +503,16 @@ namespace TrackPlanner.Mapping
 
             this.SetDangerous(dangerous_nearby.Values.SelectMany(x => x).ToHashSet());
         }
+        
+        public RoadInfo GetRoad(long roadMapIndex, in CellIndex cellIndex)
+        {
+            return GetRoad(roadMapIndex);
+        }
+
+        public CellIndex GetCellIndex(GeoZPoint point)
+        {
+            return this.grid.GetCellIndex(latitude: point.Latitude, longitude: point.Longitude);
+        }
+
     }
 }

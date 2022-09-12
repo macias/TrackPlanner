@@ -14,7 +14,7 @@ namespace TrackPlanner.Storage
         
         private readonly Dictionary<TKey, (int historyStamp,TValue value)> cache;
         private readonly IReadOnlyList<ReaderOffsets<TKey>> sourceReaders;
-        private readonly Func<IReadOnlyList<BinaryReader>, TValue> loader;
+        private readonly Func<TKey, IReadOnlyList<BinaryReader>, TValue> loader;
         // we store offsets for given entities, but in this particular dictionary
         // we might be interested only in some part of it, thus special extra offset
         private readonly int extraOffset;
@@ -35,7 +35,8 @@ namespace TrackPlanner.Storage
             }
         }
         
-        public DiskDictionary(IReadOnlyList<ReaderOffsets<TKey>> sourceReaders, int extraOffset, Func<IReadOnlyList<BinaryReader>,TValue> loader,int memoryLimit)
+        public DiskDictionary(IReadOnlyList<ReaderOffsets<TKey>> sourceReaders, int extraOffset, 
+            Func<TKey,IReadOnlyList<BinaryReader>,TValue> loader,int memoryLimit)
         {
             this.sourceReaders = sourceReaders;
             this.extraOffset = extraOffset;
@@ -86,7 +87,7 @@ namespace TrackPlanner.Storage
                 return false;
             }
 
-            value = this.loader(active);
+            value = this.loader(key,active);
 
             if (this.cache.Count == this.memoryLimit)
             {

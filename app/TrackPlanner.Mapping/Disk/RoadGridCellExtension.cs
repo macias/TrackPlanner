@@ -24,7 +24,7 @@ namespace TrackPlanner.Mapping.Disk
             }
         }
         
-        public static RoadGridCell Read(BinaryReader reader)
+        public static RoadGridCell Read(CellIndex cellIndex, BinaryReader reader)
         {
             reader.ReadInt64(); // nodes offset
             
@@ -33,10 +33,10 @@ namespace TrackPlanner.Mapping.Disk
             for (int i = 0; i < count; ++i)
                 segments.Add(RoadIndexLong.Read(reader));
 
-            return new RoadGridCell(segments.ToList());
+            return new RoadGridCell(cellIndex, segments.ToList());
         }
 
-        public static unsafe RoadGridCell Load(IReadOnlyList<BinaryReader> readers)
+        public static unsafe RoadGridCell Load(CellIndex cellIndex, IReadOnlyList<BinaryReader> readers)
         {
             var counts = stackalloc int[readers.Count];
             int total_count = 0;
@@ -56,7 +56,7 @@ namespace TrackPlanner.Mapping.Disk
                     segments.Add(RoadIndexLong.Read(readers[r]));
             }
 
-            return new RoadGridCell(segments.ToList());
+            return new RoadGridCell(cellIndex, segments.ToList());
         }
     }
 

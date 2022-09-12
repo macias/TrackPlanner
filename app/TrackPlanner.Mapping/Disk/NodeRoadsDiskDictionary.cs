@@ -27,7 +27,7 @@ namespace TrackPlanner.Mapping.Disk
             throw new NotImplementedException();
         }
 
-        public static unsafe List<RoadIndexLong> Load(IReadOnlyList<BinaryReader> readers)
+        public static unsafe List<RoadIndexLong> Load(long _, IReadOnlyList<BinaryReader> readers)
         {
             int total_count = 0;
             var counts = stackalloc int[readers.Count];

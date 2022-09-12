@@ -38,7 +38,7 @@ namespace TrackPlanner.Mapping
 
                 if (!cells.TryGetValue(cellIndex, out RoadGridCell? cell))
                 {
-                    cell = new RoadGridCell();
+                    cell = new RoadGridCell(cellIndex);
                     cells.Add(cellIndex, cell);
                 }
 

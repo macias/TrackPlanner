@@ -15,7 +15,7 @@ namespace TrackPlanner.Mapping.Disk
 {
     public sealed class WorldMapDisk : IWorldMap
     {
-        private static GeoZPoint loadNode(IReadOnlyList<BinaryReader> readers)
+        private static GeoZPoint loadNode(long _,IReadOnlyList<BinaryReader> readers)
         {
             if (!readers.Any())
                 throw new ArgumentException("No readers are given");
@@ -33,7 +33,7 @@ namespace TrackPlanner.Mapping.Disk
             return result!.Value;
         }
 
-        private static RoadInfo loadRoad(IReadOnlyList<BinaryReader> readers)
+        private static RoadInfo loadRoad(long _,IReadOnlyList<BinaryReader> readers)
         {
             RoadInfo? result = null;
 
@@ -61,7 +61,8 @@ namespace TrackPlanner.Mapping.Disk
         private readonly DiskDictionary<long, RoadInfo> roads;
         private readonly ILogger logger;
         private readonly DiskDictionary<long,GeoZPoint> nodes;
-        public IGrid Grid { get; }
+        private readonly RoadGridDisk grid;
+        public IGrid Grid => this.grid;
 
         private IEnumerable<IEnumerable<long>> Railways => throw new InvalidOperationException("Map was loaded only with roads info.");
         private IEnumerable<IEnumerable<long>> Forests => throw new InvalidOperationException("Map was loaded only with roads info.");
@@ -103,7 +104,7 @@ namespace TrackPlanner.Mapping.Disk
             {
                 var calc = new ApproximateCalculator();
 
-                this.Grid = new RoadGridDisk(logger, cells, this, new ApproximateCalculator(), 
+                this.grid = new RoadGridDisk(logger, cells, this, calc, 
                     gridCellSize, debugDirectory, legacyGetNodeAllRoads: false);
             }
 
@@ -331,17 +332,17 @@ namespace TrackPlanner.Mapping.Disk
                     foreach (var (coords, cell_offset) in cell_offsets.Offsets)
                     {
                         reader.BaseStream.Seek(cell_offset, SeekOrigin.Begin);
-                        var cell = RoadGridCellExtension.Load(readers_arr);
+                        var cell = RoadGridCellExtension.Load(coords,readers_arr);
                         var road_ids = cell.RoadSegments.Select(it => it.RoadMapIndex).Distinct().ToArray();
                         foreach (var rd_id in road_ids)
                         {
                             reader.BaseStream.Seek(road_offsets[rd_id], SeekOrigin.Begin);
-                            var info = loadRoad(readers_arr);
+                            var info = loadRoad(rd_id,readers_arr);
 
                             foreach (var nd_id in info.Nodes)
                             {
                                 reader.BaseStream.Seek(node_offsets[nd_id], SeekOrigin.Begin);
-                                loadNode(readers_arr);
+                                loadNode(nd_id,readers_arr);
                             }
                         }
                     }
@@ -373,7 +374,8 @@ namespace TrackPlanner.Mapping.Disk
 
             var nodes = new DiskDictionary<long, GeoZPoint>(node_sources, 1, loadNode, memSettings.CacheNodesLimit);
             var roads = new DiskDictionary<long, RoadInfo>(road_sources, 0, loadRoad, memSettings.CacheRoadsLimit);
-            DiskDictionary<CellIndex, RoadGridCell> cells = new DiskDictionary<CellIndex, RoadGridCell>(cell_sources, 0, RoadGridCellExtension.Load, memSettings.CacheCellsLimit);
+            DiskDictionary<CellIndex, RoadGridCell> cells =
+                new DiskDictionary<CellIndex, RoadGridCell>(cell_sources, 0, RoadGridCellExtension.Load, memSettings.CacheCellsLimit);
 
             // 4323 MB --> +1133 MB (total) 
         //    Console.WriteLine("PRESS KEY BEFORE MAP");
@@ -403,7 +405,14 @@ namespace TrackPlanner.Mapping.Disk
             }));
         }
 
+        public RoadInfo GetRoad(long roadMapIndex, in CellIndex cellIndex)
+        {
+            return GetRoad(roadMapIndex);
+        }
 
-
+        public CellIndex GetCellIndex(GeoZPoint point)
+        {
+            return this.grid.GetCellIndex(latitude: point.Latitude, longitude: point.Longitude);
+        }
     }
 }

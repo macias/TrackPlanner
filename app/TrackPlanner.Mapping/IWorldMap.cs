@@ -23,7 +23,9 @@ namespace TrackPlanner.Mapping
        // RoadGrid createRoadGrid(int gridCellSize, string? debugDirectory);
 
         string GetStats();
+        RoadInfo GetRoad(long roadMapIndex,in CellIndex cellIndex);
         RoadInfo GetRoad(long roadMapIndex);
         IEnumerable<KeyValuePair<long, RoadInfo>> GetAllRoads();
+        CellIndex GetCellIndex(GeoZPoint point);
     }
 }

@@ -1,8 +1,6 @@
 ﻿using MathUnit;
 using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using TrackPlanner.Shared;
 using TrackPlanner.Mapping.Data;
 
@@ -12,14 +10,17 @@ namespace TrackPlanner.Mapping
 
     public sealed class RoadGridCell
     {
+        private readonly CellIndex cellIndex;
+
         // segment from given road index to (implicit) next road index
         private readonly List<RoadIndexLong> roadRoadSegments; // when working, we don't need hashset, so let's keep it list for lower memory
 
         public int Count => this.roadRoadSegments.Count;
         public IEnumerable<RoadIndexLong> RoadSegments => this.roadRoadSegments;
 
-        public RoadGridCell(List<RoadIndexLong>? segmets = null)
+        public RoadGridCell(in CellIndex cellIndex, List<RoadIndexLong>? segmets = null)
         {
+            this.cellIndex = cellIndex;
             this.roadRoadSegments = segmets ?? new List<RoadIndexLong>();
         }
 
@@ -41,7 +42,7 @@ namespace TrackPlanner.Mapping
         {
             foreach (var idx in this.roadRoadSegments)
             {
-                if (predicate != null && !predicate(map.GetRoad(idx.RoadMapIndex)))
+                if (predicate != null && !predicate(map.GetRoad(idx.RoadMapIndex,this.cellIndex)))
                     continue;
 
                 // because we basically look for points on mapped ways, we expect the difference to be so small that we can use plane/euclidian distance

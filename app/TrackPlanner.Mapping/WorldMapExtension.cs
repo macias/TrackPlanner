@@ -148,10 +148,13 @@ namespace TrackPlanner.Mapping
 
         public static bool IsCycleWay(this IWorldMap map, long roadId) => map.GetRoad(roadId).Kind == WayKind.Cycleway;
 
-public static bool IsMotorRoad(this IWorldMap map, long roadId)
-            => map.GetRoad(roadId).Kind != WayKind.Cycleway && map.GetRoad(roadId).Kind != WayKind.Footway && map.GetRoad(roadId).Kind != WayKind.Steps;
+        public static bool IsMotorRoad(this IWorldMap map, long roadId)
+        {
+            var road_kind = map.GetRoad(roadId).Kind;
+            return road_kind != WayKind.Cycleway && road_kind != WayKind.Footway && road_kind != WayKind.Steps;
+        }
 
-public static bool IsSignificantMotorRoad(this IWorldMap map, long roadId) => map.IsMotorRoad(roadId) && map.GetRoad(roadId).Kind <= WayKind.Unclassified;
+        public static bool IsSignificantMotorRoad(this IWorldMap map, long roadId) => map.IsMotorRoad(roadId) && map.GetRoad(roadId).Kind <= WayKind.Unclassified;
 
         internal static int CycleWeight(this IWorldMap map, in RoadIndexLong idx) => map.IsCycleWay(idx.RoadMapIndex) ? 1 : 0;
 
