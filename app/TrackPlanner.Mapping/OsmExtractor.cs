@@ -39,9 +39,9 @@ namespace TrackPlanner.Mapping
 
         public List<(HistoricObject historicObject,GeoPoint location)> ReadHistoricObjects(string filePath)
         {
-            var nodes = new CompactDictionary<long, GeoPoint>();
+            var nodes = new CompactDictionaryShift<long, GeoPoint>();
             // way id -> first node id
-            var ways = new CompactDictionary<long, long>();
+            var ways = new CompactDictionaryShift<long, long>();
             var historic_objects = new List<(HistoricObject hist, long? nodeId, long? wayId)>();
 
             double start = Stopwatch.GetTimestamp();

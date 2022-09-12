@@ -9,7 +9,7 @@ namespace TrackPlanner.Storage
     where TKey:notnull
     {
         private readonly BinaryReader reader;
-        private readonly CompactDictionaryFirst<TKey, long> offsets;
+        private readonly CompactDictionaryFill<TKey, long> offsets;
 
         public long this[TKey key] => this.offsets[key];
 
@@ -18,7 +18,7 @@ namespace TrackPlanner.Storage
         public ReaderOffsets(BinaryReader reader, int capacity)
         {
             this.reader = reader;
-            this.offsets = new CompactDictionaryFirst<TKey, long>(capacity: capacity);
+            this.offsets = new CompactDictionaryFill<TKey, long>(capacity: capacity);
         }
 
         public void Deconstruct(out BinaryReader reader, out IReadOnlyDictionary<TKey, long> offsets)

@@ -18,7 +18,7 @@ namespace TrackPlanner.Tests
             // 200 --> pure hash 198
             // 23 --> pure hash 21
             var input = new long[] { 200,23, 2,3,5,7,11,13,17,19,111, 4, 6, 8, 12, 202, 444,401};
-            var dict = new CompactDictionary<long,long>( );
+            var dict = new CompactDictionaryShift<long,long>( );
             foreach (var x in input)
             {
                 long y;
@@ -45,7 +45,7 @@ namespace TrackPlanner.Tests
         public void LongAdditionsTest()
         {
             
-            var map = new CompactDictionary<long,string>( );
+            var map = new CompactDictionaryShift<long,string>( );
             map.Add(1L+int.MaxValue, "ello");
             map.DEBUG_DUMP();
             map.Add(0L+int.MaxValue, "h");
@@ -93,7 +93,7 @@ namespace TrackPlanner.Tests
         public void AdditionsTest()
         {
             {
-                var map = new CompactDictionary<long,string>( );
+                var map = new CompactDictionaryShift<long,string>( );
                 map.Add(1, "ello");
                 map.Add(0, "h");
                 map.Add(3, "world");
@@ -139,7 +139,7 @@ namespace TrackPlanner.Tests
         public void TryAdditionsTest()
         {
             {
-                var map = new CompactDictionary<long,string>();
+                var map = new CompactDictionaryShift<long,string>();
                 Assert.True( map.TryAdd(1, "ello",out _));
                 Assert.True(map.TryAdd(0, "h", out _));
                 Assert.True(map.TryAdd(3, "world", out _));

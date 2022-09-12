@@ -122,10 +122,10 @@ namespace TrackPlanner.Runner
             var res_dict = new Dictionary<long, long>();
             Dictionary<long, long> dict;
             SeededDictionary<long, long> seed_dict;
-            CompactDictionaryFirst<long, long> compact;
-            CompactDictionary<long, long> compact0;
-            var res_compact = new CompactDictionaryFirst<long, long>();
-            var res_compact0 = new CompactDictionary<long, long>();
+            CompactDictionaryFill<long, long> compact;
+            CompactDictionaryShift<long, long> compact0;
+            var res_compact = new CompactDictionaryFill<long, long>();
+            var res_compact0 = new CompactDictionaryShift<long, long>();
 
             using (var mem = new MemoryStream(System.IO.File.ReadAllBytes(path)))
             {
@@ -148,8 +148,8 @@ namespace TrackPlanner.Runner
 
                     seed_dict = new SeededDictionary<long, long>(EqualityComparer<long>.Default, nodes_count);
                     dict = new Dictionary<long, long>(capacity: nodes_count);
-                    compact = new CompactDictionaryFirst<long, long>(nodes_count);
-                    compact0 = new CompactDictionary<long, long>(nodes_count);
+                    compact = new CompactDictionaryFill<long, long>(nodes_count);
+                    compact0 = new CompactDictionaryShift<long, long>(nodes_count);
                     var roads_offset = reader.ReadInt64();
                     var grid_offset = reader.ReadInt64();
 
