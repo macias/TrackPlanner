@@ -23,7 +23,7 @@ namespace TrackPlanner.Mapping
 
         public static RoadBucket CreateBucket(int index,long nodeId,IWorldMap map, IGeoCalculator calc,bool isFinal,bool allowSmoothing)
         {
-            var node_point = map.Nodes[nodeId];
+            var node_point = map.GetPoint(nodeId);
             Dictionary<RoadIndexLong, RoadSnapInfo> snaps = map.GetRoads(nodeId)
                 .ToDictionary(idx => idx,
                     idx => new RoadSnapInfo(idx, trackSnapDistance: Length.Zero, trackCrosspoint: node_point, distanceAlongRoad: Length.Zero, shortestNextDistance: Length.Zero));

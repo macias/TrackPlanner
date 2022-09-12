@@ -103,6 +103,14 @@ namespace TrackPlanner.Mapping.Disk
             this.cells = cells;
         }
 
+        public GeoZPoint GetPoint(long nodeId)
+        {
+            return this.nodes[nodeId];
+        }
+        public IEnumerable<KeyValuePair<long, GeoZPoint>> GetAllNodes()
+        {
+            return Nodes;
+        }
 
         // note we can get even for the same road multiple indices, example case: roundabouts -- "start" and "end" are at the same point
         public IEnumerable<RoadIndexLong> GetRoads(long nodeId)

@@ -23,7 +23,7 @@ namespace TrackPlanner.Mapping
             GeoZPoint max =  GeoZPoint.Create(-Angle.PI, Angle.Zero, null);
             foreach (long node in map.Roads[roundaboutId].Nodes)
             {
-                GeoZPoint pt = map.Nodes[node];
+                GeoZPoint pt = map.GetPoint(node);
                 if (min.Latitude >= pt.Latitude)
                     min = pt;
                 if (max.Latitude <= pt.Latitude)
@@ -42,10 +42,10 @@ namespace TrackPlanner.Mapping
             input.Lines = map.Roads.Select(it =>
             {
                 var road = map.Roads[it.Key];
-                return new LineDefinition(road.Nodes.Select(node_id => map.Nodes[node_id]).ToArray(), name: it.Key.ToString(),
+                return new LineDefinition(road.Nodes.Select(map.GetPoint).ToArray(), name: it.Key.ToString(),
                     description:road.DetailsToString(), speed_lines[ it.Value.GetRoadSpeedMode()]);
             }).ToList();
-            input.Waypoints = map.Nodes.Select(it => new WaypointDefinition (it.Value,it.Key.ToString(),
+            input.Waypoints = map.GetAllNodes().Select(it => new WaypointDefinition (it.Value,it.Key.ToString(),
                     description:(map.IsBikeFootRoadDangerousNearby(it.Key)?KmlDangerousTag:""), PointIcon.DotIcon))
                 .ToList();
 
@@ -64,7 +64,7 @@ namespace TrackPlanner.Mapping
         {
             var nodes_extract = new HashMap<long, GeoZPoint>();
 
-            foreach ((long node_id, GeoZPoint coords) in sourceMap.Nodes)
+            foreach ((long node_id, GeoZPoint coords) in sourceMap.GetAllNodes())
             {
                 if (focusPoints.Any(it => calc.GetDistance(it, coords) <= distance))
                     nodes_extract.TryAdd(node_id, coords);
@@ -82,7 +82,7 @@ namespace TrackPlanner.Mapping
 
             foreach (var node_id in roads_extract.Values.SelectMany(it => it.Nodes))
             {
-                nodes_extract.TryAdd(node_id, sourceMap.Nodes[node_id]);
+                nodes_extract.TryAdd(node_id, sourceMap.GetPoint(node_id));
             }
 
             var dangerous = new HashSet<long>();
@@ -140,7 +140,7 @@ namespace TrackPlanner.Mapping
 
         public static GeoZPoint GetPoint(this IWorldMap map, in RoadIndexLong idx)
         {
-            return map.Nodes[map.GetNode(idx)];
+            return map.GetPoint(map.GetNode(idx));
         }
 
         public static bool IsCycleWay(this IWorldMap map, long roadId) => map.Roads[roadId].Kind == WayKind.Cycleway;

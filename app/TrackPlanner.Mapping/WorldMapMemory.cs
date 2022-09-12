@@ -39,7 +39,7 @@ namespace TrackPlanner.Mapping
 
         private IReadOnlySet<long>? bikeFootDangerousNearbyNodes;
 
-        IReadOnlyEnumerableDictionary<long, GeoZPoint> IWorldMap.Nodes => this.Nodes;
+        //IReadOnlyEnumerableDictionary<long, GeoZPoint> IWorldMap.Nodes => this.Nodes;
         IReadOnlyEnumerableDictionary<long, RoadInfo> IWorldMap.Roads => this.Roads;
         public IReadOnlyMap<long, GeoZPoint> Nodes { get; }
         public IReadOnlyMap<long, RoadInfo> Roads { get; }
@@ -113,6 +113,16 @@ namespace TrackPlanner.Mapping
         public IEnumerable<RoadIndexLong> GetRoads(long nodeId)
         {
             return this.nodeRoadReferences[nodeId];
+        }
+
+        public GeoZPoint GetPoint(long nodeId)
+        {
+            return this.Nodes[nodeId];
+        }
+
+        public IEnumerable<KeyValuePair<long, GeoZPoint>> GetAllNodes()
+        {
+            return Nodes;
         }
 
         public int LEGACY_RoadSegmentsDistanceCount(long roadId, int sourceIndex, int destIndex)

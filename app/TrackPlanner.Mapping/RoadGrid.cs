@@ -220,7 +220,7 @@ namespace TrackPlanner.Mapping
 
             foreach (long node in snaps.SelectMany(entry => entry.Value.Select(it => map.GetNode(new RoadIndexLong(entry.Key, it.Key)))).Distinct().ToArray())
             {
-                GeoZPoint node_point = map.Nodes[node];
+                GeoZPoint node_point = map.GetPoint(node);
                 var dist = Calc.GetDistance(point, node_point);
                 foreach (var idx in map.GetRoads(node))
                 {

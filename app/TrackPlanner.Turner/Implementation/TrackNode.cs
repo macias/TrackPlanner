@@ -57,7 +57,7 @@ namespace TrackPlanner.Turner.Implementation
                     throw new ArgumentException();
             }
 
-            this.Point = map.Nodes[NodeId];
+            this.Point = map.GetPoint(NodeId);
 
             foreach (var entry in this.dict)
             {

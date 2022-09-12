@@ -8,7 +8,9 @@ namespace TrackPlanner.Mapping
 {
     public interface IWorldMap
     {
-        IReadOnlyEnumerableDictionary<long, GeoZPoint> Nodes { get; }
+        GeoZPoint GetPoint(long nodeId);
+        IEnumerable<KeyValuePair<long, GeoZPoint>> GetAllNodes();
+
         IReadOnlyEnumerableDictionary<long,RoadInfo> Roads { get; }
 
         IEnumerable<CityInfo> Cities { get; }

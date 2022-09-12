@@ -333,7 +333,7 @@ namespace TrackPlanner.PathFinder
             {
                 var input = new TrackWriterInput();
                 foreach (var node in DEBUG_lowCostNodes)
-                    input.AddPoint(map.Nodes[node], icon: PointIcon.DotIcon);
+                    input.AddPoint(map.GetPoint(node), icon: PointIcon.DotIcon);
 
                 string filename = Helper.GetUniqueFileName(this.navigator.GetDebug(), $"low-cost.kml");
                 input.BuildDecoratedKml().Save(filename);
@@ -345,7 +345,7 @@ namespace TrackPlanner.PathFinder
                 foreach (var entry in this.DEBUG_suppressToFar)
                 {
                     if (!this.DEBUG_suppressInRange.ContainsKey(entry.Key))
-                        input.AddPoint(map.Nodes[entry.Key], label: entry.Value, icon: PointIcon.CircleIcon);
+                        input.AddPoint(map.GetPoint(entry.Key), label: entry.Value, icon: PointIcon.CircleIcon);
                 }
 
                 string filename = Helper.GetUniqueFileName(this.debugDirectory!, $"too-far.kml");
@@ -357,7 +357,7 @@ namespace TrackPlanner.PathFinder
             {
                 var input = new TrackWriterInput();
                 foreach (var entry in this.DEBUG_suppressInRange)
-                    input.AddPoint(map.Nodes[entry.Key], label: entry.Value, icon: PointIcon.DotIcon);
+                    input.AddPoint(map.GetPoint(entry.Key), label: entry.Value, icon: PointIcon.DotIcon);
 
                 string filename = Helper.GetUniqueFileName(this.debugDirectory!, $"in-range.kml");
                 input.BuildDecoratedKml().Save(filename);
@@ -368,7 +368,7 @@ namespace TrackPlanner.PathFinder
             {
                 var input = new TrackWriterInput();
                 foreach (var entry in this.DEBUG_dangerousNodes)
-                    input.AddPoint(map.Nodes[entry], label: "noname", icon: PointIcon.DotIcon);
+                    input.AddPoint(map.GetPoint(entry), label: "noname", icon: PointIcon.DotIcon);
 
                 string filename = Helper.GetUniqueFileName(this.debugDirectory!, $"dangerous.kml");
                 input.BuildDecoratedKml().Save(filename);
@@ -747,7 +747,7 @@ namespace TrackPlanner.PathFinder
                 {
                     var snap_node = this.map.GetNode(snap.RoadIdx);
                     if (this.constraints.IsAcceptable(snap_node))
-                    adjacent.TryAdd(Placement.Node(snap_node, this.map.Nodes[snap_node], place.IsFinal, isSnapped: true), snap.RoadIdx.RoadMapIndex);
+                    adjacent.TryAdd(Placement.Node(snap_node, this.map.GetPoint(snap_node), place.IsFinal, isSnapped: true), snap.RoadIdx.RoadMapIndex);
                     adjacent.TryAdd(Placement.UserPoint(bucket), snap.RoadIdx.RoadMapIndex);
                 }
         }
@@ -785,7 +785,7 @@ namespace TrackPlanner.PathFinder
                             }
                         }
                     }*/
-                    adjacent.TryAdd(Placement.Node(adj_node_id, this.map.Nodes[adj_node_id], is_final, isSnapped: is_snapped), adj_road_idx.RoadMapIndex);
+                    adjacent.TryAdd(Placement.Node(adj_node_id, this.map.GetPoint(adj_node_id), is_final, isSnapped: is_snapped), adj_road_idx.RoadMapIndex);
                 }
             }
             else
@@ -850,7 +850,7 @@ namespace TrackPlanner.PathFinder
                 suppressed.Add(curr_node_id);
                 this.DEBUG_suppressInRange.TryAdd(curr_node_id,$"#{incoming_road_id} {curr_dist}");
 
-                GeoZPoint current_point = map.Nodes[curr_node_id];
+                GeoZPoint current_point = map.GetPoint(curr_node_id);
 
                 foreach (var adj_idx in map.GetAdjacentRoads(curr_node_id))
                 {
@@ -861,7 +861,7 @@ namespace TrackPlanner.PathFinder
 
                     if (map.Roads[adj_idx.RoadMapIndex].IsDangerous || map.Roads[adj_idx.RoadMapIndex].IsUncomfortable)
                     {
-                        Length adj_total_dist = curr_dist + calc.GetDistance(current_point, map.Nodes[adj_node_id]);
+                        Length adj_total_dist = curr_dist + calc.GetDistance(current_point, map.GetPoint(adj_node_id));
                         if (adj_total_dist <= suppressionRange)
                         {
                             heap.TryAddOrUpdate(adj_node_id, adj_total_dist, adj_idx.RoadMapIndex);

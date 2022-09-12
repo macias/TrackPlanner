@@ -222,14 +222,15 @@ namespace TrackPlanner.Turner
                 }
 
                 (var incoming_node, var outgoing_node) = (track_exits[0], track_exits[1]);
-                GeoZPoint incoming_pt = map.Nodes[incoming_node.item];
-                GeoZPoint outgoing_pt = map.Nodes[outgoing_node.item];
+                GeoZPoint incoming_pt = map.GetPoint(incoming_node.item);
+                GeoZPoint outgoing_pt = map.GetPoint(outgoing_node.item);
                 foreach (long exit in exit_nodes)
                 {
                     if (exit != incoming_node.item && exit != outgoing_node.item)
                     {
                         (TurnNotification forward, TurnNotification backward) = (TurnNotification.None, TurnNotification.None);
-                        TurnNotification forced = isTurnNeededOnCurvedTrack(node_index, center, incoming_pt, outgoing_pt, map.Nodes[exit],
+                        TurnNotification forced = isTurnNeededOnCurvedTrack(node_index, center, incoming_pt, outgoing_pt, 
+                            map.GetPoint(exit),
                             // we could the exit kind into account, but well -- since it works...
                             isAltMinor: false, ref forward, ref backward);
                         if (forced.Enable || forward.Enable || backward.Enable)
@@ -507,7 +508,7 @@ namespace TrackPlanner.Turner
                     (long road_id, ushort idx) = ass.First();
                     long node_id = this.map.Roads[road_id].Nodes[idx];
                     string label = ass.Count == 1 ? $"{i}={road_id}" : $"{i} : {ass.Count}";
-                    return ((GeoZPoint)this.map.Nodes[node_id], label);
+                    return (this.map.GetPoint(node_id), label);
                 }));
                 TrackWriter.WriteLabeled(Helper.GetUniqueFileName(this.sysConfig.DebugDirectory, $"recreated-line-{label}.kml"), points.Select(it => it.Item1).ToList(), null);
                 TrackWriter.WriteLabeled(Helper.GetUniqueFileName(this.sysConfig.DebugDirectory, $"recreated-points-{label}.kml"), null, points);
@@ -746,9 +747,9 @@ namespace TrackPlanner.Turner
             RoadRank incoming_rank = track[nodeIndex].BackwardCycleWayCorrected ? RoadRank.CyclewayLink(incomingSegmentInfo) : new RoadRank(incomingSegmentInfo);
             RoadRank outgoing_rank = track[nodeIndex].ForwardCycleWayCorrected ? RoadRank.CyclewayLink(outgoingSegmentInfo) : new RoadRank(outgoingSegmentInfo);
 
-            GeoZPoint current_point = map.Nodes[incomingNode];
-            GeoZPoint next_point = map.Nodes[outgoingNode];
-            GeoZPoint alt_sibling_point = map.Nodes[altSiblingNode];
+            GeoZPoint current_point = map.GetPoint(incomingNode);
+            GeoZPoint next_point = map.GetPoint(outgoingNode);
+            GeoZPoint alt_sibling_point = map.GetPoint(altSiblingNode);
 
             // consider we are coming from right
             // _L 
