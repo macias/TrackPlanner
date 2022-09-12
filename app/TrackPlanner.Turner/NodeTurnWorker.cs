@@ -83,8 +83,8 @@ namespace TrackPlanner.Turner
                 RoadIndexLong incoming_road = track[turn_pt_idx - 1].Segment.Forward;
                 RoadIndexLong outgoing_road = track[turn_pt_idx + 1].Segment.Backward;
 
-                RoadRank incoming_kind = new RoadRank(map.Roads[incoming_road.RoadMapIndex]);
-                RoadRank outgoing_kind = new RoadRank(map.Roads[outgoing_road.RoadMapIndex]);
+                RoadRank incoming_kind = new RoadRank(map.GetRoad(incoming_road.RoadMapIndex));
+                RoadRank outgoing_kind = new RoadRank(map.GetRoad(outgoing_road.RoadMapIndex));
 
                 long incoming_arm_node = track[turn_pt_idx - 1].NodeId;
                 GeoZPoint incoming_arm_pt = track[turn_pt_idx - 1].Point;
@@ -95,7 +95,7 @@ namespace TrackPlanner.Turner
                 GeoZPoint turn_point = track_node.Point;
 
                 IReadOnlyList<(RoadIndexLong turn, RoadIndexLong sibling)> alt_arms = getAlternateArms(track_node, incoming_road, outgoing_road).ToList();
-                logger.Verbose($"Track index {turn_pt_idx}, arms {alt_arms.Count}, {(String.Join(", ", alt_arms.Select(it => stringify(map.Roads[it.turn.RoadMapIndex]))))}");
+                logger.Verbose($"Track index {turn_pt_idx}, arms {alt_arms.Count}, {(String.Join(", ", alt_arms.Select(it => stringify(map.GetRoad(it.turn.RoadMapIndex)))))}");
 
                 bool is_cross_intersection = false;
                 if (alt_arms.Count == 2)
@@ -105,7 +105,7 @@ namespace TrackPlanner.Turner
                     //  -+-/
                     //   |
                     //  with - segment being very short. For the rider in real life if will be angled interesection
-                    if (map.Roads[alt_arms[0].turn.RoadMapIndex].Kind == map.Roads[alt_arms[1].turn.RoadMapIndex].Kind
+                    if (map.GetRoad(alt_arms[0].turn.RoadMapIndex).Kind == map.GetRoad(alt_arms[1].turn.RoadMapIndex).Kind
                         // go over other turns to get proper length of the arm
                         && tryGetPointAlongTrack(track, emptyIntSet, turn_pt_idx, -1, this.userPreferences.MinimalCrossIntersection, out GeoZPoint distant_incoming_pt)
                         && tryGetPointAlongTrack(track, emptyIntSet, turn_pt_idx, +1, this.userPreferences.MinimalCrossIntersection, out GeoZPoint distant_outgoing_pt)
@@ -142,7 +142,7 @@ namespace TrackPlanner.Turner
                     
                     foreach ((RoadIndexLong alt_road_idx, RoadIndexLong alt_sibling) in alt_arms)
                     {
-                        RoadInfo altInfo = map.Roads[alt_road_idx.RoadMapIndex];
+                        RoadInfo altInfo = map.GetRoad(alt_road_idx.RoadMapIndex);
                         //RoadRank alt_importance = simplifyRoadImportance(alt_info);
                         long alt_sibling_node = altInfo.Nodes[alt_sibling.IndexAlongRoad];
 
@@ -153,15 +153,15 @@ namespace TrackPlanner.Turner
                             track_node.IsDirectionAllowed(outgoing_road.RoadMapIndex, outgoing_road),
                             alt_road_idx, alt_sibling,
                             turn_point,
-                            map.Roads[incoming_road.RoadMapIndex], // road kind "to" turn point
+                            map.GetRoad(incoming_road.RoadMapIndex), // road kind "to" turn point
                             incoming_arm_node,
-                            map.Roads[outgoing_road.RoadMapIndex], // road kind "from" turn point
+                            map.GetRoad(outgoing_road.RoadMapIndex), // road kind "from" turn point
                             outgoing_arm_node,
                             altInfo, alt_sibling_node);
 
                         if (forward.Enable || backward.Enable)
                         {
-                            logger.Verbose($"Turn {turn_pt_idx} on roads {incoming_road.RoadMapIndex} {outgoing_road.RoadMapIndex} {altInfo.Identifier}, all present {(String.Join(", ", alt_arms.Select(it => stringify(map.Roads[it.turn.RoadMapIndex]))))}");
+                            logger.Verbose($"Turn {turn_pt_idx} on roads {incoming_road.RoadMapIndex} {outgoing_road.RoadMapIndex} {altInfo.Identifier}, all present {(String.Join(", ", alt_arms.Select(it => stringify(map.GetRoad(it.turn.RoadMapIndex)))))}");
                             string reason;
                             if (forward.Reason == backward.Reason)
                                 reason = "* "+forward.Reason;
@@ -178,7 +178,7 @@ namespace TrackPlanner.Turner
 
                     if (!forward.Enable && !backward.Enable)
                     {
-                        logger.Verbose($"NO turn {turn_pt_idx} on roads {incoming_road.RoadMapIndex} {outgoing_road.RoadMapIndex}, all present {(String.Join(", ", alt_arms.Select(it => stringify(map.Roads[it.turn.RoadMapIndex]))))}");
+                        logger.Verbose($"NO turn {turn_pt_idx} on roads {incoming_road.RoadMapIndex} {outgoing_road.RoadMapIndex}, all present {(String.Join(", ", alt_arms.Select(it => stringify(map.GetRoad(it.turn.RoadMapIndex)))))}");
                     }
 
                 }
@@ -261,8 +261,8 @@ namespace TrackPlanner.Turner
                 RoadIndexLong incoming_road = track[i - 1].Segment.Forward;
                 RoadIndexLong outgoing_road = track[i + 1].Segment.Backward;
 
-                RoadRank incoming_kind = new RoadRank(map.Roads[incoming_road.RoadMapIndex]);
-                RoadRank outgoing_kind = new RoadRank(map.Roads[outgoing_road.RoadMapIndex]);
+                RoadRank incoming_kind = new RoadRank(map.GetRoad(incoming_road.RoadMapIndex));
+                RoadRank outgoing_kind = new RoadRank(map.GetRoad(outgoing_road.RoadMapIndex));
 
                 bool incoming_fixed = fixPathCycleWayLink(track, i - 1, +1, ref incoming_kind);
                 bool outgoing_fixed = fixPathCycleWayLink(track, i + 1, -1, ref outgoing_kind);
@@ -292,12 +292,12 @@ namespace TrackPlanner.Turner
                 {
                     // ok, so we know we have change from/to cycleway, this coresponds to the short "link" segment
                     // so now we have to check if our track "behind" the cycle-link is also cycleway
-                    if (from_cycleway && (i < 2 || map.Roads[track[i - 2].Segment.Forward.RoadMapIndex].Kind != WayKind.Cycleway))
+                    if (from_cycleway && (i < 2 || map.GetRoad(track[i - 2].Segment.Forward.RoadMapIndex).Kind != WayKind.Cycleway))
                     {
                         logger.Verbose($"Giving up on cycle way exit at track index {i}, no further cycleway");
                         continue;
                     }
-                    else if (to_cycleway && (i >= track.Count - 2 || map.Roads[track[i + 2].Segment.Backward.RoadMapIndex].Kind != WayKind.Cycleway))
+                    else if (to_cycleway && (i >= track.Count - 2 || map.GetRoad(track[i + 2].Segment.Backward.RoadMapIndex).Kind != WayKind.Cycleway))
                     {
                         logger.Verbose($"Giving up on cycle way exit at track index {i}, no further cycleway");
                         continue;
@@ -433,8 +433,8 @@ namespace TrackPlanner.Turner
             RoadIndexLong incoming_road = track[i - 1].Segment[direction];
             RoadIndexLong outgoing_road = track[i + 1].Segment[direction]; //computeTrackSegmentRoadId(track, i + 1, direction);
 
-            RoadRank incoming_kind = new RoadRank(map.Roads[incoming_road.RoadMapIndex]);
-            RoadRank outgoing_kind = new RoadRank(map.Roads[outgoing_road.RoadMapIndex]);
+            RoadRank incoming_kind = new RoadRank(map.GetRoad(incoming_road.RoadMapIndex));
+            RoadRank outgoing_kind = new RoadRank(map.GetRoad(outgoing_road.RoadMapIndex));
 
             bool is_cycleway_link(in RoadRank a, in RoadRank b) => a.IsCycleway && !b.IsCycleway && !b.IsMapPath;
 
@@ -471,8 +471,8 @@ namespace TrackPlanner.Turner
 
             bool? is_cycleway_category(TrackNode node)
             {
-                bool has_cycleway = node.Any(it => map.Roads[it.RoadMapIndex].Kind == WayKind.Cycleway);
-                bool has_road = node.Any(it => new RoadRank(map.Roads[it.RoadMapIndex]).IsSolid);
+                bool has_cycleway = node.Any(it => map.GetRoad(it.RoadMapIndex).Kind == WayKind.Cycleway);
+                bool has_road = node.Any(it => new RoadRank(map.GetRoad(it.RoadMapIndex)).IsSolid);
 
                 if (has_cycleway && !has_road)
                     return true;
@@ -506,7 +506,7 @@ namespace TrackPlanner.Turner
                 {
                     var ass = road_assignments[i];
                     (long road_id, ushort idx) = ass.First();
-                    long node_id = this.map.Roads[road_id].Nodes[idx];
+                    long node_id = this.map.GetRoad(road_id).Nodes[idx];
                     string label = ass.Count == 1 ? $"{i}={road_id}" : $"{i} : {ass.Count}";
                     return (this.map.GetPoint(node_id), label);
                 }));
@@ -542,19 +542,19 @@ namespace TrackPlanner.Turner
         private HashSet<long> getRoundaboutExitNodes(long roundaboutId)
         {
             var result = new HashSet<long>();
-            foreach (long node_id in map.Roads[roundaboutId].Nodes)
+            foreach (long node_id in map.GetRoad(roundaboutId).Nodes)
             {
-                foreach (RoadIndexLong road_idx in this.map.GetRoads(node_id).Where(it => it.RoadMapIndex != roundaboutId))
+                foreach (RoadIndexLong road_idx in this.map.GetRoadsAtNode(node_id).Where(it => it.RoadMapIndex != roundaboutId))
                 {
-                    RoadInfo roadInfo = map.Roads[road_idx.RoadMapIndex];
+                    RoadInfo roadInfo = map.GetRoad(road_idx.RoadMapIndex);
                     if (roadInfo.OneWay)
                     {
                         // if this is oneway exit road, it means the exit is on the end of this "link"-road actually, case like this
                         // O>
                         if (road_idx.IndexAlongRoad == 0)
-                            result.Add(map.Roads[road_idx.RoadMapIndex].Nodes.Last());
+                            result.Add(map.GetRoad(road_idx.RoadMapIndex).Nodes.Last());
                         else if (road_idx.IndexAlongRoad == roadInfo.Nodes.Count - 1)
-                            result.Add(map.Roads[road_idx.RoadMapIndex].Nodes.First());
+                            result.Add(map.GetRoad(road_idx.RoadMapIndex).Nodes.First());
                         else
                             throw new NotImplementedException();
                     }
@@ -604,7 +604,7 @@ namespace TrackPlanner.Turner
 
         private bool isEndRoad(in RoadIndexLong roadIdx)
         {
-            RoadInfo info = this.map.Roads[roadIdx.RoadMapIndex];
+            RoadInfo info = this.map.GetRoad(roadIdx.RoadMapIndex);
             return roadIdx.IndexAlongRoad == 0 || roadIdx.IndexAlongRoad == info.Nodes.Count - 1;
         }
 
@@ -697,9 +697,9 @@ namespace TrackPlanner.Turner
             if (direction != -1 && direction != 1)
                 throw new ArgumentOutOfRangeException($"Invalid direction {direction}");
 
-            IReadOnlySet<long> roundabout_nodes = map.Roads[roundaboutId].Nodes.ToHashSet();
+            IReadOnlySet<long> roundabout_nodes = map.GetRoad(roundaboutId).Nodes.ToHashSet();
 
-            RoadInfo roadInfo = map.Roads[roadIndexLong.RoadMapIndex];
+            RoadInfo roadInfo = map.GetRoad(roadIndexLong.RoadMapIndex);
             for (int idx = roadIndexLong.IndexAlongRoad; idx >= 0 && idx < roadInfo.Nodes.Count; idx += direction)
                 if (roundabout_nodes.Contains(roadInfo.Nodes[idx]))
                 {

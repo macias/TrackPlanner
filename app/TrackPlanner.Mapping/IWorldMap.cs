@@ -11,7 +11,7 @@ namespace TrackPlanner.Mapping
         GeoZPoint GetPoint(long nodeId);
         IEnumerable<KeyValuePair<long, GeoZPoint>> GetAllNodes();
 
-        IReadOnlyEnumerableDictionary<long,RoadInfo> Roads { get; }
+       // IReadOnlyEnumerableDictionary<long,RoadInfo> Roads { get; }
 
         IEnumerable<CityInfo> Cities { get; }
         Angle Eastmost { get; }
@@ -25,11 +25,13 @@ namespace TrackPlanner.Mapping
         IEnumerable<IEnumerable<long>> Waters { get; }
         Angle Westmost { get; }
 
-        IEnumerable<RoadIndexLong> GetRoads(long nodeId);
+        IEnumerable<RoadIndexLong> GetRoadsAtNode(long nodeId);
         bool IsBikeFootRoadDangerousNearby(long nodeId);
         int LEGACY_RoadSegmentsDistanceCount(long roadId, int sourceIndex, int destIndex);
         RoadGrid CreateRoadGrid(int gridCellSize, string? debugDirectory);
 
         string GetStats();
+        RoadInfo GetRoad(long roadMapIndex);
+        IEnumerable<KeyValuePair<long, RoadInfo>> GetAllRoads();
     }
 }

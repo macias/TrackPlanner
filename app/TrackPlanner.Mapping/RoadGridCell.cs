@@ -41,7 +41,7 @@ namespace TrackPlanner.Mapping
         {
             foreach (var idx in this.roadRoadSegments)
             {
-                if (predicate != null && !predicate(map.Roads[idx.RoadMapIndex]))
+                if (predicate != null && !predicate(map.GetRoad(idx.RoadMapIndex)))
                     continue;
 
                 // because we basically look for points on mapped ways, we expect the difference to be so small that we can use plane/euclidian distance

@@ -116,7 +116,7 @@ namespace TrackPlanner.PathFinder
                 var path_step = pathSteps[step_idx];
                 
                 var incoming_road_map_index = path_step.IncomingRoadMapIndex;
-                var roundabout_road = map.Roads[ incoming_road_map_index];
+                var roundabout_road = map.GetRoad( incoming_road_map_index);
                 if (!roundabout_road.IsRoundabout)
                 {
                     --step_idx;
@@ -129,7 +129,7 @@ namespace TrackPlanner.PathFinder
                 
                 int entry_idx;
                 // take all steps covering roundabout
-                for (entry_idx = step_idx; entry_idx >= 0 && map.Roads[ pathSteps[entry_idx].IncomingRoadMapIndex].IsRoundabout; --entry_idx)
+                for (entry_idx = step_idx; entry_idx >= 0 && map.GetRoad( pathSteps[entry_idx].IncomingRoadMapIndex).IsRoundabout; --entry_idx)
                 {
                     var curr_step = pathSteps[entry_idx];
                     

@@ -112,8 +112,19 @@ namespace TrackPlanner.Mapping.Disk
             return Nodes;
         }
 
+        
+        public RoadInfo GetRoad(long roadMapIndex)
+        {
+            return Roads[roadMapIndex];
+        }
+
+        public IEnumerable<KeyValuePair<long, RoadInfo>> GetAllRoads()
+        {
+            return Roads;
+        }
+        
         // note we can get even for the same road multiple indices, example case: roundabouts -- "start" and "end" are at the same point
-        public IEnumerable<RoadIndexLong> GetRoads(long nodeId)
+        public IEnumerable<RoadIndexLong> GetRoadsAtNode(long nodeId)
         {
             return this.nodeRoadReferences[nodeId];
         }

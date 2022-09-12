@@ -14,7 +14,7 @@ namespace TrackPlanner.Turner.Implementation
     {
         public static TrackNode Create(IWorldMap map, long nodeId)
         {
-            return new TrackNode(map, map.GetRoads(nodeId)
+            return new TrackNode(map, map.GetRoadsAtNode(nodeId)
                 .GroupBy(it => it.RoadMapIndex).ToDictionary(it => it.Key, it => cast(it.Select(it => it.IndexAlongRoad).ToList())));
         }
 
@@ -44,14 +44,14 @@ namespace TrackPlanner.Turner.Implementation
         {
             this.map = map;
             // remove all point-roads (like crossings)
-            this.dict = dict.Where(it => map.Roads[it.Key].Nodes.Count > 1).ToDictionary(it => it.Key, it => it.Value);
+            this.dict = dict.Where(it => map.GetRoad(it.Key).Nodes.Count > 1).ToDictionary(it => it.Key, it => it.Value);
 
             if (this.dict.Values.Any(it => it.Count < 1 || it.Count > 2))
                 throw new ArgumentException();
 
             {
                 (long road_id, int idx) = this.dict.Select(it => (it.Key, it.Value.First())).First();
-                NodeId = map.Roads[road_id].Nodes[idx];
+                NodeId = map.GetRoad(road_id).Nodes[idx];
 
                 if (this.Any(idx => map.GetNode(idx) != NodeId))
                     throw new ArgumentException();
@@ -61,7 +61,7 @@ namespace TrackPlanner.Turner.Implementation
 
             foreach (var entry in this.dict)
             {
-                if (map.Roads[entry.Key].IsRoundabout)
+                if (map.GetRoad(entry.Key).IsRoundabout)
                 {
                     RoundaboutId = entry.Key;
                     break;

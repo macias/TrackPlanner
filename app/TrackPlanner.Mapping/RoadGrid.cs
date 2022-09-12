@@ -222,9 +222,9 @@ namespace TrackPlanner.Mapping
             {
                 GeoZPoint node_point = map.GetPoint(node);
                 var dist = Calc.GetDistance(point, node_point);
-                foreach (var idx in map.GetRoads(node))
+                foreach (var idx in map.GetRoadsAtNode(node))
                 {
-                    if (map.Roads[idx.RoadMapIndex].Kind == WayKind.Crossing)
+                    if (map.GetRoad(idx.RoadMapIndex).Kind == WayKind.Crossing)
                         continue;
 
                     if (!snaps.TryGetValue(idx.RoadMapIndex, out var entry))

@@ -21,7 +21,7 @@ namespace TrackPlanner.Mapping
         {
             GeoZPoint min =  GeoZPoint.Create(Angle.PI, Angle.Zero, null);
             GeoZPoint max =  GeoZPoint.Create(-Angle.PI, Angle.Zero, null);
-            foreach (long node in map.Roads[roundaboutId].Nodes)
+            foreach (long node in map.GetRoad(roundaboutId).Nodes)
             {
                 GeoZPoint pt = map.GetPoint(node);
                 if (min.Latitude >= pt.Latitude)
@@ -39,9 +39,9 @@ namespace TrackPlanner.Mapping
             var title = System.IO.Path.GetFileNameWithoutExtension(path);
 
             var input=  new TrackWriterInput() { Title = title };
-            input.Lines = map.Roads.Select(it =>
+            input.Lines = map.GetAllRoads().Select(it =>
             {
-                var road = map.Roads[it.Key];
+                var road = it.Value;
                 return new LineDefinition(road.Nodes.Select(map.GetPoint).ToArray(), name: it.Key.ToString(),
                     description:road.DetailsToString(), speed_lines[ it.Value.GetRoadSpeedMode()]);
             }).ToList();
@@ -72,7 +72,7 @@ namespace TrackPlanner.Mapping
 
             var roads_extract = new HashMap<long, RoadInfo>();
 
-            foreach ((long road_id, RoadInfo road_info) in sourceMap.Roads)
+            foreach ((long road_id, RoadInfo road_info) in sourceMap.GetAllRoads())
             {
                 if (road_info.Nodes.Any(it => nodes_extract.ContainsKey(it)))
                 {
@@ -97,7 +97,7 @@ namespace TrackPlanner.Mapping
 
         public static IEnumerable<RoadIndexLong> GetAdjacentRoads(this IWorldMap map, long nodeId)
         {
-            foreach (var road_idx in map.GetRoads(nodeId))
+            foreach (var road_idx in map.GetRoadsAtNode(nodeId))
             {
                 if (map.TryGetSibling(road_idx, -1, out RoadIndexLong prev))
                     yield return prev;
@@ -113,7 +113,7 @@ namespace TrackPlanner.Mapping
 
             var target_index = current.IndexAlongRoad + direction;
 
-            if (target_index >= 0 && target_index < map.Roads[current.RoadMapIndex].Nodes.Count)
+            if (target_index >= 0 && target_index < map.GetRoad(current.RoadMapIndex).Nodes.Count)
             {
                 sibling = new RoadIndexLong(current.RoadMapIndex, target_index);
                 return true;
@@ -135,7 +135,7 @@ namespace TrackPlanner.Mapping
 
         public static long GetNode(this IWorldMap map, in RoadIndexLong idx)
         {
-            return map.Roads[idx.RoadMapIndex].Nodes[idx.IndexAlongRoad];
+            return map.GetRoad(idx.RoadMapIndex).Nodes[idx.IndexAlongRoad];
         }
 
         public static GeoZPoint GetPoint(this IWorldMap map, in RoadIndexLong idx)
@@ -143,12 +143,12 @@ namespace TrackPlanner.Mapping
             return map.GetPoint(map.GetNode(idx));
         }
 
-        public static bool IsCycleWay(this IWorldMap map, long roadId) => map.Roads[roadId].Kind == WayKind.Cycleway;
+        public static bool IsCycleWay(this IWorldMap map, long roadId) => map.GetRoad(roadId).Kind == WayKind.Cycleway;
 
 public static bool IsMotorRoad(this IWorldMap map, long roadId)
-            => map.Roads[roadId].Kind != WayKind.Cycleway && map.Roads[roadId].Kind != WayKind.Footway && map.Roads[roadId].Kind != WayKind.Steps;
+            => map.GetRoad(roadId).Kind != WayKind.Cycleway && map.GetRoad(roadId).Kind != WayKind.Footway && map.GetRoad(roadId).Kind != WayKind.Steps;
 
-public static bool IsSignificantMotorRoad(this IWorldMap map, long roadId) => map.IsMotorRoad(roadId) && map.Roads[roadId].Kind <= WayKind.Unclassified;
+public static bool IsSignificantMotorRoad(this IWorldMap map, long roadId) => map.IsMotorRoad(roadId) && map.GetRoad(roadId).Kind <= WayKind.Unclassified;
 
         internal static int CycleWeight(this IWorldMap map, in RoadIndexLong idx) => map.IsCycleWay(idx.RoadMapIndex) ? 1 : 0;
 
@@ -156,13 +156,13 @@ public static bool IsSignificantMotorRoad(this IWorldMap map, long roadId) => ma
         {
             return currentRoadId == nextRoadId
                 || (map.IsCycleWay(currentRoadId) && map.IsCycleWay(nextRoadId))
-                || (map.Roads[currentRoadId].HasName && map.Roads[nextRoadId].HasName 
-                                                     && map.Roads[currentRoadId].NameIdentifier == map.Roads[nextRoadId].NameIdentifier);
+                || (map.GetRoad(currentRoadId).HasName && map.GetRoad(nextRoadId).HasName 
+                                                     && map.GetRoad(currentRoadId).NameIdentifier == map.GetRoad(nextRoadId).NameIdentifier);
         }
 
         internal static bool IsRoadLooped(this IWorldMap map, long roadId)
         {
-            return map.Roads[roadId].Nodes.Count != map.Roads[roadId].Nodes.Distinct().Count();
+            return map.GetRoad(roadId).Nodes.Count != map.GetRoad(roadId).Nodes.Distinct().Count();
         }
 
         public static bool IsDirectionAllowed(this IWorldMap map, in RoadIndexLong from, in RoadIndexLong dest)
@@ -172,7 +172,7 @@ public static bool IsSignificantMotorRoad(this IWorldMap map, long roadId) => ma
             if (map.GetNode(from) == map.GetNode(dest))
                 throw new ArgumentException($"Cannot compute direction for the same spot {from.IndexAlongRoad}");
 
-            if (!map.Roads[from.RoadMapIndex].OneWay)
+            if (!map.GetRoad(from.RoadMapIndex).OneWay)
                 return true;
 
             if (map.IsRoadLooped(from.RoadMapIndex))

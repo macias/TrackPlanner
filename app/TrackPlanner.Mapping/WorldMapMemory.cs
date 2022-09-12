@@ -40,7 +40,7 @@ namespace TrackPlanner.Mapping
         private IReadOnlySet<long>? bikeFootDangerousNearbyNodes;
 
         //IReadOnlyEnumerableDictionary<long, GeoZPoint> IWorldMap.Nodes => this.Nodes;
-        IReadOnlyEnumerableDictionary<long, RoadInfo> IWorldMap.Roads => this.Roads;
+        //IReadOnlyEnumerableDictionary<long, RoadInfo> IWorldMap.Roads => this.Roads;
         public IReadOnlyMap<long, GeoZPoint> Nodes { get; }
         public IReadOnlyMap<long, RoadInfo> Roads { get; }
         public IEnumerable<IEnumerable<long>> Railways => this.railways ?? throw new InvalidOperationException("Map was loaded only with roads info.");
@@ -110,7 +110,7 @@ namespace TrackPlanner.Mapping
 
 
         // note we can get even for the same road multiple indices, example case: roundabouts -- "start" and "end" are at the same point
-        public IEnumerable<RoadIndexLong> GetRoads(long nodeId)
+        public IEnumerable<RoadIndexLong> GetRoadsAtNode(long nodeId)
         {
             return this.nodeRoadReferences[nodeId];
         }
@@ -170,6 +170,16 @@ namespace TrackPlanner.Mapping
         {
             //return this.bikeFootDangerousNearbyNodes.TryGetValue(roadId, out var indices) && indices.Contains(nodeId);
             return this.bikeFootDangerousNearbyNodes!.Contains(nodeId);
+        }
+
+        public RoadInfo GetRoad(long roadMapIndex)
+        {
+            return Roads[roadMapIndex];
+        }
+
+        public IEnumerable<KeyValuePair<long, RoadInfo>> GetAllRoads()
+        {
+            return Roads;
         }
 
         private void validate(IEnumerable<long> nodeReferences)

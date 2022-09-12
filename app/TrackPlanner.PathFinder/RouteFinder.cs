@@ -414,7 +414,7 @@ namespace TrackPlanner.PathFinder
             out CostPath resultPath)
         {
             stats = new CompStatistics();
-            logger.Info($"Start at legal {stageStart.Any(it => this.map.Roads[it.RoadIdx.RoadMapIndex].HasAccess)}, end at legal {stageEnd.Any(it => this.map.Roads[it.RoadIdx.RoadMapIndex].HasAccess)}");
+            logger.Info($"Start at legal {stageStart.Any(it => this.map.GetRoad(it.RoadIdx.RoadMapIndex).HasAccess)}, end at legal {stageEnd.Any(it => this.map.GetRoad(it.RoadIdx.RoadMapIndex).HasAccess)}");
 
             int rejected = 0;
 
@@ -520,7 +520,7 @@ namespace TrackPlanner.PathFinder
 
                 backtrack.Add(current_place, (current_info, current_weight));
 
-                if (current_place.IsNode && map.Roads[current_info.IncomingRoadId!.Value].IsDangerous)
+                if (current_place.IsNode && map.GetRoad(current_info.IncomingRoadId!.Value).IsDangerous)
                 {
                     this.DEBUG_dangerousNodes.Add(current_place.NodeId);
                 }
@@ -824,7 +824,7 @@ namespace TrackPlanner.PathFinder
                 {
                     foreach (RoadSnapInfo snap in bucket)
                     {
-                        var road = map.Roads[snap.RoadIdx.RoadMapIndex];
+                        var road = map.GetRoad(snap.RoadIdx.RoadMapIndex);
                         if (road.IsDangerous || road.IsUncomfortable)
                         {
                             suppressed.AddRange(suppressTrafficCost(map.GetNode(snap.RoadIdx), suppressionRange));
@@ -859,7 +859,7 @@ namespace TrackPlanner.PathFinder
                     if (suppressed.Contains(adj_node_id))
                         continue;
 
-                    if (map.Roads[adj_idx.RoadMapIndex].IsDangerous || map.Roads[adj_idx.RoadMapIndex].IsUncomfortable)
+                    if (map.GetRoad(adj_idx.RoadMapIndex).IsDangerous || map.GetRoad(adj_idx.RoadMapIndex).IsUncomfortable)
                     {
                         Length adj_total_dist = curr_dist + calc.GetDistance(current_point, map.GetPoint(adj_node_id));
                         if (adj_total_dist <= suppressionRange)

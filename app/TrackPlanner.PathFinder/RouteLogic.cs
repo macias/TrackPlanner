@@ -40,7 +40,7 @@ namespace TrackPlanner.PathFinder
             }
             else if (current.IsNode)
             {
-                roadIds = map.GetRoads(current.NodeId).Select(it => it.RoadMapIndex);
+                roadIds = map.GetRoadsAtNode(current.NodeId).Select(it => it.RoadMapIndex);
                 return true;
             }
             else if (current.IsCross)
@@ -73,7 +73,7 @@ namespace TrackPlanner.PathFinder
 
             Length segment_length = calc.GetDistance(currentPlace.Point, target_point);
 
-            RoadInfo connecting_road = this.map.Roads[connectingRoadMapIndex];
+            RoadInfo connecting_road = this.map.GetRoad(connectingRoadMapIndex);
 
             bool is_forbidden = connecting_road.Kind <= WayKind.HighwayLink || !connecting_road.HasAccess;
             SpeedMode connecting_speed_mode = connecting_road.GetRoadSpeedMode();
@@ -161,7 +161,7 @@ namespace TrackPlanner.PathFinder
                     // todo: this is odd, we should check the road we came, and the connecting road (as future one)
                     && !connecting_road.IsMassiveTraffic
                     && tryGetIcomingRoadIds(targetPlace, start, end, out IEnumerable<long>? road_ids)
-                    && road_ids.Any(it => this.map.Roads[it].IsMassiveTraffic)) // we are hitting high-traffic road
+                    && road_ids.Any(it => this.map.GetRoad(it).IsMassiveTraffic)) // we are hitting high-traffic road
                 {
                     TimeSpan join_traffic = this.userConfig.JoiningHighTraffic;
                     added_run_time += join_traffic;
