@@ -7,7 +7,7 @@ namespace TrackPlanner.Mapping
 {
     public interface IWorldMap
     {
-        RoadGrid Grid { get; }
+        IGrid Grid { get; }
         
         GeoZPoint GetPoint(long nodeId);
         IEnumerable<KeyValuePair<long, GeoZPoint>> GetAllNodes();

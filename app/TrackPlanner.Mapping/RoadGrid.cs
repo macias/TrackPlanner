@@ -10,7 +10,7 @@ using TrackPlanner.Storage.Data;
 
 namespace TrackPlanner.Mapping
 {
-    public abstract class RoadGrid
+    public abstract class RoadGrid : IGrid
     {
         public int CellSize { get; }
 
@@ -21,8 +21,6 @@ namespace TrackPlanner.Mapping
         private readonly bool legacyGetNodeAllRoads;
         private readonly IReadOnlyBasicMap<CellIndex, RoadGridCell> cells;
 
-        public abstract string GetStats();
-        
         protected RoadGrid(ILogger logger, IReadOnlyBasicMap<CellIndex, RoadGridCell> cells, IWorldMap map, IGeoCalculator calc,
             int gridCellSize, string? debugDirectory, bool legacyGetNodeAllRoads)
         {
@@ -35,6 +33,8 @@ namespace TrackPlanner.Mapping
             this.legacyGetNodeAllRoads = legacyGetNodeAllRoads;
         }
 
+        public abstract string GetStats();
+        
         private CellIndex getCellIndex(Angle latitude, Angle longitude)
         {
             return new CellIndex()

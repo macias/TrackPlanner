@@ -28,7 +28,8 @@ namespace TrackPlanner.PathFinder
             CancellationToken cancellationToken,
             [MaybeNullWhen(false)] out List<LegRun> pathSteps,out string? problem)
         {
-            var buckets = map.Grid.GetRoadBuckets(userPoints, sysConfig.InitSnapProximityLimit, sysConfig.FinalSnapProximityLimit, 
+            var buckets = map.Grid.GetRoadBuckets(userPoints, sysConfig.InitSnapProximityLimit, 
+                sysConfig.FinalSnapProximityLimit, 
                 requireAllHits: true, singleMiddleSnaps: true);
             var finder = new RouteFinder(logger,navigator, map,  new Shortcuts(), sysConfig, userConfig, buckets, 
                 new PathConstraints(), cancellationToken);

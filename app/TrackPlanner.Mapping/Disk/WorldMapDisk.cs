@@ -61,7 +61,7 @@ namespace TrackPlanner.Mapping.Disk
         private readonly DiskDictionary<long, RoadInfo> roads;
         private readonly ILogger logger;
         private readonly DiskDictionary<long,GeoZPoint> nodes;
-        public RoadGrid Grid { get; }
+        public IGrid Grid { get; }
 
         private IEnumerable<IEnumerable<long>> Railways => throw new InvalidOperationException("Map was loaded only with roads info.");
         private IEnumerable<IEnumerable<long>> Forests => throw new InvalidOperationException("Map was loaded only with roads info.");

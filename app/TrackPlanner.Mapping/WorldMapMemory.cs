@@ -40,7 +40,7 @@ namespace TrackPlanner.Mapping
 
         private IReadOnlySet<long>? bikeFootDangerousNearbyNodes;
         private RoadGridMemory grid;
-        public RoadGrid Grid => this.grid;
+        public IGrid Grid => this.grid;
 
         private IReadOnlyMap<long, GeoZPoint> nodes { get; }
         private IReadOnlyMap<long, RoadInfo> roads { get; }
