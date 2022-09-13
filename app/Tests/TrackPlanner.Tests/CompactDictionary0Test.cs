@@ -1,17 +1,33 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using TrackPlanner.Turner;
+using FluentAssertions;
 using Xunit;
-using TrackPlanner.LinqExtensions;
-using TrackPlanner.Mapping;
-using TrackPlanner.Mapping.Data;
 using TrackPlanner.Storage.Data;
 
 namespace TrackPlanner.Tests
 {
     public class CompactDictionary0Test
     {
+        [Fact]
+        public void RemovalTest()
+        {
+            var input = new long[] { 200,23, 2,3,5,7,11,13,17,19,111, 4, 6, 8, 12, 202, 444,401};
+            var dict = new CompactDictionaryShift<long,long>( );
+            foreach (var x in input)
+                dict.Add(x,-x);
+            for (int i=0;i<input.Length;++i)
+            {
+                Assert.True(dict.Remove(input[i],out var removed));
+                Assert.Equal(-input[i],removed);
+                Assert.Equal(input.Length-i-1,dict.Count);
+                KeyValuePair<long,long>[] trimmed_input = input.Skip(i+1).Select(it => KeyValuePair.Create(it, -it)).ToArray();
+                KeyValuePair<long,long>[] dict_entries = dict.OrderBy(it => it.Key).ToArray();
+                Assert.Equal(trimmed_input.Length,dict_entries.Length);
+                trimmed_input.Should().BeEquivalentTo(dict_entries);
+            }
+        }
+
         [Fact]
         public void LongResizingTest()
         {

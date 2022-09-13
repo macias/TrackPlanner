@@ -461,12 +461,6 @@ namespace TrackPlanner.Mapping
             return map;
         }
 
-              /* RoadGrid IWorldMap.CreateRoadGrid(int gridCellSize, string? debugDirectory)
-                {
-                    return this.createRoadGrid(gridCellSize, debugDirectory);
-                }
-                */
-        
         public void AttachDangerInNonMotorNodes( RoadGridMemory grid, Length highTrafficProximity)
         {
             this.grid = grid;

@@ -264,20 +264,50 @@ namespace TrackPlanner.Storage.Data
             return true;
         }
 
-        public bool TryGetValue(TKey key, [MaybeNullWhen(false)] out TValue value)
+        public bool Remove(TKey key, [MaybeNullWhen(false)] out TValue value)
+        {
+            if (!tryGetValue(key, out value, out int index, out int hash))
+                return false;
+
+            int curr_index = index;
+            while (true)
+            {
+                int redirect = (this.targets[curr_index] & indexMask)-shift;
+                if (redirect == index)
+                    break;
+                curr_index = redirect;
+            }
+
+            {
+                var original_target = this.targets[index];
+                if (curr_index == hash) // if we are at in-sync position we have to clear redirect flag
+                    original_target &= indexMask;
+                this.targets[curr_index] = original_target;
+
+            }
+
+            this.targets[index] = notUsed;
+            --Count;
+
+            return true;
+        }
+        
+        private bool tryGetValue(TKey key, [MaybeNullWhen(false)] out TValue value,out int index,out int hash)
         {
             if (Count == 0)
             {
                 value = default;
+                index = default;
+                hash = default;
                 return false;
             }
 
-            int hash = getHash(key) % this.keys.Length;
+            hash = getHash(key) % this.keys.Length;
 
             // checking if slot is occupied and whether at least hash matches
             if (this.targets[hash] != notUsed && this.targets[hash] >= 0)
             {
-                int index = hash;
+                index = hash;
                 do
                 {
                     if (this.comparer.Equals(keys[index], key))
@@ -291,7 +321,14 @@ namespace TrackPlanner.Storage.Data
             }
 
             value = default;
+            index = default;
+            hash = default;
             return false;
+        }
+
+        public bool TryGetValue(TKey key, [MaybeNullWhen(false)] out TValue value)
+        {
+            return tryGetValue(key, out value, out _, out _);
         }
 
         private IEnumerable<KeyValuePair<TKey, TValue>> iterate()
