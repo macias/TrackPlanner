@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using TrackPlanner.Shared;
@@ -10,12 +9,13 @@ using TrackPlanner.Mapping.Data;
 namespace TrackPlanner.Turner.Implementation
 
 {
-    internal sealed class TrackNode : IEnumerable<RoadIndexLong>
+    internal sealed class TrackNode 
     {
         public static TrackNode Create(IWorldMap map, long nodeId)
         {
-            return new TrackNode(map, map.GetRoadsAtNode(nodeId)
-                .GroupBy(it => it.RoadMapIndex).ToDictionary(it => it.Key, it => cast(it.Select(it => it.IndexAlongRoad).ToList())));
+            return new TrackNode(map,nodeId, map.GetRoadsAtNode(nodeId)
+                .GroupBy(it => it.RoadMapIndex)
+                .ToDictionary(it => it.Key, it => it.Select(it => it.IndexAlongRoad).ToList().ReadOnlyList()));
         }
 
         private readonly IWorldMap map;
@@ -38,25 +38,21 @@ namespace TrackPlanner.Turner.Implementation
         public bool ForwardCyclewayUncertain { get; set; }
         public DirectionalArray<RoadIndexLong> Segment { get; }
 
-        private static IReadOnlyList<T> cast<T>(List<T> list) => list;
-
-        private TrackNode(IWorldMap map, IReadOnlyDictionary<long, IReadOnlyList<ushort>> dict)
+        private TrackNode(IWorldMap map,long nodeId,
+            // road id -> indices along road
+            IReadOnlyDictionary<long, IReadOnlyList<ushort>> dict)
         {
             this.map = map;
             // remove all point-roads (like crossings)
-            this.dict = dict.Where(it => map.GetRoad(it.Key).Nodes.Count > 1).ToDictionary(it => it.Key, it => it.Value);
+            this.dict = dict
+                .Where(it => map.GetRoad(it.Key).Nodes.Count > 1)
+                .ToDictionary(it => it.Key, it => it.Value);
 
             if (this.dict.Values.Any(it => it.Count < 1 || it.Count > 2))
                 throw new ArgumentException();
 
-            {
-                (long road_id, int idx) = this.dict.Select(it => (it.Key, it.Value.First())).First();
-                NodeId = map.GetRoad(road_id).Nodes[idx];
-
-                if (this.Any(idx => map.GetNode(idx) != NodeId))
-                    throw new ArgumentException();
-            }
-
+            NodeId = nodeId;
+            
             this.Point = map.GetPoint(NodeId);
 
             foreach (var entry in this.dict)
@@ -71,16 +67,6 @@ namespace TrackPlanner.Turner.Implementation
             this.Segment = new DirectionalArray<RoadIndexLong>();
         }
 
-        public IEnumerator<RoadIndexLong> GetEnumerator()
-        {
-            return this.dict.SelectMany(it => it.Value.Select(v => new RoadIndexLong(it.Key, v))).GetEnumerator();
-        }
-
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return this.GetEnumerator();
-        }
-
         public IReadOnlyDictionary<long, (ushort currentIndex, ushort nextIndex)> ShortestSegmentsIntersection(TrackNode other)
         {
             var intersect = Linqer.Intersect(this.dict, other.dict, (a, b) => (a, b));
@@ -91,12 +77,6 @@ namespace TrackPlanner.Turner.Implementation
             // todo: this is wrong also because we cannot assume we are along (and not in reverse) of given road
             return intersect.ToDictionary(it => it.Key, it => (it.Value.a.OrderByDescending(x => x).First(), it.Value.b.OrderBy(x => x).First()));
         }
-
-        /*internal RoadIndex GetIndex(long roadId)
-        {
-//            return new RoadIndex(roadId, this.dict[roadId]);
-            throw new NotImplementedException();
-        }*/
 
         internal bool IsDirectionAllowed(long roadId, in RoadIndexLong dest)
         {

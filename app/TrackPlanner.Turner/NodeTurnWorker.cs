@@ -94,7 +94,8 @@ namespace TrackPlanner.Turner
                 var track_node = track[turn_pt_idx];
                 GeoZPoint turn_point = track_node.Point;
 
-                IReadOnlyList<(RoadIndexLong turn, RoadIndexLong sibling)> alt_arms = getAlternateArms(track_node, incoming_road, outgoing_road).ToList();
+                IReadOnlyList<(RoadIndexLong turn, RoadIndexLong sibling)> alt_arms 
+                    = getAlternateArms(track_node, incoming_road, outgoing_road).ToList();
                 logger.Verbose($"Track index {turn_pt_idx}, arms {alt_arms.Count}, {(String.Join(", ", alt_arms.Select(it => stringify(map.GetRoad(it.turn.RoadMapIndex)))))}");
 
                 bool is_cross_intersection = false;
@@ -147,8 +148,6 @@ namespace TrackPlanner.Turner
                         long alt_sibling_node = altInfo.Nodes[alt_sibling.IndexAlongRoad];
 
                         (forward, backward) = isTurnNeeded(track, potential_turn_indices, turn_pt_idx,
-                            //track[trk_idx].GetIndex(incoming_road.RoadId), incoming_road,
-                            //track[trk_idx].GetIndex(outgoing_road.RoadId), outgoing_road,
                             track_node.IsDirectionAllowed(incoming_road.RoadMapIndex, incoming_road),
                             track_node.IsDirectionAllowed(outgoing_road.RoadMapIndex, outgoing_road),
                             alt_road_idx, alt_sibling,
@@ -471,8 +470,9 @@ namespace TrackPlanner.Turner
 
             bool? is_cycleway_category(TrackNode node)
             {
-                bool has_cycleway = node.Any(it => map.GetRoad(it.RoadMapIndex).Kind == WayKind.Cycleway);
-                bool has_road = node.Any(it => new RoadRank(map.GetRoad(it.RoadMapIndex)).IsSolid);
+                IEnumerable<RoadIndexLong> node_roads = this.map.GetRoadsAtNode(node.NodeId);
+                bool has_cycleway = node_roads.Any(it => map.GetRoad(it.RoadMapIndex).Kind == WayKind.Cycleway);
+                bool has_road = node_roads.Any(it => new RoadRank(map.GetRoad(it.RoadMapIndex)).IsSolid);
 
                 if (has_cycleway && !has_road)
                     return true;
@@ -505,7 +505,7 @@ namespace TrackPlanner.Turner
                 var points = Enumerable.Range(0, road_assignments.Count).Select((Func<int, (GeoZPoint, string label)>)(i =>
                 {
                     var ass = road_assignments[i];
-                    (long road_id, ushort idx) = ass.First();
+                    (long road_id, ushort idx) = this.map.GetRoadsAtNode(ass.NodeId).First();
                     long node_id = this.map.GetRoad(road_id).Nodes[idx];
                     string label = ass.Count == 1 ? $"{i}={road_id}" : $"{i} : {ass.Count}";
                     return (this.map.GetPoint(node_id), label);
@@ -517,7 +517,7 @@ namespace TrackPlanner.Turner
 
         private IEnumerable<(RoadIndexLong turn, RoadIndexLong sibling)> getAlternateArms(TrackNode trackNode, RoadIndexLong incoming, RoadIndexLong outgoing)
         {
-            foreach (RoadIndexLong road_idx in trackNode)
+            foreach (RoadIndexLong road_idx in this.map.GetRoadsAtNode( trackNode.NodeId))
             {
                 bool is_same_arm(in RoadIndexLong a, in RoadIndexLong b) => a.RoadMapIndex == road_idx.RoadMapIndex && a.RoadMapIndex == b.RoadMapIndex  // same road
                                                                                                                          // we cannot compare direct indices or nodes, because our track does not have to contain all the nodes from the given map road
@@ -589,15 +589,19 @@ namespace TrackPlanner.Turner
                 {
                     yield return i;
                 }
-                else if (isEndRoad(track_node.First()) && isEndRoad(track_node.Last()))
-                {
-                    // just an extension of the roads
-                    ;
-                }
                 else
                 {
-                    // T-juction of two roads, thus it is a turn here
-                    yield return i;
+                    IEnumerable<RoadIndexLong> node_roads = this.map.GetRoadsAtNode(track_node.NodeId);
+                    if (isEndRoad(node_roads.First()) && isEndRoad(node_roads.Last()))
+                    {
+                        // just an extension of the roads
+                        ;
+                    }
+                    else
+                    {
+                        // T-juction of two roads, thus it is a turn here
+                        yield return i;
+                    }
                 }
             }
         }
@@ -631,10 +635,10 @@ namespace TrackPlanner.Turner
             if (intersection.Count == 0)
             {
                 logger.Verbose($"CURRENT {idx}");
-                foreach (var entry in current)
+                foreach (var entry in this.map.GetRoadsAtNode( current.NodeId))
                     logger.Verbose($"{entry.RoadMapIndex} [{entry.IndexAlongRoad}]");
                 logger.Verbose($"NEXT {idx + direction}");
-                foreach (var entry in next)
+                foreach (var entry in  this.map.GetRoadsAtNode(next.NodeId))
                     logger.Verbose($"{entry.RoadMapIndex} [{entry.IndexAlongRoad}]");
                 if (this.sysConfig.DebugDirectory != null)
                 {
@@ -709,7 +713,8 @@ namespace TrackPlanner.Turner
             return false;
         }
 
-        private (TurnNotification forward, TurnNotification backward) isTurnNeeded(IReadOnlyList<TrackNode> track, IReadOnlySet<int> turnIndices, 
+        private (TurnNotification forward, TurnNotification backward) isTurnNeeded(IReadOnlyList<TrackNode> track, 
+            IReadOnlySet<int> turnIndices, 
             int nodeIndex,
             //in RoadIndex incomingTurn, in RoadIndex incoming, 
             //in RoadIndex outgoingTurn, in RoadIndex outgoing,
