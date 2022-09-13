@@ -89,6 +89,8 @@ namespace TrackPlanner.Tests
         [MemberData(nameof(TestParams))]
                 public void A_FIX_BAD_PLANNING_BiskupiceTurnOnCyclewayTest(MapMode mapMode)
         {
+            // we should stick to the road and give notification and road turn
+            // not at the cycleway turn (cycleway turn is earlier than road one)
             var map_filename = "legacy/biskupice_turn_on_cycleway.kml";
             var (plan,turns) = ComputeTurns(mapMode,map_filename,
                 GeoZPoint.FromDegreesMeters(                53.13756, 18.51066, 0),
@@ -99,11 +101,12 @@ namespace TrackPlanner.Tests
             
             Assert.Equal(1, turns.Count);
 
-            Assert.Equal(53.143534600000002, turns[0].Point.Latitude.Degrees, Precision);
-            Assert.Equal(18.506028300000001, turns[0].Point.Longitude.Degrees, Precision);
-            Assert.True(turns[0].Forward);
-            Assert.True(turns[0].Backward);
-            Assert.Equal(3, turns[0].TrackIndex);
+            int index = 0;
+            
+            Assert.Equal(1437255500, turns[index].EntityId);
+            Assert.True(turns[index].Forward);
+            Assert.True(turns[index].Backward);
+            Assert.Equal(4, turns[index].TrackIndex);
         }
 
                 [Theory]
@@ -145,7 +148,8 @@ namespace TrackPlanner.Tests
             
             Assert.Equal(1, turns.Count);
             
-            // this entire turn-notification is because we snapped path to one-direction road (partially) so when we go along no problem, but when we go back
+            // this entire turn-notification is because we snapped path to one-direction road (partially)
+            // so when we go along no problem, but when we go back
             // turn calculator see we go against current thus it gives us notification
             Assert.Equal(53.022024400000006, turns[0].Point.Latitude.Degrees, Precision);
             Assert.Equal(18.669373999999998, turns[0].Point.Longitude.Degrees, Precision);

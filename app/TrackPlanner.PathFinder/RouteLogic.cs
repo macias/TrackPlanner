@@ -82,8 +82,19 @@ namespace TrackPlanner.PathFinder
             
             Risk risk_info = Risk.None;
 
-            if (connecting_road.Kind != WayKind.Cycleway)
-                cost_scale_factor += this.userConfig.AddedNonCyclewayCostFactor;
+            {
+                // it can be negative
+                var cycleway_factor = this.userConfig.AddedCyclewayCostFactor;
+                if (connecting_road.Kind == WayKind.Cycleway)
+                {
+                    if (cycleway_factor > 0) // only add this if is positive
+                        cost_scale_factor += cycleway_factor;
+                }
+                // if we would like to promote cycleway we do this by adding penalties
+                // to non-cycleways
+                else if (cycleway_factor < 0)
+                    cost_scale_factor -= cycleway_factor;
+            }
             
             {
                 bool is_suppressed(Placement pl) => (pl.IsSnapped && !pl.IsFinal)
