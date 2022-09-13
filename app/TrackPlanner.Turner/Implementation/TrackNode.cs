@@ -80,7 +80,7 @@ namespace TrackPlanner.Turner.Implementation
 
         internal bool IsDirectionAllowed(long roadId, in RoadIndexLong dest)
         {
-            return map.IsDirectionAllowed(new RoadIndexLong(roadId, dict[roadId].First()), dest);
+            return map.IsDirectionAllowed(this.map.GetRoadsAtNode(NodeId).First(it => it.RoadMapIndex==roadId), dest);
         }
 
     }
