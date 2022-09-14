@@ -12,7 +12,7 @@ namespace TrackPlanner.Storage
     {
         // https://thargy.com/2014/03/memory-mapped-file-performance/
         
-        private readonly Dictionary<TKey, (int historyStamp,TValue value)> cache;
+        private readonly CompactDictionaryFill<TKey, (int historyStamp,TValue value)> cache;
         private readonly IReadOnlyList<ReaderOffsets<TKey>> sourceReaders;
         private readonly Func<TKey, IReadOnlyList<BinaryReader>, TValue> loader;
         // we store offsets for given entities, but in this particular dictionary
@@ -42,7 +42,7 @@ namespace TrackPlanner.Storage
             this.extraOffset = extraOffset;
             this.loader = loader;
             this.memoryLimit = memoryLimit;
-            this.cache = new Dictionary<TKey, (int,TValue)>(capacity:memoryLimit);
+            this.cache = new CompactDictionaryFill<TKey, (int,TValue)>(capacity:memoryLimit);
         }
 
         public bool ContainsKey(TKey key)
@@ -96,7 +96,7 @@ namespace TrackPlanner.Storage
                 {
                     if (entry.Value.historyStamp == this.historyIndex - this.memoryLimit)
                     {
-                        this.cache.Remove(entry.Key);
+                        this.cache.Remove(entry.Key,out _);
                         break;
                     }
                 }
