@@ -89,19 +89,19 @@ namespace TrackPlanner.Runner
                     // 1.0 -- castles only
                     // 2.0 -- added historic objects
                     // 2.1 -- added new historic objects
-                    var castles_fileName = Helper.GetUniqueFileName(outputDir, "2.1-"+System.IO.Path.GetFileName((file).Replace(".osm.pbf","")+"-historic.kml"));
+                    // 2.2 -- switch to tourist attraction
+                    var castles_fileName = Helper.GetUniqueFileName(outputDir, "2.2-"+System.IO.Path.GetFileName((file).Replace(".osm.pbf","")+"-historic.kml"));
                     using (FileStream stream = new FileStream(castles_fileName, FileMode.CreateNew))
                     {
                         var input = new TrackWriterInput();
                         foreach (var hist in hist_objects)
                         {
                             var description = new List<string>();
-                            if (hist.historicObject.Ruins)
-                                description.Add("Ruins");
-                            if (hist.historicObject.Url!=null)
+                            description.Add(String.Join(", ", hist.historicObject.GetFeatures()));
+                            if (hist.historicObject.Url != null)
                                 description.Add(hist.historicObject.Url);
-                            input.AddPoint(hist.location.Convert(), hist.historicObject.Name, String.Join(Environment.NewLine,description),
-                                hist.historicObject.Ruins ? PointIcon.CircleIcon : PointIcon.StarIcon);
+                            input.AddPoint(hist.location.Convert(), $"{hist.historicObject.Name} {hist.historicObject.NodeId}", String.Join(Environment.NewLine, description),
+                                hist.historicObject.Features.HasFlag(TouristAttraction.Feature.Ruins) ? PointIcon.CircleIcon : PointIcon.StarIcon);
                         }
 
                         var kml = input.BuildDecoratedKml();
@@ -110,7 +110,7 @@ namespace TrackPlanner.Runner
                     logger.Info($"Data saved to {castles_fileName}");
                 }
                 
-                logger.Info($"Unused historic values: {(String.Join(Environment.NewLine,extractor.UnusedHistoric.OrderBy(x => x)))}");
+                logger.Info($"Unused values: {(String.Join(Environment.NewLine,extractor.Unused.OrderBy(x => x)))}");
             
         }
 

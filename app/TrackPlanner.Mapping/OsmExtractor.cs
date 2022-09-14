@@ -1,23 +1,14 @@
 ﻿using MathUnit;
 using OsmSharp;
 using OsmSharp.Streams;
-using OsmSharp.Tags;
-using SharpKml.Engine;
-using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Globalization;
 using System.IO;
 using System.Linq;
 using Geo;
 using TrackPlanner.Shared;
-using TrackPlanner.DataExchange;
 using TrackPlanner.LinqExtensions;
-using TrackPlanner.Mapping.Data;
 using TrackPlanner.Storage.Data;
-
-
-#nullable enable
 
 namespace TrackPlanner.Mapping
 {
@@ -27,7 +18,15 @@ namespace TrackPlanner.Mapping
         private readonly IGeoCalculator calc;
         private readonly string? debugDirectory;
         private readonly HashSet<string> unusedHistoric;
-        public IEnumerable<string> UnusedHistoric => this.unusedHistoric;
+        private readonly HashSet<string> unusedBuildings;
+        private readonly HashSet<string> unusedHeritage;
+        private readonly HashSet<string> unusedSiteType;
+
+        public IEnumerable<string> Unused => this.unusedHistoric.Select(it => $"h:{this.unusedHistoric}")
+            .Concat(this.unusedBuildings.Select(it => $"b:{it}"))
+            .Concat(this.unusedHeritage.Select(it => $"r:{it}"))
+            .Concat(this.unusedSiteType.Select(it => $"s:{it}"))
+        ;
 
         public OsmExtractor(ILogger logger, IGeoCalculator calc, string? debugDirectory)
         {
@@ -35,14 +34,17 @@ namespace TrackPlanner.Mapping
             this.calc = calc;
             this.debugDirectory = debugDirectory;
             this.unusedHistoric = new HashSet<string>();
+            this.unusedBuildings = new HashSet<string>();
+            this.unusedHeritage = new HashSet<string>();
+            this.unusedSiteType = new HashSet<string>();
         }
 
-        public List<(HistoricObject historicObject,GeoPoint location)> ReadHistoricObjects(string filePath)
+        public List<(TouristAttraction historicObject,GeoPoint location)> ReadHistoricObjects(string filePath)
         {
             var nodes = new CompactDictionaryShift<long, GeoPoint>();
             // way id -> first node id
             var ways = new CompactDictionaryShift<long, long>();
-            var historic_objects = new List<(HistoricObject hist, long? nodeId, long? wayId)>();
+            var attractions = new List<(TouristAttraction hist, long? nodeId, long? wayId)>();
 
             double start = Stopwatch.GetTimestamp();
             {
@@ -59,55 +61,75 @@ namespace TrackPlanner.Mapping
                                 continue;
                             }
 
-                            bool is_castle = false;
-                            bool is_target = false;
+                            TouristAttraction.Feature? features = null;
+                            
                             if (element.Tags.TryGetValue("historic", out string hist_value))
                             {
+                                void set_feature(string type, TouristAttraction.Feature feature)
+                                {
+                                    if (hist_value.Contains(type))
+                                        features |= feature;
+                                }
 
-                                is_castle = hist_value.Contains("castle");
-                                is_target = hist_value.Contains("mansion")
-                                            || hist_value.Contains("lighthouse")
-                                            || hist_value.Contains("wreck")
-                                            || hist_value.Contains("tomb")
-                                            || hist_value.Contains("manor")
-                                            || hist_value.Contains("bunker")
-                                            || hist_value.Contains("church")
-                                            || hist_value.Contains("palace")
-                                            || hist_value.Contains("tower")
-                                            || hist_value.Contains("chapel")
-                                    ;
-                                if (!is_castle && !is_target)
+                                set_feature("castle", TouristAttraction.Feature.Castle);
+                                set_feature("mansion", TouristAttraction.Feature.Mansion);
+                                set_feature("lighthouse", TouristAttraction.Feature.Lighthouse);
+                                set_feature("wreck", TouristAttraction.Feature.Wreck);
+                                set_feature("tomb", TouristAttraction.Feature.Tomb);
+                                set_feature("manor", TouristAttraction.Feature.Manor);
+                                set_feature("bunker", TouristAttraction.Feature.Bunker);
+                                set_feature("church", TouristAttraction.Feature.Church);
+                                set_feature("palace", TouristAttraction.Feature.Palace);
+                                set_feature("tower", TouristAttraction.Feature.Tower);
+                                set_feature("chapel", TouristAttraction.Feature.Chapel);
+                                set_feature("archaeological_site", TouristAttraction.Feature.ArchaeologicalSite);
+
+                                if (features==null)
                                     this.unusedHistoric.Add(hist_value);
                             }
 
                             // https://wiki.openstreetmap.org/wiki/Key:heritage
-                            bool is_heritage = element.Tags.TryGetValue("heritage", out string heritage_value);
-                            bool is_church_attraction = element.Tags.TryGetValue("tourism", out string? tourism_value) && tourism_value.Contains("attraction")
-                                                                                                                       && element.Tags.TryGetValue("building", out string? building_value) && building_value.Contains("church");
-                            bool ruins = is_castle && ((element.Tags.TryGetValue("ruins", out string ruins_val) && ruins_val == "yes") || hist_value.Contains("ruins"));
-                            element.Tags.TryGetValue("site_type", out string? site_type_value);
-                            string description = "";
-                            if (element.Tags.TryGetValue("castle_type", out string type_val))
+                            if (element.Tags.TryGetValue("heritage", out string heritage_value))
                             {
-                                if (type_val == "manor" || type_val == "palace")
-                                    description = $" ({type_val})";
+                                features ??= TouristAttraction.Feature.None;
+                                this.unusedHeritage.Add(heritage_value);
                             }
 
-                            string name = element.Tags.TryGetValue("name", out var name_val)
-                                ? name_val
-                                : $"{hist_value} {site_type_value}{description} {element.GetType().Name[0]}{element.Id}";
-                            element.Tags.TryGetValue("url", out string? url_value);
+                            if (element.Tags.TryGetValue("tourism", out string? tourism_value) && tourism_value.Contains("attraction")
+                                                                                               && element.Tags.TryGetValue("building", out string? building_value))
+                            {
+                                if (building_value.Contains("church"))
+                                    features |= TouristAttraction.Feature.Church;
+                                else
+                                    this.unusedBuildings.Add(hist_value);
+                            }
 
-                            if (is_castle || is_church_attraction || is_heritage)
-                                is_target = true;
+                            if ((element.Tags.TryGetValue("ruins", out string ruins_val) && ruins_val == "yes") || hist_value.Contains("ruins"))
+                                features |= TouristAttraction.Feature.Ruins;
+
+                            if (element.Tags.TryGetValue("site_type", out string? site_type_value))
+                                this.unusedSiteType.Add(site_type_value);
+
+                            if (element.Tags.TryGetValue("castle_type", out string type_val))
+                            {
+                                if (type_val == "manor")
+                                    features |= TouristAttraction.Feature.Manor;
+                                if (type_val == "palace")
+                                    features |= TouristAttraction.Feature.Palace;
+                            }
+
+                             element.Tags.TryGetValue("name", out var name_val);
+                                 name_val ??= "";
+
+                                 element.Tags.TryGetValue("url", out string? url_value);
 
                             if (element is Way way)
                             {
                                 ways.Add(way.Id!.Value, way.Nodes.First());
 
-                                if (is_target)
+                                if (features.HasValue)
                                 {
-                                    historic_objects.Add((new HistoricObject(default, name, url_value, ruins), way.Nodes.First(), null));
+                                    attractions.Add((new TouristAttraction(default, name_val, url_value, features.Value), way.Nodes.First(), null));
 
                                 }
                             }
@@ -120,23 +142,23 @@ namespace TrackPlanner.Mapping
                                     nodes.Add(node_id, new GeoPoint(latitude: Angle.FromDegrees(node.Latitude.Value), longitude: Angle.FromDegrees(node.Longitude.Value)));
                                 }
 
-                                if (is_target)
+                                if (features.HasValue)
                                 {
-                                    historic_objects.Add((new HistoricObject(default, name, url_value, ruins), node_id, null));
+                                    attractions.Add((new TouristAttraction(default, name_val, url_value, features.Value), node_id, null));
                                 }
                             }
                             else if (element is Relation relation)
                             {
-                                if (is_target)
+                                if (features.HasValue)
                                 {
                                     var way_id = relation.Members.Where(it => it.Type == OsmGeoType.Way).Select(it => it.Id).FirstOrNone();
                                     if (way_id.HasValue)
-                                        historic_objects.Add((new HistoricObject(default, name, url_value, ruins), null, way_id.Value));
+                                        attractions.Add((new TouristAttraction(default, name_val, url_value, features.Value), null, way_id.Value));
                                     else
                                     {
                                         var node_id = relation.Members.Where(it => it.Type == OsmGeoType.Node).Select(it => it.Id).FirstOrNone();
                                         if (node_id.HasValue)
-                                            historic_objects.Add((new HistoricObject(default, name, url_value, ruins), node_id.Value, null));
+                                            attractions.Add((new TouristAttraction(default, name_val, url_value, features.Value), node_id.Value, null));
                                         else
                                             this.logger.Warning($"Relation {relation.Id} does not have any way or node.");
                                     }
@@ -147,10 +169,10 @@ namespace TrackPlanner.Mapping
                 }
             }
 
-            return historic_objects.Select(it =>
+            return attractions.Select(it =>
             {
                 var effective_node_id = it.nodeId ?? ways[it.wayId!.Value];
-                    return (new HistoricObject(effective_node_id,  it.hist.Name, it.hist.Url, it.hist.Ruins),nodes[effective_node_id]);
+                    return (new TouristAttraction(effective_node_id,  it.hist.Name, it.hist.Url, it.hist.Features),nodes[effective_node_id]);
                 }).ToList();
         }
     }
