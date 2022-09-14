@@ -9,33 +9,83 @@ namespace TrackPlanner.Tests
 {
     public class CompactDictionaryTest
     {
-        [Fact]
-        public void RemovalTest()
+        public static IEnumerable<object[]> TestParams
+        {
+            get
+            {
+                yield return new object[] {new CompactDictionaryFill<long, string>()};
+                yield return new object[] {new CompactDictionaryShift<long, string>()};
+            }
+        }
+
+        [Theory]
+        [MemberData(nameof(TestParams))]
+        public void RemovalTest(ICompactDictionary<long,string> dict)
         {
             var input = new long[] { 200,23, 2,3,5,7,11,13,17,19,111, 4, 6, 8, 12, 202, 444,401};
-            var dict = new CompactDictionaryFill<long,long>( );
             foreach (var x in input)
-                dict.Add(x,-x);
+                dict.Add(x,(-x).ToString());
+            input.Select(it => KeyValuePair.Create(it, (-it).ToString()))
+                .Should().BeEquivalentTo(dict.OrderBy(it => it.Key));
             for (int i=0;i<input.Length;++i)
             {
-                Assert.True(dict.Remove(input[i],out var removed));
-                Assert.Equal(-input[i],removed);
+                if (!dict.Remove(input[i], out var removed))
+                {
+                    dict.DEBUG_DUMP();
+                    Assert.False(true, $"Key {input[i]} not found.");
+                }
+
+                Assert.Equal((-input[i]).ToString(),removed);
                 Assert.Equal(input.Length-i-1,dict.Count);
-                input.Skip(i+1).Select(it => KeyValuePair.Create(it, -it))
+                input.Skip(i+1).Select(it => KeyValuePair.Create(it, (-it).ToString()))
                     .Should().BeEquivalentTo(dict.OrderBy(it => it.Key));
             }
         }
         
-        [Fact]
-        public void LongResizingTest()
+        [Theory]
+        [MemberData(nameof(TestParams))]
+        public void TwoStepsRemovalTest(ICompactDictionary<long,string> dict)
+        {
+            var input = new long[] { 200,23, 2,3,5,7,11,13,17,19,111, 4, 6, 8, 12, 202, 444,401};
+            foreach (var x in input)
+                dict.Add(x,(-x).ToString());
+            input.Select(it => KeyValuePair.Create(it, (-it).ToString()))
+                .Should().BeEquivalentTo(dict.OrderBy(it => it.Key));
+            for (int i=0;i<input.Length/2;++i)
+            {
+                Assert.True(dict.Remove(input[i],out var removed));
+                Assert.Equal((-input[i]).ToString(),removed);
+                Assert.Equal(input.Length-i-1,dict.Count);
+                input.Skip(i+1).Select(it => KeyValuePair.Create(it, (-it).ToString()))
+                    .Should().BeEquivalentTo(dict.OrderBy(it => it.Key));
+            }
+
+            for (int i =  input.Length / 2-1;i>=0;--i)
+            {
+                var x = input[i];
+                dict.Add(x,(-x).ToString());
+                input.Skip(i).Select(it => KeyValuePair.Create(it, (-it).ToString()))
+                    .Should().BeEquivalentTo(dict.OrderBy(it => it.Key));
+            }
+            for (int i=0;i<input.Length;++i)
+            {
+                Assert.True(dict.Remove(input[i],out var removed));
+                Assert.Equal((-input[i]).ToString(),removed);
+                Assert.Equal(input.Length-i-1,dict.Count);
+                input.Skip(i+1).Select(it => KeyValuePair.Create(it, (-it).ToString()))
+                    .Should().BeEquivalentTo(dict.OrderBy(it => it.Key));
+            }
+        }
+
+        [Theory]
+        [MemberData(nameof(TestParams))]
+        public void LongResizingTest(ICompactDictionary<long,string> dict)
         {
             // 200 --> pure hash 198
             // 23 --> pure hash 21
             var input = new long[] { 200,23, 2,3,5,7,11,13,17,19,111, 4, 6, 8, 12, 202, 444,401};
-            var dict = new CompactDictionaryFill<long,long>( );
             foreach (var x in input)
             {
-                long y;
                 long big_x =x + int.MaxValue;
                 Console.WriteLine($"ADDING {x} as key {big_x}");
                 if (x == 23)
@@ -45,19 +95,21 @@ namespace TrackPlanner.Tests
                     dict.DEBUG_DUMP();
                 }
 
-                dict.Add(big_x,-x);
+                dict.Add(big_x,(-x).ToString());
                 dict.DEBUG_DUMP();
+                string? y;
                 Assert.True(dict.TryGetValue(big_x,out y));
-                Assert.Equal(-x,y);
+                Assert.Equal((-x).ToString(),y);
                 dict.TrimExcess();
                 dict.DEBUG_DUMP();
                 Assert.True(dict.TryGetValue(big_x,out y));
-                Assert.Equal(-x,y);
+                Assert.Equal((-x).ToString(),y);
             }
         }
 
-        [Fact]
-        public void LongAdditionsTest()
+        [Theory]
+        [MemberData(nameof(TestParams))]
+        public void LongAdditionsTest(ICompactDictionary<long,string> dict)
         {
             
                 var map = new CompactDictionaryFill<long,string>( );
@@ -104,8 +156,9 @@ namespace TrackPlanner.Tests
             
         }
 
-        [Fact]
-        public void AdditionsTest()
+        [Theory]
+        [MemberData(nameof(TestParams))]
+        public void AdditionsTest(ICompactDictionary<long,string> dict)
         {
             {
                 var map = new CompactDictionaryFill<long,string>( );
@@ -150,8 +203,9 @@ namespace TrackPlanner.Tests
             }
         }
 
-        [Fact]
-        public void TryAdditionsTest()
+        [Theory]
+        [MemberData(nameof(TestParams))]
+        public void TryAdditionsTest(ICompactDictionary<long,string> dict)
         {
             {
                 var map = new CompactDictionaryFill<long,string>();

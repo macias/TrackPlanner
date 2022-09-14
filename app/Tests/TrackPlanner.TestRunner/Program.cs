@@ -5,6 +5,8 @@ using TrackPlanner.Shared;
 using TrackPlanner.DataExchange;
 using TrackPlanner.Mapping;
 using TrackPlanner.PathFinder;
+using TrackPlanner.Storage.Data;
+using TrackPlanner.Tests;
 
 namespace TrackPlanner.TestRunner
 {
@@ -25,11 +27,14 @@ namespace TrackPlanner.TestRunner
             //new CompactDictionaryTest().LongResizingTest();
 
          //   new Program().ExtractMiniMapFromFile(args, "gaski.kml");
+         if (false)
             new Program().extractMiniMapFromPoints("cierpice-crossing_road.kml",
                 GeoZPoint.FromDegreesMeters(52.983727, 18.485634, 0),
                 GeoZPoint.FromDegreesMeters(52.987045, 18.49471, 0)
             );
             //new MiniWorldTurnTest().LipionkaTest();
+            
+            new CompactDictionaryTest().RemovalTest(new CompactDictionaryFill<long, string>());
         }
 
         public void ExtractMiniMapFromFile(string[] args, params string[] planFilenames)
