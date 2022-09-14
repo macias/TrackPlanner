@@ -3,14 +3,13 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using System.Runtime.CompilerServices;
 
 namespace TrackPlanner.Storage.Data
 {
-    public abstract class CompactDictionary<TKey, TValue>: ICompactDictionary<TKey, TValue> 
+    public abstract class CompactDictionary<TKey, TValue> : ICompactDictionary<TKey, TValue>
         where TKey : notnull
     {
-        protected  abstract int notUsed { get; }
+        protected abstract int notUsed { get; }
 
         private const double growthRatio = 1.6;
 
@@ -18,13 +17,17 @@ namespace TrackPlanner.Storage.Data
         protected const int redirectedBit = int.MinValue;
 
         private readonly IEqualityComparer<TKey> comparer;
+
+        // anything below is for sure occupied, anything above maybe
+        // in other words when searching for free slot it makes sense
+        // to look only above
         private int occupied;
 
         public int Count { get; private set; }
         public int Capacity => this.keys.Length;
 
         private TKey[] keys = default!;
-        private TValue[] values = default!; 
+        private TValue[] values = default!;
         private int[] targets = default!;
 
         public TValue this[TKey key]
@@ -42,6 +45,7 @@ namespace TrackPlanner.Storage.Data
                     throw new NotSupportedException();
             }
         }
+
         public IEnumerable<TKey> Keys => this.iterate().Select(it => it.Key);
         public IEnumerable<TValue> Values => this.iterate().Select(it => it.Value);
 
@@ -77,7 +81,7 @@ namespace TrackPlanner.Storage.Data
             this.Count = 0;
             Array.Fill(this.targets, notUsed);
             // we have to clear those as well because we could have hanging references
-            // i.e. without this two calls GC could not reclaim memory
+            // i.e. without these two calls GC could not reclaim memory
             Array.Fill(this.keys, default(TKey));
             Array.Fill(this.values, default(TValue));
         }
@@ -90,7 +94,7 @@ namespace TrackPlanner.Storage.Data
 
         public bool TryAdd(TKey key, TValue value, out TValue? existing)
         {
-            return tryAdd(key, key.GetHashCode(),value, overwrite: false, out existing);
+            return tryAdd(key, key.GetHashCode(), value, overwrite: false, out existing);
         }
 
         public void TrimExcess()
@@ -100,15 +104,15 @@ namespace TrackPlanner.Storage.Data
 
         public void Expand()
         {
-            resize( (int) Math.Round((this.keys.Length + 1) * growthRatio));
+            resize((int) Math.Round((this.keys.Length + 1) * growthRatio));
         }
 
         // https://stackoverflow.com/a/51018529/210342
         protected int mod(int k, int n) // always returns positive value
         {
-            return ((k %= n) < 0) ? k+n : k;
+            return ((k %= n) < 0) ? k + n : k;
         }
-        
+
         private void resize(int capacity)
         {
             int DEBUG = Count;
@@ -131,19 +135,20 @@ namespace TrackPlanner.Storage.Data
                 --DEBUG;
 
             }
+
             if (DEBUG != 0)
             {
-                DEBUG_DUMP(source_targets,source_keys);
+                DEBUG_DUMP(source_targets, source_keys);
                 throw new InvalidOperationException($"Invalid resize {DEBUG} not copied");
             }
         }
 
         public void DEBUG_DUMP()
         {
-            DEBUG_DUMP(this.targets,this.keys);
+            DEBUG_DUMP(this.targets, this.keys);
         }
 
-        private void DEBUG_DUMP(int[] dumpTargets,TKey[] dumpKeys)
+        private void DEBUG_DUMP(int[] dumpTargets, TKey[] dumpKeys)
         {
             int size = dumpTargets.Length;
             Console.WriteLine($"current size {size}");
@@ -153,19 +158,19 @@ namespace TrackPlanner.Storage.Data
                 if (target == notUsed)
                     Console.WriteLine($"[{i}] Not used");
                 else
-                    Console.WriteLine($"[{i}] {dumpKeys[i]} -- {mod(dumpKeys[i].GetHashCode(),size)} -- {targetToIndex(target)}{((target & redirectedBit) != 0 ? " R" : "")}");
+                    Console.WriteLine($"[{i}] {dumpKeys[i]} -- {mod(dumpKeys[i].GetHashCode(), size)} -- {targetToIndex(target)}{((target & redirectedBit) != 0 ? " R" : "")}");
             }
 
             Console.WriteLine("======================");
         }
 
-        private bool tryAdd(TKey key, int pureHash, TValue value, bool overwrite,  out TValue? existing)
+        private bool tryAdd(TKey key, int pureHash, TValue value, bool overwrite, out TValue? existing)
         {
             if (this.keys.Length == 0)
                 initData(2);
 
             int hash_index = mod(pureHash, this.keys.Length);
-            
+
             // this slot is taken and it is taken with out-of-sync hash, thus we need to move
             // this entry somewhere else
             if (this.targets[hash_index] < 0)
@@ -176,7 +181,7 @@ namespace TrackPlanner.Storage.Data
                     return tryAdd(key, pureHash, value, overwrite, out existing);
                 }
 
-                int index =  findReferer( hash_index);
+                int index = findReferer(hash_index);
 
                 // looking for some free entry
                 while (this.targets[this.occupied] != notUsed)
@@ -200,13 +205,12 @@ namespace TrackPlanner.Storage.Data
                     // some time later -- if we have unused slot, this condition is then false, correct?
                     throw new Exception("REMOVE ME");
                     Expand();
-                    return tryAdd(key,pureHash, value, overwrite, out existing);
+                    return tryAdd(key, pureHash, value, overwrite, out existing);
                 }
 
                 this.keys[hash_index] = key;
                 this.values[hash_index] = value;
-                // preserve original hash, so on resize we won't rehash everything
-                this.targets[hash_index] =indexToTarget( hash_index); // this is valid (in-sync) slot so do not set redirection bit 
+                this.targets[hash_index] = indexToTarget(hash_index); // this is valid (in-sync) slot so do not set redirection bit 
             }
             else
             {
@@ -246,7 +250,7 @@ namespace TrackPlanner.Storage.Data
                 this.keys[data_index] = key;
                 this.values[data_index] = value;
                 this.targets[data_index] = this.targets[hash_index] | redirectedBit;
-                this.targets[hash_index] = indexToTarget( data_index); // this is valid (in-sync) slot so do not set redirection bit 
+                this.targets[hash_index] = indexToTarget(data_index); // this is valid (in-sync) slot so do not set redirection bit 
             }
 
 
@@ -259,8 +263,8 @@ namespace TrackPlanner.Storage.Data
         protected abstract int targetToIndex(int target);
         protected abstract int indexToTarget(int index);
 
-        
-        private int findReferer( int index)
+
+        private int findReferer(int index)
         {
             int curr_index = index;
             // searching the slot which directs to this entry
@@ -275,7 +279,7 @@ namespace TrackPlanner.Storage.Data
             return curr_index;
         }
 
-        private bool tryGetValue(TKey key, [MaybeNullWhen(false)] out TValue value,out int index,out int hashIndex)
+        private bool tryGetValue(TKey key, [MaybeNullWhen(false)] out TValue value, out int index, out int hashIndex)
         {
             if (Count == 0)
             {
@@ -313,7 +317,7 @@ namespace TrackPlanner.Storage.Data
         {
             return tryGetValue(key, out value, out _, out _);
         }
-        
+
         public IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator()
         {
             return iterate().GetEnumerator();
@@ -335,52 +339,61 @@ namespace TrackPlanner.Storage.Data
             foreach (var target in this.targets)
             {
                 ++idx;
-                if (target==notUsed)
+                if (target == notUsed)
                     continue;
                 yield return KeyValuePair.Create(this.keys[idx], this.values[idx]);
             }
         }
-        
+
         public bool Remove(TKey key, [MaybeNullWhen(false)] out TValue value)
         {
             if (!tryGetValue(key, out value, out int del_index, out int hash_index))
                 return false;
 
-            int referer_index = findReferer(del_index);
-
-            // if we are about to remove entry from its true slot (in sync)
-            // and there are more entries with the same hash, we have to move something to
-            // this place, because we cannot leave hole in true slot
-            if (hash_index == del_index && referer_index != del_index)
+            if (del_index != targetToIndex(this.targets[del_index])) // we have multiple entries for given hash
             {
-                // copy stuff from slot we are point to
-                var curr_dest_index = targetToIndex(this.targets[del_index]);
-                keys[del_index] = keys[curr_dest_index];
-                this.values[del_index] = this.values[curr_dest_index];
-                // and then remove the other slot
-                referer_index = del_index;
-                del_index = curr_dest_index;
-            }
+                int referer_index;
 
-            {
-                var curr_target = this.targets[del_index];
-                if (referer_index == hash_index) // if we are at in-sync position we have to clear redirect flag
-                    curr_target &= indexMask;
+                // we are removing out-of-sync entry, so all it takes
+                // is to find who is linking to this entry
+                if (hash_index != del_index)
+                {
+                    referer_index = findReferer(del_index);
+                }
+                // if we are about to remove entry from its true slot (in sync)
+                // we have to move something to this place,
+                // because we cannot leave hole in true slot
                 else
-                    curr_target |= redirectedBit;
-                this.targets[referer_index] = curr_target;
+                {
+                    // copy stuff from slot we are pointing to
+                    var curr_dest_index = targetToIndex(this.targets[del_index]);
+                    keys[del_index] = keys[curr_dest_index];
+                    this.values[del_index] = this.values[curr_dest_index];
+                    // and then set indices for removal to the other slot
+                    referer_index = del_index;
+                    del_index = curr_dest_index;
+                }
+
+                // closing the same-hash-loop/ring
+                {
+                    var curr_target = this.targets[del_index];
+                    if (referer_index == hash_index) // if we are at in-sync position we have to clear redirect flag
+                        curr_target &= indexMask;
+                    else
+                        curr_target |= redirectedBit;
+                    this.targets[referer_index] = curr_target;
+                }
             }
 
             this.targets[del_index] = notUsed;
+            // set key and value to default so GC could reclaim their memory
             this.keys[del_index] = default(TKey)!;
             this.values[del_index] = default(TValue)!;
-            
+
             --Count;
-            this.occupied = Math.Min(this.occupied,del_index);
-            
+            this.occupied = Math.Min(this.occupied, del_index);
+
             return true;
         }
-
     }
-  
 }
