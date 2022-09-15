@@ -408,7 +408,8 @@ Loaded 178_093_027 nodes, 50_177 road names, 4_051_113 roads, 1_503 longest in 5
                     {
                         foreach (OsmGeo element in source)
                         {
-                            if (element.Id.HasValue && element is Node node && node.Latitude.HasValue && node.Longitude.HasValue)
+                            if (element.Id.HasValue && element is Node node 
+                                                    && node.Latitude.HasValue && node.Longitude.HasValue)
                             {
                                 long node_id = node.Id!.Value;
                                 GeoZPoint pt = GeoZPoint.FromDegreesMeters(node.Latitude.Value, node.Longitude.Value, altitude: null);
@@ -423,6 +424,7 @@ Loaded 178_093_027 nodes, 50_177 road names, 4_051_113 roads, 1_503 longest in 5
                     }
                 }
             }
+            
             logger.Verbose($"Loaded {nodes.Count} nodes in {(Stopwatch.GetTimestamp() - start) / Stopwatch.Frequency} s");
             logger.Flush();
 

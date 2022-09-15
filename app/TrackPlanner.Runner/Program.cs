@@ -51,22 +51,22 @@ namespace TrackPlanner.Runner
                 logger.Info($"{nameof(GeoZPoint)}: {System.Runtime.InteropServices.Marshal.SizeOf(typeof(GeoZPoint))}");
                 //logger.Info($"{nameof(RoadInfo)}: {System.Runtime.InteropServices.Marshal.SizeOf(typeof(RoadInfo))}");
                 //RunTurner(logger);
-                RunFinder(logger);
+               // RunFinder(logger);
                 //RunCalc();
                 //DictionaryEval();
-                ExtracMapData(logger);
-                
+                ExtractMapData(logger);
+
             }
 
             Console.WriteLine("Done!");
             //Console.ReadLine();
         }
 
-        private static void ExtracMapData(ILogger logger)
+        private static void ExtractMapData(ILogger logger)
         {
             var builder = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile("clientsettings.json", optional: false);
+                .AddJsonFile("runner.json", optional: true);
 
             IConfiguration config = builder.Build();
 
@@ -74,40 +74,38 @@ namespace TrackPlanner.Runner
             config.GetSection(EnvironmentConfiguration.SectionName).Bind(env_config);
             env_config.Check();
 
-            var baseDirectory = System.IO.Path.GetFullPath(baseDir);
-
-            var navigator = new Navigator(baseDirectory);
+            var navigator = new Navigator(baseDir);
 
             var sysConfig = new SystemConfiguration() { EnableDebugDumping = true };
 
-            var extractor = new OsmExtractor(logger, new ApproximateCalculator(), navigator.GetDebug());
-                var osm_files = System.IO.Directory.GetFiles(System.IO.Path.Combine( baseDirectory, "maps/"), "*.osm.pbf");
+            var extractor = new OsmExtractor(logger);
+                var osm_files = System.IO.Directory.GetFiles(navigator.GetWorldMaps(), "*.osm.pbf");
                 foreach (var file in osm_files)
                 {
                     logger.Info($"Reading {file}");
-                    var hist_objects = extractor.ReadHistoricObjects(file);
+                    var hist_objects = extractor.ReadOsm(file);
                     // 1.0 -- castles only
                     // 2.0 -- added historic objects
                     // 2.1 -- added new historic objects
                     // 2.2 -- switch to tourist attraction
-                    var castles_fileName = Helper.GetUniqueFileName(outputDir, "2.2-"+System.IO.Path.GetFileName((file).Replace(".osm.pbf","")+"-historic.kml"));
-                    using (FileStream stream = new FileStream(castles_fileName, FileMode.CreateNew))
+                    var extract_fileName = Helper.GetUniqueFileName(outputDir, "2.2-"+System.IO.Path.GetFileName((file).Replace(".osm.pbf","")+"-historic.kml"));
+                    using (FileStream stream = new FileStream(extract_fileName, FileMode.CreateNew))
                     {
                         var input = new TrackWriterInput();
                         foreach (var hist in hist_objects)
                         {
                             var description = new List<string>();
-                            description.Add(String.Join(", ", hist.historicObject.GetFeatures()));
-                            if (hist.historicObject.Url != null)
-                                description.Add(hist.historicObject.Url);
-                            input.AddPoint(hist.location.Convert(), $"{hist.historicObject.Name} {hist.historicObject.NodeId}", String.Join(Environment.NewLine, description),
-                                hist.historicObject.Features.HasFlag(TouristAttraction.Feature.Ruins) ? PointIcon.CircleIcon : PointIcon.StarIcon);
+                            description.Add(String.Join(", ", hist.attraction.GetFeatures()));
+                            if (hist.attraction.Url != null)
+                                description.Add(hist.attraction.Url);
+                            input.AddPoint(hist.location.Point, $"{hist.attraction.Name} {hist.location.NodeId}", String.Join(Environment.NewLine, description),
+                                hist.attraction.Features.HasFlag(TouristAttraction.Feature.Ruins) ? PointIcon.CircleIcon : PointIcon.StarIcon);
                         }
 
                         var kml = input.BuildDecoratedKml();
                         kml.Save(stream);
                     }
-                    logger.Info($"Data saved to {castles_fileName}");
+                    logger.Info($"Data saved to {extract_fileName}");
                 }
                 
                 logger.Info($"Unused values: {(String.Join(Environment.NewLine,extractor.Unused.OrderBy(x => x)))}");
