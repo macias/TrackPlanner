@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
-using TrackPlanner.Storage.Data;
 
-namespace TrackPlanner.Mapping.Data
+namespace TrackPlanner.Structures
 {
     public interface IReadOnlyMap<TKey, TValue> : IReadOnlyEnumerableDictionary<TKey,TValue>
         where TKey : notnull

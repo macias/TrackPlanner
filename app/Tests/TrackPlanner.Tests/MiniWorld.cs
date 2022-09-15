@@ -15,6 +15,7 @@ using TrackPlanner.Mapping;
 using TrackPlanner.Mapping.Data;
 using TrackPlanner.Mapping.Disk;
 using TrackPlanner.PathFinder;
+using TrackPlanner.Structures;
 using TrackPlanner.Tests.Implementation;
 using Xunit;
 

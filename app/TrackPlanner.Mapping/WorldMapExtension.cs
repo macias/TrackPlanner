@@ -10,6 +10,7 @@ using TrackPlanner.Shared;
 using TrackPlanner.DataExchange;
 using TrackPlanner.Mapping.Data;
 using TrackPlanner.Data.Stored;
+using TrackPlanner.Structures;
 
 namespace TrackPlanner.Mapping
 {

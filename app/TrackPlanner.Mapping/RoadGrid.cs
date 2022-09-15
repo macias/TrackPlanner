@@ -6,7 +6,7 @@ using TrackPlanner.Data;
 using TrackPlanner.Shared;
 using TrackPlanner.LinqExtensions;
 using TrackPlanner.Mapping.Data;
-using TrackPlanner.Storage.Data;
+using TrackPlanner.Structures;
 
 namespace TrackPlanner.Mapping
 {

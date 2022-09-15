@@ -1,87 +1,63 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using OsmSharp;
-using OsmSharp.Streams;
-using System.Diagnostics;
-using System.IO;
 using System.Linq;
 using Geo;
 using MathUnit;
 using TrackPlanner.Data;
 using TrackPlanner.LinqExtensions;
+using TrackPlanner.Mapping.Data;
 using TrackPlanner.Shared;
-using TrackPlanner.Storage.Data;
+using TrackPlanner.Structures;
 
 namespace TrackPlanner.Mapping
 {
-    public sealed class OsmExtractor
+    public static class OsmExtractor
+    {
+        public enum Source
+        {
+            Historic,
+            Buildings,
+            Heritage,
+            SiteType,
+            Castles,
+        }
+    }
+
+    public sealed class OsmExtractor<TRoad>
     {
         private readonly ILogger logger;
-        private readonly HashSet<string> unusedHistoric;
-        private readonly HashSet<string> unusedBuildings;
-        private readonly HashSet<string> unusedHeritage;
-        private readonly HashSet<string> unusedSiteType;
-        private readonly HashSet<string> unusedCastles;
-        private CompactDictionaryShift<long, GeoPoint> nodes = default!;
-        private CompactDictionaryShift<long, long> ways = default!;
-        private List<(TouristAttraction hist, long? nodeId, long? wayId)> attractions = default!;
+        private readonly IReadOnlyBasicMap<long, GeoZPoint> nodes;
+        private readonly IReadOnlyBasicMap<long, TRoad> ways;
+        private readonly Func<TRoad, long> roadNodeExtractor;
+        private readonly HashSet<(OsmExtractor.Source,string)> unused;
+        private readonly List<(TouristAttraction hist, long? nodeId, long? wayId)> attractions;
 
-        public IEnumerable<string> Unused => this.unusedHistoric.Select(it => $"hi:{it}")
-            .Concat(this.unusedBuildings.Select(it => $"b:{it}"))
-            .Concat(this.unusedHeritage.Select(it => $"he:{it}"))
-            .Concat(this.unusedCastles.Select(it => $"c:{it}"))
-            .Concat(this.unusedSiteType.Select(it => $"s:{it}"));
+        public IEnumerable<(OsmExtractor.Source,string)> Unused => this.unused;
 
-        public OsmExtractor(ILogger logger)
+        public OsmExtractor(ILogger logger,IReadOnlyBasicMap<long, GeoZPoint> nodes,
+            IReadOnlyBasicMap<long, TRoad> ways,
+            // road data -> any node of the road
+            Func<TRoad,long> roadNodeExtractor)
         {
             this.logger = logger;
-            this.unusedHistoric = new HashSet<string>();
-            this.unusedBuildings = new HashSet<string>();
-            this.unusedHeritage = new HashSet<string>();
-            this.unusedSiteType = new HashSet<string>();
-            this.unusedCastles = new HashSet<string>();
-
-            Clear();
-        }
-
-        private void Clear()
-        {
-            this.nodes = new CompactDictionaryShift<long, GeoPoint>();
-            // way id -> first node id
-            this.ways = new CompactDictionaryShift<long, long>();
+            this.nodes = nodes;
+            this.ways = ways;
+            this.roadNodeExtractor = roadNodeExtractor;
+            this.unused = new HashSet<(OsmExtractor.Source,string)>();
             this.attractions = new List<(TouristAttraction hist, long? nodeId, long? wayId)>();
-        }
-        
-        public List<(TouristAttraction attraction, MapPoint location)> ReadOsm(string filePath)
-        {
-            Clear();
-            
-            double start = Stopwatch.GetTimestamp();
-            {
-                using (var stream = new MemoryStream(System.IO.File.ReadAllBytes(filePath)))
-                {
-                    using (var source = new PBFOsmStreamSource(stream))
-                    {
-                        foreach (OsmGeo element in source)
-                        {
-                            Collect(element);
-                        }
-                    }
-                }
-            }
-
-            return GetAttractions();
         }
 
         public List<(TouristAttraction attraction, MapPoint location)> GetAttractions()
         {
             return attractions.Select(it =>
             {
-                var effective_node_id = it.nodeId ?? ways[it.wayId!.Value];
-                return (it.hist, new MapPoint(nodes[effective_node_id].Convert(), effective_node_id));
+                var effective_node_id = it.nodeId ?? this.roadNodeExtractor( ways[it.wayId!.Value]);
+                return (it.hist, new MapPoint(nodes[effective_node_id], effective_node_id));
             }).ToList();
         }
 
-        public void Collect(OsmGeo element)
+        public void Extract(OsmGeo element)
         {
             if (!element.Id.HasValue)
             {
@@ -149,14 +125,14 @@ namespace TrackPlanner.Mapping
                 set_feature("railway_car", TouristAttraction.Feature.Train);
 
                 if (features == null)
-                    this.unusedHistoric.Add(hist_value);
+                    this.unused.Add((OsmExtractor.Source.Historic, hist_value));
             }
 
             // https://wiki.openstreetmap.org/wiki/Key:heritage
             if (element.Tags.TryGetValue("heritage", out string heritage_value))
             {
                 add_feature(TouristAttraction.Feature.None);
-                this.unusedHeritage.Add(heritage_value);
+                this.unused.Add(( OsmExtractor.Source.Heritage, heritage_value));
             }
 
             if (element.Tags.TryGetValue("tourism", out string? tourism_value)
@@ -178,7 +154,7 @@ namespace TrackPlanner.Mapping
                 add_feat(building_value, "train_station", TouristAttraction.Feature.TrainStation, ref found);
 
                 if (!found)
-                    this.unusedBuildings.Add(building_value);
+                    this.unused.Add((OsmExtractor.Source.Buildings,building_value));
             }
 
             if (element.Tags.TryGetValue("ruins", out string ruins_val) && ruins_val == "yes")
@@ -202,7 +178,7 @@ namespace TrackPlanner.Mapping
                 add_feat(site_type_value, "earthworks", TouristAttraction.Feature.Fortification, ref found);
 
                 if (!found)
-                    this.unusedSiteType.Add(site_type_value);
+                    this.unused.Add((OsmExtractor.Source.SiteType,site_type_value));
             }
 
             if (element.Tags.TryGetValue("castle_type", out string castle_type_val))
@@ -214,7 +190,7 @@ namespace TrackPlanner.Mapping
                 add_feat(castle_type_val, "fortress", TouristAttraction.Feature.Fortress, ref found);
 
                 if (!found)
-                    this.unusedCastles.Add(castle_type_val);
+                    this.unused.Add((OsmExtractor.Source.Castles,castle_type_val));
             }
 
             element.Tags.TryGetValue("name", out var name_val);
@@ -224,8 +200,6 @@ namespace TrackPlanner.Mapping
 
             if (element is Way way)
             {
-                ways.Add(way.Id!.Value, way.Nodes.First());
-
                 if (features.HasValue)
                 {
                     attractions.Add((new TouristAttraction( name_val, url_value, features.Value), way.Nodes.First(), null));
@@ -234,11 +208,6 @@ namespace TrackPlanner.Mapping
             else if (element is Node node)
             {
                 long node_id = node.Id!.Value;
-
-                if (node.Latitude.HasValue && node.Longitude.HasValue)
-                {
-                    nodes.Add(node_id, new GeoPoint(latitude: Angle.FromDegrees(node.Latitude.Value), longitude: Angle.FromDegrees(node.Longitude.Value)));
-                }
 
                 if (features.HasValue)
                 {

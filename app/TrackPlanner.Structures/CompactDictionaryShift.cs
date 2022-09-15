@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
-
-namespace TrackPlanner.Storage.Data
+namespace TrackPlanner.Structures
 {
     public sealed class CompactDictionaryShift<TKey, TValue> : CompactDictionary<TKey,TValue>, ICompactDictionary<TKey, TValue> 
         where TKey : notnull

@@ -5,7 +5,8 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Runtime.CompilerServices;
 
-namespace TrackPlanner.Mapping.Data
+namespace TrackPlanner.Structures
+
 {
     public sealed class ArrayLong<TValue> : IReadOnlyArrayLong<TValue>
     {

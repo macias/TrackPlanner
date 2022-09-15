@@ -5,7 +5,7 @@ using TrackPlanner.Shared;
 using TrackPlanner.DataExchange;
 using TrackPlanner.Mapping;
 using TrackPlanner.PathFinder;
-using TrackPlanner.Storage.Data;
+using TrackPlanner.Structures;
 using TrackPlanner.Tests;
 
 namespace TrackPlanner.TestRunner

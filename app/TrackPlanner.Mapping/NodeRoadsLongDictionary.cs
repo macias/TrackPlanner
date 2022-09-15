@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using TrackPlanner.Shared;
 using TrackPlanner.Mapping.Data;
+using TrackPlanner.Structures;
 
 namespace TrackPlanner.Mapping
 {

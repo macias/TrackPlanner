@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 
-namespace TrackPlanner.Storage.Data
+namespace TrackPlanner.Structures
 {
     public abstract class CompactDictionary<TKey, TValue> : ICompactDictionary<TKey, TValue>
         where TKey : notnull
@@ -92,7 +92,7 @@ namespace TrackPlanner.Storage.Data
                 throw new ArgumentException($"Key {key} already exists.");
         }
 
-        public bool TryAdd(TKey key, TValue value, out TValue? existing)
+        public bool TryAdd(TKey key, TValue value, [MaybeNullWhen(true)]out TValue existing)
         {
             return tryAdd(key, key.GetHashCode(), value, overwrite: false, out existing);
         }
@@ -345,6 +345,14 @@ namespace TrackPlanner.Storage.Data
             }
         }
 
+        public void ExceptWith(IEnumerable<TKey> keys)
+        {
+            foreach (TKey k in keys)
+            {
+                Remove(k, out _);
+            }
+        }
+        
         public bool Remove(TKey key, [MaybeNullWhen(false)] out TValue value)
         {
             if (!tryGetValue(key, out value, out int del_index, out int hash_index))

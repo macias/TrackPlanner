@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 
-namespace TrackPlanner.Mapping.Data
+namespace TrackPlanner.Structures
 {
     public static class MapFactory
     {

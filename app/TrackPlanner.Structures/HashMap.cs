@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 
-namespace TrackPlanner.Mapping.Data
+namespace TrackPlanner.Structures
 {
     public sealed class HashMap<TKey, TValue> : IMap<TKey,TValue>
         where TKey : notnull

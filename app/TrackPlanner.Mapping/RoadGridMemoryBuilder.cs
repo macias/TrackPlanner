@@ -7,6 +7,7 @@ using System.Xml;
 using TrackPlanner.Shared;
 using TrackPlanner.Mapping;
 using TrackPlanner.Mapping.Data;
+using TrackPlanner.Structures;
 
 namespace TrackPlanner.Mapping
 {

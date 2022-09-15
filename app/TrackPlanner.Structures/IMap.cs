@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 
-namespace TrackPlanner.Mapping.Data
+namespace TrackPlanner.Structures
 {
     public interface IMap<TKey, TValue> : IReadOnlyMap<TKey,TValue>
         where TKey : notnull

@@ -15,6 +15,7 @@ using TrackPlanner.LinqExtensions;
 using TrackPlanner.Mapping.Data;
 using TrackPlanner.Mapping.Disk;
 using TrackPlanner.Storage;
+using TrackPlanner.Structures;
 
 
 #nullable enable
@@ -145,6 +146,10 @@ Loaded 178_093_027 nodes, 50_177 road names, 4_051_113 roads, 1_503 longest in 5
             bool onlyRoads)
         {
             IMap<long,RoadInfo> roads = MapFactory.CreateFast<long, RoadInfo>(); // road id -> road info
+            var nodes = MapFactory.CreateFast<long, GeoZPoint>();
+
+            var extractor = new OsmExtractor<RoadInfo>(logger,nodes,roads,info => info.Nodes.First());
+            
             var forests = new List<IEnumerable<long>>();
             var rivers = new List<(RiverKind kind, IEnumerable<long> indices)>();
             var railways = new List<List<long>>();
@@ -300,6 +305,14 @@ Loaded 178_093_027 nodes, 50_177 road names, 4_051_113 roads, 1_503 longest in 5
                             {
                                 long node_id = node.Id!.Value;
 
+                                GeoZPoint pt = GeoZPoint.FromDegreesMeters(node.Latitude.Value, node.Longitude.Value, altitude: null);
+                                if (nodes.TryGetValue(node_id, out GeoZPoint existing))
+                                {
+                                    if( existing != GeoZPoint.Invalid)
+                                        throw new ArgumentException($"Node {node_id} already exists at {existing}, while we have {pt}");
+                                    nodes[node_id] = pt;
+                                }
+
                                 // https://wiki.openstreetmap.org/wiki/Tag:highway%3Dcrossing
                                 // currently we are not interested in point-roads (like crossings)
                                 if (try_add_road(element, parseOnly: true, node_id)) // todo: point-ways have separate id numbering, currently reader is not prepared for this
@@ -338,6 +351,8 @@ Loaded 178_093_027 nodes, 50_177 road names, 4_051_113 roads, 1_503 longest in 5
                             }
                             else
                                 throw new NotImplementedException($"Type {element.GetType().Name} is not supported");
+                            
+                            extractor.Extract(element);
                         }
                     }
                 }
@@ -376,54 +391,6 @@ Loaded 178_093_027 nodes, 50_177 road names, 4_051_113 roads, 1_503 longest in 5
 
             //mutableMergeRailways(railways);
             
-            var nodes = MapFactory.CreateFast<long, GeoZPoint>();
-
-            foreach (var node_id in roads.SelectMany(it => it.Value.Nodes)
-                .Concat(nozone.SelectMany(it => it.Nodes)))
-            {
-                nodes.TryAdd(node_id, GeoZPoint.Invalid,out _);
-            }
-
-            if (!onlyRoads)
-            {
-                foreach (var node_id in forests.SelectMany(it => it)
-                    .Concat(rivers.SelectMany(it => it.indices))
-                    .Concat(waters.SelectMany(it => it))
-                    .Concat(railways.SelectMany(it => it))
-                    .Concat(protected_area.SelectMany(it => it))
-                    .Concat(cities.Select(it => it.Node)))
-                {
-                    nodes.TryAdd(node_id, GeoZPoint.Invalid,out _);
-                }
-            }
-
-            foreach (string map_path in filePaths)
-            {
-                //using (var stream = new MemoryStream(System.IO.File.ReadAllBytes(map_path)))
-                using (var stream = new FileStream(map_path, FileMode.Open, FileAccess.Read))
-                {
-                    logger.Verbose($"Stream {map_path} built in {(Stopwatch.GetTimestamp() - start) / Stopwatch.Frequency} s");
-
-                    using (var source = new PBFOsmStreamSource(stream))
-                    {
-                        foreach (OsmGeo element in source)
-                        {
-                            if (element.Id.HasValue && element is Node node 
-                                                    && node.Latitude.HasValue && node.Longitude.HasValue)
-                            {
-                                long node_id = node.Id!.Value;
-                                GeoZPoint pt = GeoZPoint.FromDegreesMeters(node.Latitude.Value, node.Longitude.Value, altitude: null);
-                                if (nodes.TryGetValue(node_id, out GeoZPoint existing))
-                                {
-                                    if( existing != GeoZPoint.Invalid)
-                                        throw new ArgumentException($"Node {node_id} already exists at {existing}, while we have {pt}");
-                                    nodes[node_id] = pt;
-                                }
-                            }
-                        }
-                    }
-                }
-            }
             
             logger.Verbose($"Loaded {nodes.Count} nodes in {(Stopwatch.GetTimestamp() - start) / Stopwatch.Frequency} s");
             logger.Flush();
@@ -433,7 +400,8 @@ Loaded 178_093_027 nodes, 50_177 road names, 4_051_113 roads, 1_503 longest in 5
             if (onlyRoads)
             {
                 var for_removal = nozone.SelectMany(it => it.Nodes).ToHashSet();
-                for_removal.ExceptWith(roads.Values.SelectMany(it => it.Nodes));
+                for_removal.ExceptWith(roads.Values.SelectMany(it => it.Nodes)
+                    .Concat(extractor.GetAttractions().Select(it => it.location.NodeId!.Value)));
                 nodes.ExceptWith(for_removal);
                 nozone = null;
             }

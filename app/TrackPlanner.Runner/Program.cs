@@ -15,7 +15,7 @@ using TrackPlanner.DataExchange;
 using TrackPlanner.Mapping;
 using TrackPlanner.Mapping.Data;
 using TrackPlanner.PathFinder;
-using TrackPlanner.Storage.Data;
+using TrackPlanner.Structures;
 
 namespace TrackPlanner.Runner
 {
@@ -78,7 +78,7 @@ namespace TrackPlanner.Runner
 
             var sysConfig = new SystemConfiguration() { EnableDebugDumping = true };
 
-            var extractor = new OsmExtractor(logger);
+            var extractor = new OsmCollector(logger);
                 var osm_files = System.IO.Directory.GetFiles(navigator.GetWorldMaps(), "*.osm.pbf");
                 foreach (var file in osm_files)
                 {

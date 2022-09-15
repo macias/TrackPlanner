@@ -10,6 +10,7 @@ using TrackPlanner.LinqExtensions;
 using TrackPlanner.Mapping.Data;
 using TrackPlanner.Mapping.Disk;
 using TrackPlanner.Storage;
+using TrackPlanner.Structures;
 
 namespace TrackPlanner.Mapping
 {

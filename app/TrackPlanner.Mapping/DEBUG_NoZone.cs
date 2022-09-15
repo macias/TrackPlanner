@@ -12,6 +12,7 @@ using System.Linq;
 using TrackPlanner.Shared;
 using TrackPlanner.DataExchange;
 using TrackPlanner.Mapping.Data;
+using TrackPlanner.Structures;
 
 
 #nullable enable

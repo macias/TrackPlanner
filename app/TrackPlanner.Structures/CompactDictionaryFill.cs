@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 
-namespace TrackPlanner.Storage.Data
+namespace TrackPlanner.Structures
+
 {
     public sealed class CompactDictionaryFill<TKey, TValue> :CompactDictionary<TKey,TValue>
         where TKey : notnull

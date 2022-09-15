@@ -4,6 +4,7 @@ using System.Linq;
 using TrackPlanner.Shared;
 using TrackPlanner.Mapping.Data;
 using TrackPlanner.Mapping.Disk;
+using TrackPlanner.Structures;
 
 namespace TrackPlanner.Mapping
 {

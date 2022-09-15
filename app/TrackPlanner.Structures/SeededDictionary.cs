@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 
-namespace TrackPlanner.Mapping.Data
+namespace TrackPlanner.Structures
 {
     // 1.5x slower than dictionary
     public sealed class SeededDictionary<TKey, TValue>

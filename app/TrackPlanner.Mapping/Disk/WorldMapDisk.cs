@@ -9,7 +9,6 @@ using TrackPlanner.Shared;
 using TrackPlanner.LinqExtensions;
 using TrackPlanner.Mapping.Data;
 using TrackPlanner.Storage;
-using TrackPlanner.Storage.Data;
 
 namespace TrackPlanner.Mapping.Disk
 {

@@ -6,6 +6,7 @@ using System.Runtime.InteropServices;
 using MathUnit;
 using TrackPlanner.Shared;
 using TrackPlanner.Mapping.Data;
+using TrackPlanner.Structures;
 
 namespace TrackPlanner.Mapping
 {

@@ -4,21 +4,23 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 
-namespace TrackPlanner.Mapping.Data
+using TKey = System.Int64;
+
+namespace TrackPlanner.Structures
 {
-    internal sealed class BinaryMap<TKey, TValue> : IMap<TKey, TValue>
-        where TKey : notnull
+    // 80x slower than Dictionary on key query
+    public sealed class IdMap<TValue> : IMap<TKey, TValue>
     {
         private sealed class Enumerator : IEnumerator<KeyValuePair<TKey, TValue>>
         {
-            private readonly BinaryMap<TKey, TValue> source;
+            private readonly IdMap< TValue> source;
             private int valueIndex;
             private readonly IEnumerator<TKey> iter;
 
             public KeyValuePair<TKey, TValue> Current => KeyValuePair.Create(this.iter.Current, source.values[this.valueIndex]);
             object IEnumerator.Current => this.Current;
 
-            public Enumerator(BinaryMap<TKey, TValue> source)
+            public Enumerator(IdMap<TValue> source)
             {
                 this.source = source;
                 // we use mixed iteration to protect ourselves from altering the keys, but allowing to modify the values
@@ -73,18 +75,22 @@ namespace TrackPlanner.Mapping.Data
             }
         }
 
-        public BinaryMap(IComparer<TKey> comparer) : this(comparer,0)
+        public IdMap() : this(Comparer<TKey>.Default)
         {
         }
 
-        public BinaryMap(IComparer<TKey> comparer, int capacity)
+        public IdMap(IComparer<TKey> comparer) : this(comparer,0)
+        {
+        }
+
+        public IdMap(IComparer<TKey> comparer, int capacity)
         {
             this.comparer = comparer;
             this.keys = new List<TKey>(capacity);
             this.values = new List<TValue>(capacity);
         }
 
-        public BinaryMap(IComparer<TKey> comparer, IEnumerable<KeyValuePair<TKey, TValue>> sequence) : this(comparer)
+        public IdMap(IComparer<TKey> comparer, IEnumerable<KeyValuePair<TKey, TValue>> sequence) : this(comparer)
         {
             foreach ((TKey key, TValue value) in sequence)
                 Add(key, value);
@@ -154,7 +160,12 @@ namespace TrackPlanner.Mapping.Data
                     throw new ArgumentException("Too many iterations");
                 --DEBUG;
 
-                index = (lower_bound + higher_bound) / 2;
+                double slope = (higher_bound - lower_bound-0.0)/(this.keys[higher_bound] - this.keys[lower_bound] - 0.0);
+                index = (int)Math.Round((key - this.keys[lower_bound]) * slope + lower_bound);
+
+                index = Math.Min(index, higher_bound);
+                index = Math.Max(index, lower_bound);
+                
                 comp = comparer.Compare(key, this.keys[index]);
                 if (comp == 0)
                     return true;
@@ -218,7 +229,7 @@ namespace TrackPlanner.Mapping.Data
                     this.values.RemoveAt(index);
                 }
 
-                 ++count;
+                ++count;
             }
         }
     }

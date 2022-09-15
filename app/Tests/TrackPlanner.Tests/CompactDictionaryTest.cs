@@ -1,9 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using FluentAssertions;
+using TrackPlanner.Structures;
 using Xunit;
-using TrackPlanner.Storage.Data;
 
 namespace TrackPlanner.Tests
 {
@@ -36,7 +37,7 @@ namespace TrackPlanner.Tests
                 }
 
                 Assert.Equal((-input[i]).ToString(),removed);
-                Assert.Equal(input.Length-i-1,dict.Count);
+                Assert.Equal(input.Length-i-1,dict.Count());
                 input.Skip(i+1).Select(it => KeyValuePair.Create(it, (-it).ToString()))
                     .Should().BeEquivalentTo(dict.OrderBy(it => it.Key));
             }
@@ -55,7 +56,7 @@ namespace TrackPlanner.Tests
             {
                 Assert.True(dict.Remove(input[i],out var removed));
                 Assert.Equal((-input[i]).ToString(),removed);
-                Assert.Equal(input.Length-i-1,dict.Count);
+                Assert.Equal(input.Length-i-1,dict.Count());
                 input.Skip(i+1).Select(it => KeyValuePair.Create(it, (-it).ToString()))
                     .Should().BeEquivalentTo(dict.OrderBy(it => it.Key));
             }
@@ -71,7 +72,7 @@ namespace TrackPlanner.Tests
             {
                 Assert.True(dict.Remove(input[i],out var removed));
                 Assert.Equal((-input[i]).ToString(),removed);
-                Assert.Equal(input.Length-i-1,dict.Count);
+                Assert.Equal(input.Length-i-1,dict.Count());
                 input.Skip(i+1).Select(it => KeyValuePair.Create(it, (-it).ToString()))
                     .Should().BeEquivalentTo(dict.OrderBy(it => it.Key));
             }
@@ -81,6 +82,10 @@ namespace TrackPlanner.Tests
         [MemberData(nameof(TestParams))]
         public void LongResizingTest(ICompactDictionary<long,string> dict)
         {
+            IReadOnlyBasicMap<TKey, TValue> cast<TKey, TValue>(IReadOnlyBasicMap<TKey, TValue> x)
+            where TKey:notnull
+                => x;
+            
             // 200 --> pure hash 198
             // 23 --> pure hash 21
             var input = new long[] { 200,23, 2,3,5,7,11,13,17,19,111, 4, 6, 8, 12, 202, 444,401};
@@ -98,11 +103,11 @@ namespace TrackPlanner.Tests
                 dict.Add(big_x,(-x).ToString());
                 dict.DEBUG_DUMP();
                 string? y;
-                Assert.True(dict.TryGetValue(big_x,out y));
+                Assert.True(cast(dict).TryGetValue(big_x,out y));
                 Assert.Equal((-x).ToString(),y);
                 dict.TrimExcess();
                 dict.DEBUG_DUMP();
-                Assert.True(dict.TryGetValue(big_x,out y));
+                Assert.True(cast(dict).TryGetValue(big_x,out y));
                 Assert.Equal((-x).ToString(),y);
             }
         }
