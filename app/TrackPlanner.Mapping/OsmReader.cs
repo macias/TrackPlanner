@@ -146,9 +146,19 @@ Loaded 178_093_027 nodes, 50_177 road names, 4_051_113 roads, 1_503 longest in 5
             bool onlyRoads)
         {
             IMap<long,RoadInfo> roads = MapFactory.CreateFast<long, RoadInfo>(); // road id -> road info
+            // road id -> first node id of the road
+            var attractions_roads_fallback = new CompactDictionaryFill<long, long>();
             var nodes = MapFactory.CreateFast<long, GeoZPoint>();
 
-            var extractor = new OsmExtractor<RoadInfo>(logger,nodes,roads,info => info.Nodes.First());
+            var extractor = new OsmExtractor(logger,nodes,road_id =>
+            {
+                if (roads.TryGetValue(road_id, out var info))
+                    return info.Nodes.First();
+                if (attractions_roads_fallback.TryGetValue(road_id, out var node_id))
+                    return node_id;
+
+                throw new ArgumentOutOfRangeException($"Unable to find road {road_id}");
+            });
             
             var forests = new List<IEnumerable<long>>();
             var rivers = new List<(RiverKind kind, IEnumerable<long> indices)>();
@@ -260,59 +270,63 @@ Loaded 178_093_027 nodes, 50_177 road names, 4_051_113 roads, 1_503 longest in 5
                                 {
                                     bool has_access = parseAccess(element);
                                     var layer = readLayer(element);
-                                    RoadInfo roadInfo = new RoadInfo(element.Id.Value, WayKind.Ferry, 
-                                        nameIdentifier: getRoadIdentifier(element, out _), 
+                                    RoadInfo roadInfo = new RoadInfo(element.Id.Value, WayKind.Ferry,
+                                        nameIdentifier: getRoadIdentifier(element, out _),
                                         parseOneWay(element), roundabout: false, RoadSurface.Unknown,
-                                                                        RoadSmoothness.Bad, has_access,
-                                                                        speedLimit50:true,
-                                                                        hasBikeLane: false, isSingletrack: false,
-                                                                        urbanSidewalk: false, dismount: bikeDismount(element), layer, way.Nodes);
+                                        RoadSmoothness.Bad, has_access,
+                                        speedLimit50: true,
+                                        hasBikeLane: false, isSingletrack: false,
+                                        urbanSidewalk: false, dismount: bikeDismount(element), layer, way.Nodes);
                                     roads.Add(roadInfo.Identifier, roadInfo);
                                 }
-                                else if (isNoZone(element))
+                                else
                                 {
-                                    string name = getString(element, "name") ?? "unknown";
+                                    attractions_roads_fallback.Add(way.Id!.Value,way.Nodes.First());
+                                    
+                                    if (isNoZone(element))
+                                    {
+                                        string name = getString(element, "name") ?? "unknown";
 
-                                    nozone.Add(new NamedPolygon(element.Id.Value, name, way.Nodes));
+                                        nozone.Add(new NamedPolygon(element.Id.Value, name, way.Nodes));
+                                    }
+                                    else if (!onlyRoads)
+                                    {
+                                        if (isForest(element))
+                                        {
+                                            forests.Add(way.Nodes);
+                                        }
+                                        else if (isRailway(element))
+                                        {
+                                            railways.Add(way.Nodes.ToList());
+                                        }
+                                        else if (isRiver(element, out RiverKind river_kind))
+                                        {
+                                            rivers.Add((river_kind, way.Nodes));
+                                        }
+                                        else if (isWater(element))
+                                        {
+                                            waters.Add(way.Nodes);
+                                        }
+                                        else if (isProtectedArea(element))
+                                        {
+                                            protected_area.Add(way.Nodes);
+                                        }
+
+                                    }
                                 }
-                                else if (!onlyRoads)
-                                {
-                                    if (isForest(element))
-                                    {
-                                        forests.Add(way.Nodes);
-                                    }
-                                    else if (isRailway(element))
-                                    {
-                                        railways.Add(way.Nodes.ToList());
-                                    }
-                                    else if (isRiver(element, out RiverKind river_kind))
-                                    {
-                                        rivers.Add((river_kind, way.Nodes));
-                                    }
-                                    else if (isWater(element))
-                                    {
-                                        waters.Add(way.Nodes);
-                                    }
-                                    else if (isProtectedArea(element))
-                                    {
-                                        protected_area.Add(way.Nodes);
-                                    }
-
-                                }
-
                             }
                             else if (element is Node node && node.Latitude.HasValue && node.Longitude.HasValue)
                             {
                                 long node_id = node.Id!.Value;
 
-                                GeoZPoint pt = GeoZPoint.FromDegreesMeters(node.Latitude.Value, node.Longitude.Value, altitude: null);
-                                if (nodes.TryGetValue(node_id, out GeoZPoint existing))
+                                GeoZPoint pt = GeoZPoint.FromDegreesMeters(node.Latitude.Value, node.Longitude.Value,
+                                    altitude: null);
+                                if (!nodes.TryAdd(node_id, pt, out GeoZPoint existing))
                                 {
-                                    if( existing != GeoZPoint.Invalid)
+                                    if (pt != existing)
                                         throw new ArgumentException($"Node {node_id} already exists at {existing}, while we have {pt}");
-                                    nodes[node_id] = pt;
                                 }
-
+                                
                                 // https://wiki.openstreetmap.org/wiki/Tag:highway%3Dcrossing
                                 // currently we are not interested in point-roads (like crossings)
                                 if (try_add_road(element, parseOnly: true, node_id)) // todo: point-ways have separate id numbering, currently reader is not prepared for this
@@ -363,6 +377,7 @@ Loaded 178_093_027 nodes, 50_177 road names, 4_051_113 roads, 1_503 longest in 5
             if (designated_path_keys.Any())
                 logger.Verbose($"Designated path keys {(String.Join(", ", designated_path_keys.Select(it => $"{it.Value} : {it.Key}")))}");
             logger.Verbose($"Loaded {roadNames.Count} road names, {roads.Count} roads, {roads.Values.Select(it => it.Nodes.Count).Max()} longest in {(Stopwatch.GetTimestamp() - start) / Stopwatch.Frequency} s");
+            logger.Verbose($"Loaded {nodes.Count} nodes in {(Stopwatch.GetTimestamp() - start) / Stopwatch.Frequency} s");
             logger.Flush();
 
             {
@@ -392,7 +407,6 @@ Loaded 178_093_027 nodes, 50_177 road names, 4_051_113 roads, 1_503 longest in 5
             //mutableMergeRailways(railways);
             
             
-            logger.Verbose($"Loaded {nodes.Count} nodes in {(Stopwatch.GetTimestamp() - start) / Stopwatch.Frequency} s");
             logger.Flush();
 
             computeRoadAccess(nodes, nozone, roads);

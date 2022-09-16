@@ -19,7 +19,7 @@ using TrackPlanner.Structures;
 
 namespace TrackPlanner.Runner
 {
-    
+
     /*
     https://scihub.copernicus.eu/dhus/#/home
 
@@ -51,7 +51,7 @@ namespace TrackPlanner.Runner
                 logger.Info($"{nameof(GeoZPoint)}: {System.Runtime.InteropServices.Marshal.SizeOf(typeof(GeoZPoint))}");
                 //logger.Info($"{nameof(RoadInfo)}: {System.Runtime.InteropServices.Marshal.SizeOf(typeof(RoadInfo))}");
                 //RunTurner(logger);
-               // RunFinder(logger);
+                // RunFinder(logger);
                 //RunCalc();
                 //DictionaryEval();
                 ExtractMapData(logger);
@@ -76,40 +76,41 @@ namespace TrackPlanner.Runner
 
             var navigator = new Navigator(baseDir);
 
-            var sysConfig = new SystemConfiguration() { EnableDebugDumping = true };
+            var sysConfig = new SystemConfiguration() {EnableDebugDumping = true};
 
-            var extractor = new OsmCollector(logger);
-                var osm_files = System.IO.Directory.GetFiles(navigator.GetWorldMaps(), "*.osm.pbf");
-                foreach (var file in osm_files)
+            var collector = new OsmCollector(logger);
+            var osm_files = System.IO.Directory.GetFiles(navigator.GetWorldMaps(), "*.osm.pbf");
+            foreach (var file in osm_files)
+            {
+                logger.Info($"Reading {file}");
+                var hist_objects = collector.ReadOsm(file);
+                // 1.0 -- castles only
+                // 2.0 -- added historic objects
+                // 2.1 -- added new historic objects
+                // 2.2 -- switch to tourist attraction
+                var extract_fileName = Helper.GetUniqueFileName(outputDir, "2.2-" + System.IO.Path.GetFileName((file).Replace(".osm.pbf", "") + "-historic.kml"));
+                using (FileStream stream = new FileStream(extract_fileName, FileMode.CreateNew))
                 {
-                    logger.Info($"Reading {file}");
-                    var hist_objects = extractor.ReadOsm(file);
-                    // 1.0 -- castles only
-                    // 2.0 -- added historic objects
-                    // 2.1 -- added new historic objects
-                    // 2.2 -- switch to tourist attraction
-                    var extract_fileName = Helper.GetUniqueFileName(outputDir, "2.2-"+System.IO.Path.GetFileName((file).Replace(".osm.pbf","")+"-historic.kml"));
-                    using (FileStream stream = new FileStream(extract_fileName, FileMode.CreateNew))
+                    var input = new TrackWriterInput();
+                    foreach (var hist in hist_objects)
                     {
-                        var input = new TrackWriterInput();
-                        foreach (var hist in hist_objects)
-                        {
-                            var description = new List<string>();
-                            description.Add(String.Join(", ", hist.attraction.GetFeatures()));
-                            if (hist.attraction.Url != null)
-                                description.Add(hist.attraction.Url);
-                            input.AddPoint(hist.location.Point, $"{hist.attraction.Name} {hist.location.NodeId}", String.Join(Environment.NewLine, description),
-                                hist.attraction.Features.HasFlag(TouristAttraction.Feature.Ruins) ? PointIcon.CircleIcon : PointIcon.StarIcon);
-                        }
-
-                        var kml = input.BuildDecoratedKml();
-                        kml.Save(stream);
+                        var description = new List<string>();
+                        description.Add(String.Join(", ", hist.attraction.GetFeatures()));
+                        if (hist.attraction.Url != null)
+                            description.Add(hist.attraction.Url);
+                        input.AddPoint(hist.location.Point, $"{hist.attraction.Name} {hist.location.NodeId}", String.Join(Environment.NewLine, description),
+                            hist.attraction.Features.HasFlag(TouristAttraction.Feature.Ruins) ? PointIcon.CircleIcon : PointIcon.StarIcon);
                     }
-                    logger.Info($"Data saved to {extract_fileName}");
+
+                    var kml = input.BuildDecoratedKml();
+                    kml.Save(stream);
                 }
-                
-                logger.Info($"Unused values: {(String.Join(Environment.NewLine,extractor.Unused.OrderBy(x => x)))}");
-            
+
+                logger.Info($"Data saved to {extract_fileName}");
+            }
+
+            logger.Info($"Unused values: {(String.Join(Environment.NewLine, collector.Unused.OrderBy(x => x)))}");
+
         }
 
         private static void DictionaryEval()
@@ -200,12 +201,12 @@ namespace TrackPlanner.Runner
 
                     Console.WriteLine($"Compact0 filled in {(Stopwatch.GetTimestamp() - start - 0.0) / Stopwatch.Frequency}s");
 
-                    
-                    
-                    
-                    
-                    
-                    
+
+
+
+
+
+
                     reader.BaseStream.Seek(pos, SeekOrigin.Begin);
                     start = Stopwatch.GetTimestamp();
                     for (int i = 0; i < nodes_count; ++i)
@@ -229,12 +230,12 @@ namespace TrackPlanner.Runner
                     }
 
                     Console.WriteLine($"RES Compact0 filled in {(Stopwatch.GetTimestamp() - start - 0.0) / Stopwatch.Frequency}s");
-                    
-                    
-                    
-                    
-                    
-                    
+
+
+
+
+
+
                     reader.BaseStream.Seek(pos, SeekOrigin.Begin);
                     start = Stopwatch.GetTimestamp();
 
@@ -330,7 +331,7 @@ namespace TrackPlanner.Runner
                 for (int i = copied.Count - 1; i >= 0; --i)
                 {
                     if (!res_compact.TryGetValue(copied[i].Key, out var existing))
-                        throw new ArgumentException("RES Compact failed "+res_compact.Keys.Contains(copied[i].Key).ToString());
+                        throw new ArgumentException("RES Compact failed " + res_compact.Keys.Contains(copied[i].Key).ToString());
                     if (copied[i].Value != existing)
                         throw new ArgumentException();
                 }
@@ -356,7 +357,7 @@ namespace TrackPlanner.Runner
             Geo.GeoCalculator.GetArcSegmentIntersection(GeoPoint.FromDegrees(52.8970606, 18.657783399999996), GeoPoint.FromDegrees(53.02517820000001, 18.657783399999996),
                 GeoPoint.FromDegrees(52.97015, 18.65988),
                 GeoPoint.FromDegrees(52.97147, 18.655),
-                       out GeoPoint? cx1, out GeoPoint? cx2);
+                out GeoPoint? cx1, out GeoPoint? cx2);
             Console.WriteLine("Crosspoints");
             Console.WriteLine(cx1);
             Console.WriteLine(cx2);
@@ -374,7 +375,7 @@ namespace TrackPlanner.Runner
             var env_config = new EnvironmentConfiguration();
             config.GetSection(EnvironmentConfiguration.SectionName).Bind(env_config);
             env_config.Check();*/
-            
+
             // going around highway
             //GeoZPoint[] user_points = new[] { GeoZPoint.FromDegreesMeters(53.07388, 18.75152, null), GeoZPoint.FromDegreesMeters(53.08105, 18.75141, null), };
             // going through range
@@ -390,7 +391,8 @@ namespace TrackPlanner.Runner
                 GeoZPoint south_deep_nozone_point = GeoZPoint.FromDegreesMeters(52.9265, 18.58358, null);
                 GeoZPoint north_deep_nozone_point = GeoZPoint.FromDegreesMeters(52.96128, 18.59625, null);
                 //user_points = new[] { south_legal_point, north_nozone_point, };
-                user_points = new[] {
+                user_points = new[]
+                {
                     north_nozone_point,
                     south_legal_point,
                 };
@@ -411,12 +413,13 @@ namespace TrackPlanner.Runner
                     // ale po wczytaniu map, zrobieniu grida spada do 8GB
                     // podczas liczenia trasy w ogole nie widac wzrostu pamieci
                     // glowny czynnik zajetosci RAM, to same mapy
-                    
+
                     // przy korzystaniu z double-passa i same funkcji odciecia zbyt dalekich punktow, liczba analizowanych
                     // punktow ZWIEKSZYLA SIE, z 84095 do 84630 (nie rozumiem tego zupelnie); obliczona trasa
                     // na szczescie jest identyczna (to jest troche bez sensu, bo rejected nodes = 0, wiec z czego
                     // wynika wieksza liczba na wejsciu?)
-                    user_points = new[] {
+                    user_points = new[]
+                    {
                         torun_bridge,
                         inowroclaw_tupadly,
                     };
@@ -426,9 +429,10 @@ namespace TrackPlanner.Runner
 
                 if (false)
                 {
-                    user_points = new[] {
+                    user_points = new[]
+                    {
                         torun_bridge,
-                        GeoZPoint.FromDegreesMeters(52.935, 18.5158,null), // in the middle of high-traffic road
+                        GeoZPoint.FromDegreesMeters(52.935, 18.5158, null), // in the middle of high-traffic road
                         inowroclaw_tupadly,
                     };
                 }
@@ -436,7 +440,8 @@ namespace TrackPlanner.Runner
 
             if (false)
             {
-                user_points = new[] {
+                user_points = new[]
+                {
                     // sprawdzenie wagi, zeby program odbijal z chodnika przy szosie
                     //GeoZPoint.FromDegreesMeters(52.91243, 18.48199, null), // nieco wczesniej przed Suchatowka                   
                     GeoZPoint.FromDegreesMeters(52.91158, 18.47988, null), // przed Suchatowka
@@ -446,29 +451,32 @@ namespace TrackPlanner.Runner
 
             if (false)
             {
-                user_points = new[] {
+                user_points = new[]
+                {
                     // Cierpice. Mapa zawiera blad, bo sciezka ktora wybiera nie przecina sie niby z torami kolejowymi
-                    GeoZPoint.FromDegreesMeters(    52.98716, 18.49451, null), 
-                    GeoZPoint.FromDegreesMeters(    52.98662, 18.46635, null), 
+                    GeoZPoint.FromDegreesMeters(52.98716, 18.49451, null),
+                    GeoZPoint.FromDegreesMeters(52.98662, 18.46635, null),
                 };
             }
 
             if (false)
             {
                 // test dlugiej trasy, Torun-Osie
-                user_points = new[] {
-                    GeoZPoint.FromDegreesMeters(        53.024, 18.60917, null), // Torun 
-                    GeoZPoint.FromDegreesMeters(        53.61702, 18.27056, null),  // Osie
+                user_points = new[]
+                {
+                    GeoZPoint.FromDegreesMeters(53.024, 18.60917, null), // Torun 
+                    GeoZPoint.FromDegreesMeters(53.61702, 18.27056, null), // Osie
                 };
             }
 
 //            if (false)
             {
                 // something really short but with 3 points to check out smoothing middle points
-                user_points = new[] {
-                    GeoZPoint.FromDegreesMeters(            53.38503, 18.93153, null),  
-                    GeoZPoint.FromDegreesMeters(            53.38563, 18.93642, null),  
-                    GeoZPoint.FromDegreesMeters(            53.38943, 18.93627, null), 
+                user_points = new[]
+                {
+                    GeoZPoint.FromDegreesMeters(53.38503, 18.93153, null),
+                    GeoZPoint.FromDegreesMeters(53.38563, 18.93642, null),
+                    GeoZPoint.FromDegreesMeters(53.38943, 18.93627, null),
                 };
             }
 
@@ -476,12 +484,14 @@ namespace TrackPlanner.Runner
             {
                 // m n#9223673711@52.40488815307617°, 19.027236938476562° to 53.59299850463868°, 17.86724090576172°
 
-                user_places = new[] {
-                    NodePoint.CreateNode(9223673711) ,  
-                    NodePoint.CreatePoint(  GeoZPoint.FromDegreesMeters(            53.59299850463868, 17.86724090576172, null)),  
+                user_places = new[]
+                {
+                    NodePoint.CreateNode(9223673711),
+                    NodePoint.CreatePoint(GeoZPoint.FromDegreesMeters(53.59299850463868, 17.86724090576172, null)),
                 };
                 user_configuration = new UserRouterPreferences() {HACK_ExactToTarget = false}.SetUniformSpeeds();
             }
+
             if (false)
             {
                 // testing for computation speed
@@ -490,27 +500,30 @@ namespace TrackPlanner.Runner
                 // NUC z cala Polska -- 9 s
                 // NUC z cala Polska bidir -- 7.1 s
                 // NUC z cala Polska bidir singlepass -- 6.9 s (krotko mowiac, pozytku z fast-pass nie ma)
-                user_points = new[] {
-                    GeoZPoint.FromDegreesMeters(            52.4049, 19.02756, null), // Chodecz 
-                    GeoZPoint.FromDegreesMeters(            53.593, 17.86724, null),  // Tuchola
+                user_points = new[]
+                {
+                    GeoZPoint.FromDegreesMeters(52.4049, 19.02756, null), // Chodecz 
+                    GeoZPoint.FromDegreesMeters(53.593, 17.86724, null), // Tuchola
                 };
             }
 
             if (false)
             {
                 // testing if Poland-long route can be computed
-                user_points = new[] {
-                    GeoZPoint.FromDegreesMeters(                49.05505, 22.70635, null), // Bieszczady  
-                    GeoZPoint.FromDegreesMeters(                53.91467, 14.23544, null),  // Swinoujscie 
+                user_points = new[]
+                {
+                    GeoZPoint.FromDegreesMeters(49.05505, 22.70635, null), // Bieszczady  
+                    GeoZPoint.FromDegreesMeters(53.91467, 14.23544, null), // Swinoujscie 
                 };
             }
 
             if (false)
             {
                 // just testing node routing
-                user_places = new[] {
+                user_places = new[]
+                {
                     // https://www.openstreetmap.org/node/1545695728
-                    NodePoint.CreateNode( 1545695728L),
+                    NodePoint.CreateNode(1545695728L),
                     // https://www.openstreetmap.org/node/3661740250
                     NodePoint.CreateNode(3661740250L),
                 };
@@ -518,24 +531,25 @@ namespace TrackPlanner.Runner
 
             if (false)
             {
-                user_points = new[] {
+                user_points = new[]
+                {
                     // prostowanie ronda 
                     GeoZPoint.FromDegreesMeters(53.27968, 18.93167, null), // rondo w Wabrzeznie 
-                    GeoZPoint.FromDegreesMeters(53.27856, 18.93023, null), 
+                    GeoZPoint.FromDegreesMeters(53.27856, 18.93023, null),
                 };
             }
 
             //track = track.Reverse().ToArray();
 
-            using (RouteManager.Create(logger,new Navigator(baseDir), "kujawsko-pomorskie", 
-                       new SystemConfiguration(){ EnableDebugDumping = true, CompactPreservesRoads = true}, out var manager))
+            using (RouteManager.Create(logger, new Navigator(baseDir), "kujawsko-pomorskie",
+                       new SystemConfiguration() {EnableDebugDumping = true, CompactPreservesRoads = true}, out var manager))
             {
 
                 if (false)
                 {
                     double start = Stopwatch.GetTimestamp();
 
-                    if (!manager.TryFindCompactRoute(UserRouterPreferencesHelper.CreateBikeOriented().SetUniformSpeeds(), user_points.Select(it => new RequestPoint(it.Convert(),false)).ToArray(), 
+                    if (!manager.TryFindCompactRoute(UserRouterPreferencesHelper.CreateBikeOriented().SetUniformSpeeds(), user_points.Select(it => new RequestPoint(it.Convert(), false)).ToArray(),
                             CancellationToken.None, out var computed_track))
                         throw new Exception();
 
@@ -543,7 +557,7 @@ namespace TrackPlanner.Runner
 
                     using (FileStream stream = new FileStream(Helper.GetUniqueFileName(outputDir, "distance-track-with-turns.kml"), FileMode.CreateNew))
                     {
-                        TrackWriter.SaveAsKml(new UserVisualPreferences(), stream, "something meaningful",computed_track);
+                        TrackWriter.SaveAsKml(new UserVisualPreferences(), stream, "something meaningful", computed_track);
                     }
                 }
 
@@ -551,33 +565,33 @@ namespace TrackPlanner.Runner
                 {
                     double start = Stopwatch.GetTimestamp();
 
-                
+
                     TrackPlan? computed_track;
                     if (user_points != null)
                     {
-                        if (!manager.TryFindCompactRoute(user_configuration, user_points.Select(it => new RequestPoint(it.Convert(),false)).ToArray(), 
+                        if (!manager.TryFindCompactRoute(user_configuration, user_points.Select(it => new RequestPoint(it.Convert(), false)).ToArray(),
                                 CancellationToken.None, out computed_track))
                             throw new Exception("Route not found");
                     }
-                    else if (user_places!=null)
+                    else if (user_places != null)
                     {
-                        if (!manager.TryFindRoute(user_configuration, user_places, allowSmoothing:false, CancellationToken.None, out computed_track))
+                        if (!manager.TryFindRoute(user_configuration, user_places, allowSmoothing: false, CancellationToken.None, out computed_track))
                             throw new Exception("Route not found");
                     }
                     else
-                    throw new Exception("No input given");
+                        throw new Exception("No input given");
 
                     Console.WriteLine($"Time route in {(Stopwatch.GetTimestamp() - start) / Stopwatch.Frequency} s");
 
 
                     using (FileStream stream = new FileStream(Helper.GetUniqueFileName(outputDir, "time-track-with-turns.kml"), FileMode.CreateNew))
                     {
-                        TrackWriter.SaveAsKml(new UserVisualPreferences(), stream, "something meaningful",computed_track);
+                        TrackWriter.SaveAsKml(new UserVisualPreferences(), stream, "something meaningful", computed_track);
                     }
                 }
             }
 
         }
-        
+
     }
 }

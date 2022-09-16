@@ -28,10 +28,10 @@ namespace TrackPlanner.Mapping
             this.logger = logger;
             this.unused = new HashSet<(OsmExtractor.Source, string)>();
 
-            Clear();
+            clear();
         }
 
-        private void Clear()
+        private void clear()
         {
             this.nodes = new CompactDictionaryShift<long, GeoZPoint>();
             this.ways = new CompactDictionaryShift<long, long>();
@@ -39,8 +39,8 @@ namespace TrackPlanner.Mapping
         
         public List<(TouristAttraction attraction, MapPoint location)> ReadOsm(string filePath)
         {
-            Clear();
-            var extractor = new OsmExtractor<long>(this.logger, this.nodes, this.ways,x => x);
+            clear();
+            var extractor = new OsmExtractor(this.logger, this.nodes, x => this.ways[x]);
             
             double start = Stopwatch.GetTimestamp();
             {

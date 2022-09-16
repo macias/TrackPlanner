@@ -35,20 +35,20 @@ namespace TrackPlanner.Structures
             this.elements = new Dictionary<TKey, TValue>(collection);
         }
 
-        public bool TryAdd(TKey index, TValue value, [MaybeNullWhen(true)] out TValue existing)
+        public bool TryAdd(TKey key, TValue value, [MaybeNullWhen(true)] out TValue existing)
         {
-            if (this.elements.TryGetValue(index, out existing))
+            if (this.elements.TryGetValue(key, out existing))
                 return false;
             else
             {
-                this.elements.Add(index, value);
+                this.elements.Add(key, value);
                 return true;
             }
         }
 
-        public bool TryAdd(TKey index, TValue value)
+        public bool TryAdd(TKey key, TValue value)
         {
-            return TryAdd(index, value, out _);
+            return TryAdd(key, value, out _);
         }
 
         public bool TryGetValue(TKey index, [MaybeNullWhen(false)] out TValue value)

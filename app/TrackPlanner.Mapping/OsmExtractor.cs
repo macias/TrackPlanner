@@ -12,7 +12,7 @@ using TrackPlanner.Structures;
 
 namespace TrackPlanner.Mapping
 {
-    public static class OsmExtractor
+    public sealed class OsmExtractor
     {
         public enum Source
         {
@@ -22,28 +22,22 @@ namespace TrackPlanner.Mapping
             SiteType,
             Castles,
         }
-    }
 
-    public sealed class OsmExtractor<TRoad>
-    {
         private readonly ILogger logger;
         private readonly IReadOnlyBasicMap<long, GeoZPoint> nodes;
-        private readonly IReadOnlyBasicMap<long, TRoad> ways;
-        private readonly Func<TRoad, long> roadNodeExtractor;
+        private readonly Func<long, long> roadNodeGetter;
         private readonly HashSet<(OsmExtractor.Source,string)> unused;
         private readonly List<(TouristAttraction hist, long? nodeId, long? wayId)> attractions;
 
         public IEnumerable<(OsmExtractor.Source,string)> Unused => this.unused;
 
         public OsmExtractor(ILogger logger,IReadOnlyBasicMap<long, GeoZPoint> nodes,
-            IReadOnlyBasicMap<long, TRoad> ways,
-            // road data -> any node of the road
-            Func<TRoad,long> roadNodeExtractor)
+            // road id -> any node of the road
+            Func<long,long> roadNodeGetter)
         {
             this.logger = logger;
             this.nodes = nodes;
-            this.ways = ways;
-            this.roadNodeExtractor = roadNodeExtractor;
+            this.roadNodeGetter = roadNodeGetter;
             this.unused = new HashSet<(OsmExtractor.Source,string)>();
             this.attractions = new List<(TouristAttraction hist, long? nodeId, long? wayId)>();
         }
@@ -52,7 +46,7 @@ namespace TrackPlanner.Mapping
         {
             return attractions.Select(it =>
             {
-                var effective_node_id = it.nodeId ?? this.roadNodeExtractor( ways[it.wayId!.Value]);
+                var effective_node_id = it.nodeId ?? this.roadNodeGetter(it.wayId!.Value);
                 return (it.hist, new MapPoint(nodes[effective_node_id], effective_node_id));
             }).ToList();
         }
@@ -198,38 +192,50 @@ namespace TrackPlanner.Mapping
 
             element.Tags.TryGetValue("url", out string? url_value);
 
+            var (node_id,way_id ) = getEntityReference(element);
+            if (features.HasValue && (node_id.HasValue || way_id.HasValue))
+            {
+                this.attractions.Add((new TouristAttraction(name_val, url_value, features.Value),node_id,way_id));
+            }
+        }
+
+        private (long? nodeId,long? wayId) getEntityReference(OsmGeo element)
+        {
             if (element is Way way)
             {
-                if (features.HasValue)
-                {
-                    attractions.Add((new TouristAttraction( name_val, url_value, features.Value), way.Nodes.First(), null));
-                }
+                return (way.Nodes.First(), null);
             }
             else if (element is Node node)
             {
                 long node_id = node.Id!.Value;
 
-                if (features.HasValue)
+                if (node.Latitude.HasValue && node.Longitude.HasValue)
                 {
-                    attractions.Add((new TouristAttraction( name_val, url_value, features.Value), node_id, null));
+                    return (node_id, null);
                 }
+                else
+                    return (null, null);
             }
             else if (element is Relation relation)
             {
-                if (features.HasValue)
+                var way_id = relation.Members.Where(it => it.Type == OsmGeoType.Way).Select(it => it.Id).FirstOrNone();
+                if (way_id.HasValue)
+                    return ( null, way_id.Value);
+                else
                 {
-                    var way_id = relation.Members.Where(it => it.Type == OsmGeoType.Way).Select(it => it.Id).FirstOrNone();
-                    if (way_id.HasValue)
-                        attractions.Add((new TouristAttraction( name_val, url_value, features.Value), null, way_id.Value));
+                    var node_id = relation.Members.Where(it => it.Type == OsmGeoType.Node).Select(it => it.Id).FirstOrNone();
+                    if (node_id.HasValue)
+                        return (node_id.Value, null);
                     else
                     {
-                        var node_id = relation.Members.Where(it => it.Type == OsmGeoType.Node).Select(it => it.Id).FirstOrNone();
-                        if (node_id.HasValue)
-                            attractions.Add((new TouristAttraction( name_val, url_value, features.Value), node_id.Value, null));
-                        else
-                            this.logger.Warning($"Relation {relation.Id} does not have any way or node.");
+                        this.logger.Warning($"Relation {relation.Id} does not have any way or node.");
+                        return (null, null);
                     }
                 }
+            }
+            else
+            {
+                throw new NotImplementedException();
             }
         }
     }
