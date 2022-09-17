@@ -8,7 +8,7 @@ namespace TrackPlanner.Mapping
 {
   
 
-    public sealed class RoadGridCell
+    public  class RoadGridCell
     {
         private readonly CellIndex cellIndex;
 

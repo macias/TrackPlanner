@@ -19,13 +19,9 @@ namespace TrackPlanner.Mapping
 
         IEnumerable<RoadIndexLong> GetRoadsAtNode(long nodeId);
         bool IsBikeFootRoadDangerousNearby(long nodeId);
-        int LEGACY_RoadSegmentsDistanceCount(long roadId, int sourceIndex, int destIndex);
-       // RoadGrid createRoadGrid(int gridCellSize, string? debugDirectory);
 
         string GetStats();
-        RoadInfo GetRoad(long roadMapIndex,in CellIndex cellIndex);
-        RoadInfo GetRoad(long roadMapIndex);
+        RoadInfo GetRoad(long roadId);
         IEnumerable<KeyValuePair<long, RoadInfo>> GetAllRoads();
-        CellIndex GetCellIndex(GeoZPoint point);
     }
 }

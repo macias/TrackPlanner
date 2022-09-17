@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using TrackPlanner.Data;
 using TrackPlanner.Shared;
-using TrackPlanner.Mapping.Data;
 
 namespace TrackPlanner.Mapping
 {

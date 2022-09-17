@@ -1,3 +1,6 @@
+*This project serves as canary for migration to [CodeBerg](https://codeberg.org/macias/TrackPlanner).
+Read more why we should [give up GitHub](GiveUpGitHub.org).*
+
 # About
 
 It is a messy, ugly-looking, but yet useful (at least for the author) planner for bikepacking trips.

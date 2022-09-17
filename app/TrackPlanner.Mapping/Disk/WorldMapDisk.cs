@@ -119,9 +119,9 @@ namespace TrackPlanner.Mapping.Disk
         }
 
         
-        public RoadInfo GetRoad(long roadMapIndex)
+        public RoadInfo GetRoad(long roadId)
         {
-            return this.roads[roadMapIndex];
+            return this.roads[roadId];
         }
 
         public IEnumerable<KeyValuePair<long, RoadInfo>> GetAllRoads()
@@ -134,38 +134,7 @@ namespace TrackPlanner.Mapping.Disk
         {
             return this.nodeRoadReferences[nodeId];
         }
-
-        public int LEGACY_RoadSegmentsDistanceCount(long roadId, int sourceIndex, int destIndex)
-        {
-            int min_idx = Math.Min(sourceIndex, destIndex);
-            int max_idx = Math.Max(sourceIndex, destIndex);
-
-            int count = max_idx - min_idx;
-
-            {
-                // when end is looped  (EXCLUDING start-end)
-                int conn_idx = this.roads[roadId].Nodes.IndexOf(this.roads[roadId].Nodes.Last());
-                if (conn_idx != 0 && conn_idx != this.roads[roadId].Nodes.Count - 1)
-                {
-                    count = Math.Min(count, this.roads[roadId].Nodes.Count - 1 - max_idx + Math.Abs(conn_idx - min_idx));
-                }
-            }
-            {
-                // when start is looped (including start-end)
-                int conn_idx = this.roads[roadId].Nodes.Skip(1).IndexOf(this.roads[roadId].Nodes.First());
-                if (conn_idx != -1)
-                {
-                    ++conn_idx;
-
-                    count = Math.Min(count, min_idx + Math.Abs(conn_idx - max_idx));
-                }
-            }
-
-            // todo: add handling other forms of loops, like knots
-
-            return count;
-        }
-
+        
         public string GetStats()
         {
             return $"{nameof(nodes)} = {this.nodes.GetStats()}; {nameof(this.roads)} = {this.roads.GetStats()}; {nameof(this.nodeRoadReferences)} = {this.nodeRoadReferences.GetStats()}; {nameof(this.Grid)} = {this.Grid.GetStats()}";
@@ -404,9 +373,9 @@ namespace TrackPlanner.Mapping.Disk
             }));
         }
 
-        public RoadInfo GetRoad(long roadMapIndex, in CellIndex cellIndex)
+        public RoadInfo GetRoad(long roadId, in CellIndex cellIndex)
         {
-            return GetRoad(roadMapIndex);
+            return GetRoad(roadId);
         }
 
         public CellIndex GetCellIndex(GeoZPoint point)

@@ -10,6 +10,7 @@ using TrackPlanner.Shared;
 using TrackPlanner.DataExchange;
 using TrackPlanner.Mapping.Data;
 using TrackPlanner.Data.Stored;
+using TrackPlanner.LinqExtensions;
 using TrackPlanner.Structures;
 
 namespace TrackPlanner.Mapping
@@ -18,6 +19,38 @@ namespace TrackPlanner.Mapping
     {
         public static string KmlDangerousTag => "dangerous";
         
+        
+        public static int LEGACY_RoadSegmentsDistanceCount(this IWorldMap map, long roadId, int sourceIndex, int destIndex)
+        {
+            int min_idx = Math.Min(sourceIndex, destIndex);
+            int max_idx = Math.Max(sourceIndex, destIndex);
+
+            int count = max_idx - min_idx;
+
+            {
+                // when end is looped  (EXCLUDING start-end)
+                int conn_idx = map.GetRoad(roadId).Nodes.IndexOf(map.GetRoad(roadId).Nodes.Last());
+                if (conn_idx != 0 && conn_idx != map.GetRoad(roadId).Nodes.Count - 1)
+                {
+                    count = Math.Min(count, map.GetRoad(roadId).Nodes.Count - 1 - max_idx + Math.Abs(conn_idx - min_idx));
+                }
+            }
+            {
+                // when start is looped (including start-end)
+                int conn_idx = map.GetRoad(roadId).Nodes.Skip(1).IndexOf(map.GetRoad(roadId).Nodes.First());
+                if (conn_idx != -1)
+                {
+                    ++conn_idx;
+
+                    count = Math.Min(count, min_idx + Math.Abs(conn_idx - max_idx));
+                }
+            }
+
+            // todo: add handling other forms of loops, like knots
+
+            return count;
+        }
+
         public static GeoZPoint GetRoundaboutCenter(this IWorldMap map, IGeoCalculator calc, long roundaboutId)
         {
             GeoZPoint min =  GeoZPoint.Create(Angle.PI, Angle.Zero, null);

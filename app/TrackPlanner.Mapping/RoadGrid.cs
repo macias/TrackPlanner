@@ -10,7 +10,8 @@ using TrackPlanner.Structures;
 
 namespace TrackPlanner.Mapping
 {
-    public abstract class RoadGrid : IGrid
+    public abstract class RoadGrid<TCell> : IGrid
+    where TCell:RoadGridCell
     {
         public int CellSize { get; }
 
@@ -19,9 +20,10 @@ namespace TrackPlanner.Mapping
         private readonly ILogger logger;
         private readonly string? debugDirectory;
         private readonly bool legacyGetNodeAllRoads;
-        private readonly IReadOnlyBasicMap<CellIndex, RoadGridCell> cells;
+        private readonly IReadOnlyBasicMap<CellIndex, TCell> cells;
 
-        protected RoadGrid(ILogger logger, IReadOnlyBasicMap<CellIndex, RoadGridCell> cells, IWorldMap map, IGeoCalculator calc,
+        protected RoadGrid(ILogger logger, IReadOnlyBasicMap<CellIndex, TCell> cells, IWorldMap map, 
+            IGeoCalculator calc,
             int gridCellSize, string? debugDirectory, bool legacyGetNodeAllRoads)
         {
             this.CellSize = gridCellSize;
@@ -34,17 +36,6 @@ namespace TrackPlanner.Mapping
         }
 
         public abstract string GetStats();
-        
-        public CellIndex GetCellIndex(Angle latitude, Angle longitude)
-        {
-            return new CellIndex()
-            {
-                LatitudeGridIndex = (int) (latitude.Degrees * CellSize),
-                LongitudeGridIndex = (int) (longitude.Degrees * CellSize)
-            };
-        }
-
-
 
         public List<RoadBucket> GetRoadBuckets(IReadOnlyList<RequestPoint> userTrack, Length proximityLimit,Length upperProximityLimit, 
             bool requireAllHits, bool singleMiddleSnaps)

@@ -2,6 +2,6 @@
 {
     internal static class StorageInfo
     {
-        public const int DataFormatVersion = 112;
+        public const int DataFormatVersion = 113;
     }
 }
