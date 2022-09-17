@@ -1,5 +1,5 @@
 *This project serves as canary for migration to [CodeBerg](https://codeberg.org/macias/TrackPlanner).
-Read more why we should [give up GitHub](GiveUpGitHub.org).*
+Read more why we should [give up GitHub](https://GiveUpGitHub.org).*
 
 # About
 
